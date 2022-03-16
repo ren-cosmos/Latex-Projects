@@ -1,0 +1,2531 @@
+\message{************************************************************}
+\message{************************************************************}
+\message{*********** 2130.sty - compiled by Bruce Shawyer ***********}
+\message{************************************************************}
+\message{*********** latest version compiled August   2003 **********}
+\message{************************************************************}
+\message{************************************************************}
+% curves.sty version 1.41 for LaTeX 2.09, SLiTeX, and LaTeX2e.
+% I.L. Maclaine-cross, The University of New South Wales.
+% Internet: ian@ilm.mech.unsw.edu.au
+\typeout{Document Style Option `curves' <22 August 1995>}
+% Draws curves in LaTeX picture environment using parabolas between points
+%   with continuous slope at points. Equivalent to technical pens with
+%   compasses and French curves.
+% A Command Summary is at the end of this file.
+%
+% curvesls.sty is a faster equivalent requiring less memory which uses
+% straight line drawing \specials like emTeX's.
+
+% Make `;' appear like a letter so control sequences can use it and they
+% will not be accidently used by other macro packages.
+\catcode`\;=11
+
+\newcount\;sc % number of symbols on Bezier segment
+\newcount\;scp
+\newcount\;t
+\newcount\;cc % coordinate count
+\newcount\;cnd % actual point count to next dot
+\newcount\;mcnd % maximum point count to next dot
+\newcount\;np
+\newcount\;overhang
+\newcount\;pns
+\newcount\;psc % maximum dot spacing on line in sp.
+\newcount\;pbs
+\newcount\;rc
+\newcount\;rtc
+\newcount\;tc
+\let\;tca=\@tempcnta
+\let\;tcb=\@tempcntb
+
+\newdimen\csdiameter
+\newdimen\curvelength
+\newdimen\overhang \overhang\z@
+\newdimen\;dx
+\newdimen\;ddx
+\newdimen\;dy
+\newdimen\;ddy
+\newdimen\;pl \;pl\z@
+\newdimen\;ucd
+\newdimen\;y
+\let\;td=\@tempdima
+\let\;ytd=\@tempdimb
+
+\newsavebox{\;csbox}
+\newsavebox{\;pt}
+
+\newif\ifcurvewarn \curvewarntrue % Warn about curve problems
+\newif\if;ccn  % coordinate number correct
+\newif\if;pt   % plot points if true
+\newif\if;csym % curve symbol defined
+\newif\if;scnt % symbol or pattern count <>0
+
+\newhelp\;strline{curve straight from}
+\newhelp\m;ssingcoord{curve needs more points, add them.}
+\newhelp\;negdash{curvedashes needs the same sign for all arguments.}
+\newhelp\;oddcoord{curve requires two co-ordinates for each point,
+  count them.}
+
+\newcommand\arc{\@ifnextchar[\;arc{\;arc[0]}}
+\newcommand\;arc{}
+\def\;arc[#1](#2,#3)#4{\;setpoint{#1}\scaleput(#2,#3){\;ddx-#3\unitlength
+  \;ddy#2\unitlength \;firstpoint \;td#4\p@ \;drwarc}}
+
+
+% Redefines version in LaTeX 2e of 1 June 1994.
+\def\bezier#1)#2(#3)#4({\@bezier#1)(#3)(}
+\def\@bezier#1(#2,#3)(#4,#5)(#6,#7){\;dx#4\unitlength \;ddx-\;dx
+  \advance\;dx-#2\unitlength \advance\;ddx#6\unitlength \;dy#5\unitlength
+  \;ddy-\;dy \advance\;dy-#3\unitlength \advance\;ddy#7\unitlength
+  \;setpoint{#1}\scaleput(#2,#3){\;firstpoint \;bezier}}
+
+\newcommand\bigcircle{\@ifnextchar[\;bgcrcl{\;bgcrcl[0]}}
+\newcommand\;bgcrcl{}
+\def\;bgcrcl[#1]#2{\;setpoint{#1}\;dx\unitlength \global\divide\unitlength\tw@
+  \scaleput(#2,0){\;ddx\z@ \;ddy#2\unitlength \global\unitlength\;dx \;td360\p@
+    \;drwarc}}
+
+\newcommand\closecurve{\@ifnextchar[\;closecurve{\;closecurve[0]}}
+\newcommand\;closecurve{}
+\def\;closecurve[#1](#2){\;coordn\closecurve\thr@@{#2}{#1}%
+  \if;ccn\scaleput(\;xb,\;yb){\edef\;ci{\;xa,\;ya,#2,\;xb,\;yb,\;xc,\;yc}%
+    \advance\;cc\thr@@ \;tagcurve\;ci}\fi}
+
+\newcommand\curve{\@ifnextchar[\;curve{\;curve[0]}}
+\newcommand\;curve{}
+\def\;curve[#1](#2){\;coordn\curve\tw@{#2}{#1}%
+  \if;ccn \scaleput(\;xa,\;ya){\;firstpoint
+    \ifnum\;cc=\tw@ \;slbezd \;slbez
+    \else \;scbezd\;dx\;ddx\;xa\;xb\;xc \;scbezd\;dy\;ddy\;ya\;yb\;yc
+      \;bezier \;tagcurve{#2}\ifnum\;cc>6\;endcurve\fi \fi}\fi}
+\newcommand\;scbezd[5]{\;slcd#2#3#5\divide#24\;slcd#1#3#4\advance#1-#2}
+\newcommand\;xa{} \newcommand\;xb{} \newcommand\;xc{}
+\newcommand\;ya{} \newcommand\;yb{} \newcommand\;yc{}
+\newcommand\;ci{}
+
+\newcommand\curvesymbol[1]{\def\;curvesymbol{#1}\ch;ckcs
+  \global\setbox\;csbox\hbox{#1}\csdiameter\wd\;csbox}
+\newcommand\;curvesymbol{} \def\;curvesymbol{}
+
+\newcommand\curvedashes{\@ifnextchar[\;crvdshs{\;crvdshs[\unitlength]}}
+\newcommand\;crvdshs{}
+\def\;crvdshs[#1]#2{\;ucd#1\def\;icurvedashes{#2}\;ccnfalse \;pl\z@
+  \@for \;ci:=#2\do{\ifdim\;ci\;ucd<\z@ \;ccntrue \@latexerr{\string
+      \curvedashes\space sign bad at \;ci}{\the\;negdash ^^J\@eha}%
+    \else \advance\;pl\;ci\;ucd \fi}\if;ccn\;pl\z@\fi}
+\newcommand\;icurvedashes{}
+
+\newcommand\diskpitchstretch{\@ne}
+
+\newcommand\tagcurve{\@ifnextchar[\;tgcrv{\;tgcrv[0]}}
+\newcommand\;tgcrv{}
+\def\;tgcrv[#1](#2){\;coordn\tagcurve\thr@@{#2}{#1}\if;ccn
+  \scaleput(\;xb,\;yb){\;firstpoint \;tagcurve{#2}}\fi}
+
+\newcommand\scaleput{}
+\long\def\scaleput(#1,#2)#3{\@killglue \;td#2\unitlength
+  \raise\yscale\;td \hbox to \z@{\kern\xscaley\;td \;td#1\unitlength
+  \kern\xscale\;td \raise\yscalex\;td \hbox{#3}\hss}\ignorespaces}
+\newcommand\xscale{\@ne}
+\newcommand\xscaley{0}
+\newcommand\yscale{\@ne}
+\newcommand\yscalex{0}
+
+% Plot first point if any.
+\newcommand\;firstpoint{\ifdim\;pl=\z@\;point\fi}
+
+% Calculates segment count, sine, cosine and differences then plots segments.
+\newcommand\;drwarc{\;cc\;td \;np\;td \;td23\p@ \divide\;cc\;td
+  \;abs\;cc \advance\;cc\@ne \;pns\p@ \divide\;pns\tw@
+  \divide\;np\;cc \;rc\;np \divide\;rc\;pns \;abs\;rc
+  \advance\;rc\@ne \divide\;np\;rc \multiply\;np\;pns \divide\;np14668 %
+  \multiply\;np\;rc \divide\;np\@cclvi \;scp\p@ \multiply\;scp\@cclvi
+  \;t\;pns \;csi\;csi\;csi\;csi \;rxy\;ddx\;ddy \divide\;rc\p@
+  \advance\;rc\@ne \;rtc\;rc \advance\;rc\;rc \;ndd\;ddx \;ndd\;ddy
+  \;csi \;rxy\;ddx\;ddy \divide\;rc\;pns \advance\;rc\@ne
+  \@whilenum\;cc>\z@ \do{\advance\;cc\m@ne \;dx\;ddx \;dy\;ddy
+    \divide\;ddx\;rc \divide\;ddy\;rc \;td\;ddx \;ddx\;t\;td
+    \advance\;ddx-\;np\;ddy \;ddy\;t\;ddy \advance\;ddy\;np\;td
+    \divide\;ddx\;pns \divide\;ddy\;pns \;ddx\;rc\;ddx \;ddy\;rc\;ddy
+    {\;bezier \global\;ytd\;y \global\;tca\;overhang}\;y\;ytd \;overhang\;tca}}
+\newcommand\;ndd[1]{\divide#1\;rc \multiply#1\;np \divide#1\;t #1\;rtc#1}
+% Cosine and sine half angle iteration.
+\newcommand\;csi{\;tcb\;np \multiply\;np\;t \divide\;np\;pns \;t\;tcb
+  \multiply\;t\;t \divide\;t-\;scp \advance\;t\;pns \divide\;scp4 }
+
+% Count the number of co-ordinate specified and warns if incorrect.
+\newcommand\;coordn[4]{\;setpoint{#4}\ifx#1\closecurve\;cc\tw@\else\;cc\z@\fi
+  \@for\;ci:=#3\do{\advance\;cc\@ne
+    \ifcase\;cc \or \;d;f\;xa \or \;d;f\;ya \or \;d;f\;xb
+      \or \;d;f\;yb \or \;d;f\;xc \or \;d;f\;yc \fi
+    \ifx#1\closecurve\ifodd\;cc \;d;f\;xa \else \;d;f\;ya \fi\fi}%
+  \;ccnfalse \ifx#1\closecurve \advance\;cc-\tw@ \fi
+  \ifodd\;cc \@latexerr{\string #1\space points odd}{\the\;oddcoord ^^J\@eha}%
+  \else \divide\;cc\tw@
+    \ifnum#2>\;cc \@latexerr{\string #1 needs \the#2 points}%
+      {\the\m;ssingcoord ^^J\@eha}%
+    \else \;ccntrue \fi\fi}
+
+% Sets symbol, character or disk depending on how line is to be plotted.
+% Corrects overhang to be positive or zero but no greater than \;pl.
+\newcommand\;setpoint[1]{\curvelength\z@ \def\;po;nt{\raise\;y\copy\;pt}\ch;ckcs
+  \ifnum#1=\z@\;scntfalse\else\;scnttrue\fi  \;sc#1\relax \;abs\;sc \;psc\;sc
+  \ifdim\;pl>\z@ \;overhang\overhang
+    \ifnum\;overhang=\z@\else \;np\;overhang \divide\;np\;pl \multiply\;np\;pl
+      \ifnum\;overhang<\z@ \advance\;overhang\;pl
+      \else \ifnum\;overhang=\;np\advance\;overhang\;pl\fi
+      \fi \advance\;overhang-\;np
+    \fi \if;csym \if;scnt\;setdisk\else\;setsymbol\;td\p@\fi \else \;setdisk \fi
+    \s;tpitch
+  \else\ifnum#1>\z@ \s;tcirc{\hss\vrule\@height\@wholewidth\@width\@wholewidth}%
+  \else\ifnum#1<\z@ \if;csym\;setsymbol\else\set;pt{}\fi
+  \else \;setdisk \s;tpitch \fi\fi\fi
+  \edef\;point{\;po;nt}\;y\dp\;pt \advance\;y-\ht\;pt \divide\;y\tw@}
+\newcommand\;setsymbol{\s;tcirc{\hss\unhcopy\;csbox}\edef\;po;nt{\;po;nt
+  \s;tcirc{\hss\noexpand\noexpand\noexpand\;curvesymbol}%
+  \global\setbox\;csbox\copy\;pt}}
+\newcommand\s;tpitch{\;td\diskpitchstretch\;td \;psc\;td}
+\newcommand\;po;nt{} \newcommand\;point{}
+
+% Sets LaTeX disk character and calculates maximum spacing or selects period.
+\newcommand\;setdisk{\ifdim\@halfwidth>.85\p@
+    \s;tcirc{\@circ{\@wholewidth}{112}}\;td\@wholewidth
+    \divide\;td 8\advance\;td.6\p@ \ifdim\;td>\thr@@\p@\;td\thr@@\p@\fi
+  \else \;setperiod \fi}%
+
+% OFSS, SLiTeX or NFSS version for period selected at load time.
+% NFSS fix requested by Peter Vanroose and
+% Michel Goossens who also supplied a workable patch.
+\@ifundefined{selectfont}{\@ifundefined{fourteenrm}{%
+\newcommand\;setperiod{\ifdim\@halfwidth>.6\p@ \let\;ci\svtnrm \;td.7\p@
+  \else\ifdim\@wholewidth>.85\p@ \let\;ci\twlrm \;td.48\p@
+  \else \ifdim\@wholewidth>.6\p@ \let\;ci\egtrm \else \let\;ci\fivrm \fi
+    \;td.34\p@ \fi\fi \s;tcirc{\;ci\hss.}}%
+    }{%
+\newcommand\;setperiod{\;td.7\p@ \s;tcirc{\fourteenrm\hss.}}%
+   }}{%
+\newcommand\;setperiod{%
+  \ifdim\@halfwidth>.6\p@ \;tcb17\;td.7\p@
+  \else\ifdim\@wholewidth>.85\p@ \;tcb12\;td.48\p@
+  \else \ifdim\@wholewidth>.6\p@ \;tcb8\else \;tcb5\fi \;td.34\p@ \fi\fi
+  \s;tcirc{\rm \fontseries m\fontshape n\fontsize{\the\;tcb}\p@
+    \selectfont \hss.}}%
+     }
+
+% Check if curvesymbol exists and set switch.
+\newcommand\ch;ckcs{\ifx\;curvesymbol\@empty\;csymfalse\else\;csymtrue\fi}
+
+% Makes zero width box \;pt of point
+\newcommand\s;tcirc[1]{\set;pt to\z@{#1\hss}}
+
+% Set global box \;pt
+\newcommand\set;pt{\global\setbox\;pt\hbox}
+
+% Plots last segment of curve from coordinates already read.
+\newcommand\;endcurve{\;ecbezd\;dx\;ddx\;xa\;xb\;xc
+  \;ecbezd\;dy\;ddy\;ya\;yb\;yc \;bezier}
+\newcommand\;ecbezd[5]{\;slcd#1#3#5\divide#14 #2-#1\advance#2#5\unitlength
+  \advance#2-#4\unitlength}
+
+% Reads coordinates of four points before going to difference calculation.
+\newcommand\;tagcurve[1]{\ifnum\;cc=\thr@@ \;endcurve \else \;cc\z@
+  \@for\;ci:=#1\do{\advance\;cc\@ne \ifnum\;cc>6 %
+    \ifodd\;cc \;slcd\;dx\;xa\;xc \let\;xa\;xb \let\;xb\;xc \;d;f\;xc
+    \else \t;gcrv \fi \fi}\fi}
+
+% Calculates differences over whole segment from four points.
+\newcommand\t;gcrv{\;slcd\;dy\;ya\;yc \let\;ya\;yb \let\;yb\;yc \;d;f\;yc
+  \;rxy\;dx\;dy \divide\;dx\;rtc \divide\;dy\;rtc
+  \;ddx-\;ya\;dx \advance\;ddx\;xa\;dy \;ddy\;ddx
+  \advance\;ddx\;yb\;dx \advance\;ddx-\;xb\;dy
+  \advance\;ddy\;yc\;dx \advance\;ddy-\;xc\;dy
+  \;slbezd \;td\;ddy \divide\;td\@m
+  \ifdim\;td=\z@ \ifcurvewarn
+    \@warning{\the\;strline \;xa,\;ya\space to \;xb,\;yb}\fi \;slbez
+  \else \;td\unitlength \;rtc\;td \advance\;rtc\;rtc
+    \divide\;rtc\p@ \advance\;rtc\@ne \divide\;td\;rtc
+    \;t\;ddx \;scp\;t \;abs\;t
+    \advance\;t\;t \divide\;t\p@ \advance\;t\@ne \divide\;scp\;t
+    \multiply\;td\;scp \divide\;td\;ddy \multiply\;td\;rtc \multiply\;td\;t
+    \;ddx\;xc\;td \advance\;ddx-\;xa\;td \advance\;dx-\;ddx
+    \;ddy\;yc\;td \advance\;ddy-\;ya\;td \advance\;dy-\;ddy \;bezier \fi}
+
+% Avoid repeating {\;ci}
+\newcommand\;d;f[1]{\edef#1{\;ci}}
+
+\newcommand\;slbezd{\;slcd\;dx\;xa\;xb \;slcd\;dy\;ya\;yb}
+
+% Calculates difference between two coordinates.
+\newcommand\;slcd[3]{#1#3\unitlength \advance#1-#2\unitlength}
+
+% Calculates differences for bezier straight line.
+\newcommand\;slbez{\divide\;dx\tw@ \;ddx\;dx \divide\;dy\tw@ \;ddy\;dy \;bezier}
+
+% Scales segment differences, then calculates segment pattern and disk count,
+% and initial disk differences; selects line or dashes.
+\newcommand\;bezier{\;scale\;dx\;dy \;scp\;rc \;np\;rc \;scale\;ddx\;ddy
+  \ifnum\;rc>\;np\;np\;rc\fi \advance\;np\;np
+  \advance\;scp\;rc \;bezc\;dx\;ddx \;bezc\;dy\;ddy  \;rxy\;ddx\;ddy
+  \divide\;rc\p@ \advance\;rc\thr@@
+  \;tc\;rc \;sroot\;sroot\;sroot \;tca\;rc \;rxy\;dx\;dy
+  \advance\;rc\;scp \divide\;rc\thr@@ \global\advance\curvelength\;rc sp%
+  \divide\;np\;psc \ifnum\;np<\@ne\;np\@ne\fi \;t\;np
+  \if;scnt\ifdim\;pl=\z@ \;t\;sc
+    \else\;np
+      \if;csym \;rc \divide\;np\;sc \advance\;np-\csdiameter
+        \;td\;pl \divide\;td\tw@ \advance\;np\;td \divide\;np\;pl
+        \ifnum\;np<\@ne\;np\@ne\fi \multiply\;np\;sc
+      \else \;sc \fi \advance\;t\;np \divide\;t\;np \multiply\;t\;np
+  \fi \fi
+  \ifnum\;t>\;tca \;mcnd\;t \divide\;mcnd\;tca \else \;mcnd\@ne \;tca\;t \fi
+  \;tc\;t \advance\;tc\;tc \;rtc\;tc
+  \;tcb\;tca \advance\;tcb\@ne \multiply\;tcb\;mcnd \advance\;rtc-\;tcb
+  \multiply\;rtc\;tca \;tcb\;t \multiply\;tcb\;tcb \divide\;tcb\;mcnd
+  \;bezd\;dx\;ddx \;bezd\;dy\;ddy \edef\;tplot{\;po;nts}\;cnd\;mcnd
+  \ifdim\;pl>\z@ \;dashes \else \;points \fi}
+\newcommand\;scale[2]{\;td\xscale#1\advance\;td\xscaley#2%
+  #2\yscale#2\advance#2\yscalex#1#1\;td \;rxy#1#2}
+\newcommand\;bezc[2]{\advance#1#1\advance#2#2\;td#2\advance#2-#1\advance#1\;td}
+\newcommand\;bezd[2]{\divide#2\;tcb \;td#2\multiply\;td\;rtc \advance#1-\;td
+  \divide#1\;tc}
+
+% Calculates length of vector \;rc from coordinates #1,#2
+\newcommand\;rxy[2]{\;tc#1\;abs\;tc \;tcb#2\;abs\;tcb
+  \;rc\;tc \advance\;rc\;tcb
+  \ifnum\;rc>\z@ \;rtc\;rc \advance\;rtc\;rtc \divide\;rtc\p@
+    \ifnum\;rtc>\z@ \advance\;rtc\@ne \divide\;tc\;rtc
+      \divide\;tcb\;rtc \divide\;rc\;rtc
+    \else \;rtc\@ne \fi \multiply\;tc\;tc \multiply\;tcb\;tcb
+    \advance\;tc\;tcb \;sroot \multiply\;rc\;rtc \fi}
+
+% Replaces argument by magnitude
+\newcommand\;abs[1]{\ifnum#1<\z@ #1-#1\fi}
+
+% Iteration of square root calculation by Newton's method.
+\newcommand\;sroot{\;rroot\;rroot\;rroot}
+\newcommand\;rroot{\;tcb\;tc \divide\;tcb\;rc \advance\;rc\;tcb \divide\;rc\tw@}
+
+% Variable uses in \;dashes, \;scdashes, \;nscdashes, \;pdashes and \;dash.
+% counts
+% \;scp = distance between points.
+% \;rc = length of Bezier segment.
+% \;rtc = total points in Bezier segment.
+% \;np = number of whole patterns in Bezier segment or scratch.
+% \;overhang = of dash pattern past symbol or end of segment.
+% \;pbs = total points between symbols
+% \;pns = points to next symbol or dot.
+% \;tc = number of points to blank for curve symbol.
+% \;tcb = number of points along pattern.
+% dimens
+% \;pl = length of dash pattern.
+% \;ucd = dash pattern unit length.
+
+% Initializes dash plot for segment and selects symbol count alternative.
+\newcommand\;dashes{\let\;ticd\;icurvedashes \let\;tucd\;ucd \divide\;rc\;t
+  \;rtc\;t \;tc\;rc \advance\;tc\csdiameter \divide\;tc\;rc
+  \divide\;tc\tw@ \;t\;tc \multiply\;tc\tw@ \;ptfalse
+  \;pbs\;rc \divide\;pbs\tw@ \advance\;overhang\;pbs \divide\;overhang-\;rc
+  \if;scnt \;scdashes \else \;nscdashes \fi \multiply\;overhang\;rc}
+
+% Plots dash pattern when a nonzero symbol count is specified.
+\newcommand\;scdashes{\;pbs\;rtc \divide\;pbs\;sc \;ccss \;scp
+  \if;csym \;pl \multiply\;scp\;np \divide\;scp\;sc \advance\;pbs-\;tc
+  \else \;pbs \multiply\;scp\;rc \fi \;np\;overhang \;overhang\z@
+  \divide\;scp\;pbs \;tcb\z@ \;pns\;t \;dash \;overhang\;np
+  \if;csym\else \advance\;overhang-\;tcb \advance\;rtc-\;tcb
+    \advance\;pbs-\;tc \fi
+  \;pns\;pbs \advance\;pns-\;np \if;csym\else\advance\;pns\;tcb\fi
+  \@whilenum\;rtc>\z@\do{\;pdashes \;ptfalse \;t\;tc \;pns\;t \;dash
+    \;pns\;pbs \;overhang\if;csym\;np\else-\;overhang\fi
+    \advance\;pns-\;overhang}\;overhang-\if;csym\;np\else\;overhang
+      \;ptfalse \;t\;tc \;tcb\;overhang
+      \divide\;t\tw@ \;rtc\;t \;pns\;t \;dash \fi}
+
+% Plots symbols at natural pattern length but shrinks pattern to fit between.
+\newcommand\;nscdashes{\advance\;pbs\;pl \divide\;pbs\;rc
+  \if;csym \;bpdashes \fi \;ccss \;pns\;t
+  \;dash \advance\;pbs-\;tc \;scp\;pl \divide\;scp\;pbs \;pns\;pbs
+  \@whilenum\;rtc>\z@\do{\;pdashes \;ptfalse \;t\;tc \;pns\;t \;dash
+    \;pns\;pbs}\if;csym \else \divide\;tc\tw@ \advance\;overhang\;tc \fi}
+
+% If large symbol spaces, blank curve.
+\newcommand\;ccss{\ifnum\;pbs>\;tc\else \;bpdashes \fi}
+
+% A blank or symbol plotting dash pattern
+\newcommand\;bpdashes{\let\;tucd\;pl \let\;ticd\;ricd \;tc\z@ \;t\z@}
+\newcommand\;ricd{1,0}
+
+% Reads dash pattern plotting dashes and spaces up to next symbol space.
+\newcommand\;pdashes{\ifnum\;pns>\z@ \;td\z@ \;tcb\z@ \;ptfalse
+    \@for\;ci:=\;ticd \do{\advance\;td\;ci\;tucd \;t\;scp \divide\;t\tw@
+      \advance\;t\;td \divide\;t\;scp  \advance\;t-\;tcb \;dash
+      \if;pt\;ptfalse\else\;pttrue\fi}%
+  \let\n;xt\;pdashes \else \let\n;xt\relax \fi \n;xt}
+
+% Checks if dash or space occurs before or after curve, calculates fractions.
+\newcommand\;dash{\ifnum\;t=\z@ \if;csym\ifnum\;rtc>\z@\if;pt\;point\fi\fi\fi
+  \else \advance\;tcb\;t \advance\;pns-\;t
+    \ifnum\;overhang<\z@ \advance\;overhang\;t
+      \ifnum\;overhang<\z@ \;t\z@ \else \;t\;overhang \;overhang\;tcb \fi
+    \else \;overhang\;tcb \fi
+    \ifnum\;pns<\z@ \advance\;overhang\;pns \advance\;tcb\;pns
+      \advance\;t\;pns \;pns\z@ \fi \advance\;rtc-\;t
+    \ifnum\;rtc<\z@ \advance\;overhang\;rtc \advance\;t\;rtc\fi
+    \ifnum\;t>\z@ \if;pt\;point\;points\else\let\n;xt\;space\;space\fi \fi\fi}
+
+% Makes \;tplot then plots a single dash.
+\newcommand\;points{\let\n;xt\;sdash \;sdash}
+\newcommand\;sdash{\let\n;;t\;tplot \ifnum\;t<\;cnd \let\n;xt\relax
+    \advance\;cnd-\;t \;tca\;t \;tplot
+  \else \advance\;t-\;cnd \;tca\;cnd \;tplot
+    \advance\;dx\;ddx \advance\;dy\;ddy \;cnd\;mcnd
+  \fi \n;xt}
+
+% A fast single macro for drawing straight lines.
+\newcommand\;tplot{}
+\newcommand\;po;nts{\noexpand\ifnum\;tca>\z@
+  \advance\;y\;dy \kern\;dx \;po;nt \advance\;tca\m@ne
+  \noexpand\else \let\noexpand\n;;t\relax \noexpand\fi \noexpand\n;;t}
+
+% Plots a single space at high speed.
+\newcommand\;space{\ifnum\;t<\;cnd \let\n;xt\relax
+    \advance\;cnd-\;t \advance\;y\;t\;dy \kern\;t\;dx
+  \else \advance\;t-\;cnd \advance\;y\;cnd\;dy \kern\;cnd\;dx
+    \advance\;dx\;ddx \advance\;dy\;ddy \;cnd\;mcnd
+  \fi \n;xt}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%    Addition February 1997   %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\;BigcirclE#1{\arc(#1,0){23} \arc(#1,0){-23} \arc(0,#1){-23}
+\arc(0,#1){23} \arc(-#1,0){23} \arc(-#1,0){-23} \arc(0,-#1){-23}
+\arc(0,-#1){23}}\def\Bigcircle#1{\;BigcirclE{#1}
+\renewcommand\xscale{.70710678}\renewcommand\xscaley{.70710678}
+\renewcommand\yscale{.70710678}\renewcommand\yscalex{-.70710678}
+\scaleput(0,0){\;BigcirclE{#1}}
+\renewcommand\xscale{1}\renewcommand\xscaley{0}
+\renewcommand\yscale{1}\renewcommand\yscalex{0}}
+
+\def\;join(#1,#2)(#3,#4){\curve(#1,#2,#3,#4)}
+
+\def\joinlinestretch{0}
+\def\join{\@ifnextchar [{\@ijoinline}{\@ijoinline[\joinlinestretch]}}
+\def\@ijoinline[#1](#2,#3){\@ifnextchar ({\@iijoinline[#1](#2,#3)}{\relax}}
+\def\@iijoinline[#1](#2,#3)(#4,#5){\;join(#2,#3)(#4,#5)\@ijoinline[#1](#4,#5)}
+% Make `;' a punctuation mark again.
+ \catcode`\;=12
+
+%%%%%%%% am2130e.sty %%%%%%%%%%
+% Written by Bruce Shawyer March 1995 %
+%%
+%% This is file `size12.clo', generated
+%% on <1995/3/22> with the docstrip utility (2.2i).
+%%
+%% The original source files were:
+%%
+%% classes.dtx  (with options: `12pt')
+%%
+%% Copyright 1994 the LaTeX3 project and the individual authors.
+%% All rights reserved. For further copyright information see the file
+%% legal.txt, and any other copyright indicated in this file.
+%%
+%% This file is part of the LaTeX2e system.
+%% ----------------------------------------
+%%
+%% This system is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+%%
+%%
+%% IMPORTANT NOTICE:
+%%
+%% For error reports in case of UNCHANGED versions see bugs.txt.
+%%
+%% Please do not request updates from us directly. Distribution is
+%% done through Mail-Servers and TeX organizations.
+%%
+%% You are not allowed to change this file.
+%%
+%% You are allowed to distribute this file under the condition that
+%% it is distributed together with all files mentioned in manifest.txt.
+%%
+%% If you receive only some of these files from someone, complain!
+%%
+%% You are NOT ALLOWED to distribute this file alone. You are NOT
+%% ALLOWED to take money for the distribution or use of either this
+%% file or a changed version, except for a nominal charge for copying
+%% etc.
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+\ProvidesFile{size12.clo}
+             [1994/12/09 v1.2x
+     Standard LaTeX file (size option)]
+\renewcommand{\normalsize}{%
+  \@setfontsize\normalsize\@xiipt{14.5}%
+  \abovedisplayskip 12\p@ \@plus3\p@ \@minus7\p@
+  \abovedisplayshortskip \z@ \@plus3\p@
+  \belowdisplayshortskip 6.5\p@ \@plus3.5\p@ \@minus3\p@
+  \belowdisplayskip \abovedisplayskip
+  \let\@listi\@listI}
+\normalsize
+\renewcommand{\small}{%
+  \@setfontsize\small\@xipt{13.6}%
+  \abovedisplayskip 11\p@ \@plus3\p@ \@minus6\p@
+  \abovedisplayshortskip \z@ \@plus3\p@
+  \belowdisplayshortskip 6.5\p@ \@plus3.5\p@ \@minus3\p@
+  \def\@listi{\leftmargin\leftmargini
+              \topsep 9\p@ \@plus3\p@ \@minus5\p@
+              \parsep 4.5\p@ \@plus2\p@ \@minus\p@
+              \itemsep \parsep}%
+  \belowdisplayskip \abovedisplayskip
+}
+\renewcommand{\footnotesize}{%
+  \@setfontsize\footnotesize\@xpt\@xiipt
+  \abovedisplayskip 10\p@ \@plus2\p@ \@minus5\p@
+  \abovedisplayshortskip \z@ \@plus3\p@
+  \belowdisplayshortskip 6\p@ \@plus3\p@ \@minus3\p@
+  \def\@listi{\leftmargin\leftmargini
+              \topsep 6\p@ \@plus2\p@ \@minus2\p@
+              \parsep 3\p@ \@plus2\p@ \@minus\p@
+              \itemsep \parsep}%
+  \belowdisplayskip \abovedisplayskip
+}
+\renewcommand{\scriptsize}{\@setfontsize\scriptsize\@viiipt{9.5}}
+\renewcommand{\tiny}{\@setfontsize\tiny\@vipt\@viipt}
+\renewcommand{\large}{\@setfontsize\large\@xivpt{18}}
+\renewcommand{\Large}{\@setfontsize\Large\@xviipt{22}}
+\renewcommand{\LARGE}{\@setfontsize\LARGE\@xxpt{25}}
+\renewcommand{\huge}{\@setfontsize\huge\@xxvpt{30}}
+\let\Huge=\huge
+\if@twocolumn
+ \setlength\parindent{1em}
+\else
+ \setlength\parindent{1.5em}
+\fi
+\setlength\headheight{15\p@}	% was 12
+\setlength\headsep   {25\p@}
+\setlength\topskip   {12\p@}
+\setlength\footskip{30\p@}
+\if@compatibility \setlength\maxdepth{4\p@} \else
+\setlength\maxdepth{.5\topskip} \fi
+\setlength\@maxdepth\maxdepth
+\if@compatibility
+ \if@twocolumn
+   \setlength\textwidth{410\p@}
+ \else
+   \setlength\textwidth{390\p@}
+ \fi
+\else
+ \setlength\@tempdima{\paperwidth}
+ \addtolength\@tempdima{-2in}
+ \setlength\@tempdimb{390\p@}
+ \if@twocolumn
+   \ifdim\@tempdima>2\@tempdimb\relax
+     \setlength\textwidth{2\@tempdimb}
+   \else
+     \setlength\textwidth{\@tempdima}
+   \fi
+ \else
+   \ifdim\@tempdima>\@tempdimb\relax
+     \setlength\textwidth{\@tempdimb}
+   \else
+     \setlength\textwidth{\@tempdima}
+   \fi
+ \fi
+\fi
+\if@compatibility\else
+ \@settopoint\textwidth
+\fi
+\if@compatibility
+ \setlength\textheight{36\baselineskip}
+\else
+ \setlength\@tempdima{\paperheight}
+ \addtolength\@tempdima{-2in}
+ \addtolength\@tempdima{-1.5in}
+ \divide\@tempdima\baselineskip
+ \@tempcnta=\@tempdima
+ \setlength\textheight{\@tempcnta\baselineskip}
+\fi
+\addtolength\textheight{\topskip}
+\if@compatibility
+ \if@twoside
+    \setlength\oddsidemargin   {21\p@}
+    \setlength\evensidemargin  {59\p@}
+    \setlength\marginparwidth {85\p@}
+ \else
+    \setlength\oddsidemargin   {39.5\p@}
+    \setlength\evensidemargin  {39.5\p@}
+    \setlength\marginparwidth  {68\p@}
+ \fi
+ \if@twocolumn
+    \setlength\oddsidemargin  {30\p@}
+    \setlength\evensidemargin {30\p@}
+    \setlength\marginparwidth {48\p@}
+ \fi
+\else
+ \if@twoside
+   \setlength\@tempdima        {\paperwidth}
+   \addtolength\@tempdima      {-\textwidth}
+   \setlength\oddsidemargin    {.4\@tempdima}
+   \addtolength\oddsidemargin  {-1in}
+   \setlength\marginparwidth   {.6\@tempdima}
+   \addtolength\marginparwidth {-0.4in}
+ \else
+   \setlength\@tempdima        {\paperwidth}
+   \addtolength\@tempdima      {-\textwidth}
+   \setlength\oddsidemargin    {.5\@tempdima}
+   \addtolength\oddsidemargin  {-1in}
+   \setlength\marginparwidth   {.5\@tempdima}
+   \addtolength\marginparwidth {-.4in}
+ \fi
+ \ifdim \marginparwidth >2in
+    \setlength\marginparwidth{2in}
+ \fi
+ \@settopoint\oddsidemargin
+ \@settopoint\marginparwidth
+ \setlength\evensidemargin  {\paperwidth}
+ \addtolength\evensidemargin{-2in}
+ \addtolength\evensidemargin{-\textwidth}
+ \addtolength\evensidemargin{-\oddsidemargin}
+ \@settopoint\evensidemargin
+\fi
+\if@twocolumn
+\setlength\marginparsep {10\p@}
+\else
+ \setlength\marginparsep{10\p@}
+\fi
+\setlength\marginparpush{7\p@}
+\if@compatibility
+ \setlength\topmargin{27pt}
+\else
+ \setlength\topmargin{\paperheight}
+ \addtolength\topmargin{-2in}
+ \addtolength\topmargin{-\headheight}
+ \addtolength\topmargin{-\headsep}
+ \addtolength\topmargin{-\textheight}
+ \addtolength\topmargin{-\footskip}     % this might be wrong!
+ \addtolength\topmargin{-.5\topmargin}
+ \@settopoint\topmargin
+\fi
+\setlength\footnotesep{8.4\p@}
+\setlength{\skip\footins}{10.8\p@ \@plus 4\p@ \@minus 2\p@}
+\setlength\floatsep    {12\p@ \@plus 2\p@ \@minus 4\p@}
+\setlength\textfloatsep{20\p@ \@plus 2\p@ \@minus 4\p@}
+\setlength\intextsep   {14\p@ \@plus 4\p@ \@minus 4\p@}
+\setlength\dblfloatsep    {14\p@ \@plus 2\p@ \@minus 4\p@}
+\setlength\dbltextfloatsep{20\p@ \@plus 2\p@ \@minus 4\p@}
+\setlength\@fptop{0\p@ \@plus 1fil}
+\setlength\@fpsep{10\p@ \@plus 2fil}
+\setlength\@fpbot{0\p@ \@plus 1fil}
+\setlength\@dblfptop{0\p@ \@plus 1fil}
+\setlength\@dblfpsep{10\p@ \@plus 2fil}
+\setlength\@dblfpbot{0\p@ \@plus 1fil}
+\setlength\partopsep{3\p@ \@plus 2\p@ \@minus 2\p@}
+\def\@listI{\leftmargin\leftmargini
+           \parsep 5\p@  \@plus2.5\p@ \@minus\p@
+           \topsep 10\p@ \@plus4\p@   \@minus6\p@
+           \itemsep5\p@  \@plus2.5\p@ \@minus\p@}
+\let\@listi\@listI
+\@listi
+\def\@listii {\leftmargin\leftmarginii
+             \labelwidth\leftmarginii
+             \advance\labelwidth-\labelsep
+             \topsep    5\p@   \@plus2.5\p@ \@minus\p@
+             \parsep    2.5\p@ \@plus\p@    \@minus\p@
+             \itemsep   \parsep}
+\def\@listiii{\leftmargin\leftmarginiii
+             \labelwidth\leftmarginiii
+             \advance\labelwidth-\labelsep
+             \topsep    2.5\p@\@plus\p@\@minus\p@
+             \parsep    \z@
+             \partopsep \p@ \@plus\z@ \@minus\p@
+             \itemsep   \topsep}
+\def\@listiv {\leftmargin\leftmarginiv
+             \labelwidth\leftmarginiv
+             \advance\labelwidth-\labelsep}
+\def\@listv  {\leftmargin\leftmarginv
+             \labelwidth\leftmarginv
+             \advance\labelwidth-\labelsep}
+\def\@listvi {\leftmargin\leftmarginvi
+             \labelwidth\leftmarginvi
+             \advance\labelwidth-\labelsep}
+%\endinput
+%%
+%% End of file `size12.clo'.
+
+
+% Additions by Bruce Shawyer
+% Department of Mathematics and Statistics
+% Memorial University of Newfoundland
+% St. John's, NF, Canada  A1C 5S7
+%
+% bshawyer@fermat.math.mun.ca
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% fancyheadings.sty version 1.0 - version for AM2130
+% Fancy headers and footers.
+% Piet van Oostrum, Dept of Computer Science, University of Utrecht
+% Padualaan 14, P.O. Box 80.089, 3508 TB Utrecht, The Netherlands
+% Telephone: +31-30-531806. piet@cs.ruu.nl (mcvax!hp4nl!ruuinf!piet)
+% March, 1989.
+
+% Here is a documentstylestyle option that allows you to customize your
+% page headers and footers in an easy way. It combines features that were
+% separately available in other pagestyles, without introducing much
+% complexity. You can define:
+%     - three-part headers and footers
+%     - rules in header and footer
+%     - headers and footers wider than \textwidth
+%     - multiline headers and footers
+%     - separate headers and footers for even and odd pages
+%     - separate headers and footers for chapter pages
+%
+% To use this pagestyle, you must include the ``fancyheadings'' style
+% option in your \documentstyle, and issue the \pagestyle{fancy} command.
+% The \pagestyle{fancy} command should be issued after any changes made to
+% \textwidth.
+%
+% The page layout will be as follows:
+%
+% 		LHEAD          CHEAD          RHEAD
+% 		----------------------------------- (rule)
+%
+% 			     page body
+%
+%
+% 		----------------------------------- (rule)
+% 		LFOOT	       CFOOT	      RFOOT
+%
+% The L-fields will be leftadjusted, the C-fields centered and the
+% R-fields rightadjusted.
+% Each of the six fields and the two rules can be defined separately.
+%
+% Simple use:
+%
+% The header and footer fields can be defined by commands \lhead{LHEAD}
+% and so on for the other fields. If the field depends on something in the
+% document (e.g. section titles) you must in general use the \markboth and
+% \markright commands, otherwise a title may end on the wrong page. You
+% can do this e.g. by redefining the commands \chaptermark, \sectionmark
+% and so on (see example below). The defaults for these marks are as in
+% the standard pagestyles. The marks can be put into a header or footer
+% field by referencing \leftmark and \rightmark.
+%
+% Rules in header and footer
+%
+% The thickness of the rules below the header and above the footer can be
+% changed by redefining the length parameters \headrulewidth (default
+% 0.4pt) and \footrulewidth (default 0). These may be redefined by the
+% \setlength command. A thickness of 0pt makes the rule invisible.
+% If you want to make more complicated changes, you have to redefine the
+% commands \headrule and/or \footrule.
+%
+% Headers and footers wider than \textwidth
+%
+% The headers and footers are set in a box of width \headwidth. The
+% default for this is the value of \textwidth. You can make it wider (or
+% smaller) by redefining \headwidth with the \setlength or \addtolength
+% command. The headers and footers will stick out the page on the same
+% side as the marginal notes. For example to include the marginal notes,
+% add both \marginparsep and \marginparwidth to \headwidth (see also the
+% example below).
+%
+% Multiline headers and footers
+%
+% Each of the six fields is set in an appropriate parbox, so you can put a
+% multiline part in it with the \\ command. It is also possible to put
+% extra space in it with the \vspace command. Note that if you do this you
+% will probably have to increase the \headheight or \footskip lengths.
+%
+% Separate headers and footers for even and odd pages
+%
+% If you want the headers and footers to be different on even- and
+% odd-numbered pages in the ``twoside'' style, the field-defining macros
+% can be given an optional argument, to be used on the even-numbered
+% pages, like \lhead[EVEN-LHEAD]{ODD-RHEAD}.
+%
+% Separate headers and footers for chapter pages
+%
+% LaTeX gives a \thispagestyle{plain} command for the first page of the
+% document, the first page of each chapter and a couple of other pages. It
+% might be incompatible with your pagestyle. In this case you can use a
+% slightly different version of the pagestyle, called \pagestyle{fancyplain}.
+% This pagestyle redefines the pagestyle ``plain'' to also use pagestyle
+% ``fancy'' with the following modifications:
+%     - the thicknesses of the rules is defined by \plainheadrulewidth and
+%       \plainfootrulewidth (both default 0).
+%     - the 6 fields may be defined separately for the plain pages by
+%       giving them the value \fancyplain{PLAIN-VALUE}{NORMAL-VALUE}. This
+%       construct may be used in both the optional argument and the normal
+%       argument. Thus \lhead[\fancyplain{F1}{F2}]{\fancyplain{F3}{F4}}
+%       specifies the LHEAD value in a two-sided document:
+% 	F1 on an even-numbered ``plain'' page
+% 	F2 on an even-numbered normal page
+% 	F3 on an odd-numbered ``plain'' page
+% 	F4 on an odd-numbered normal page.
+%
+% Defaults:
+%
+% \headrulewidth 	      0.4pt
+% \footrulewidth		0pt
+% \plainheadrulewidth	0pt
+% \plainfootrulewidth	0pt
+%
+% \lhead[\fancyplain{}{\sl\rightmark}]{\fancyplain{}{\sl\leftmark}}
+% %  i.e. empty on ``plain'' pages \rightmark on even, \leftmark on odd pages
+% \chead{}
+% \rhead[\fancyplain{}{\sl\leftmark}]{\fancyplain{}{\sl\rightmark}}
+% %  i.e. empty on ``plain'' pages \leftmark on even, \rightmark on odd pages
+% \lfoot{}
+% \cfoot{\rm\thepage} % page number
+% \rfoot{}
+%
+% Examples:
+%
+% To put two lines containing the section title and the subsection title
+% in the righthandside corner, use:
+%
+% \documentstyle[fancyheadings]{article}
+% \pagestyle{fancy}
+% \renewcommand{\sectionmark}[1]{\markboth{#1}{}}
+% \renewcommand{\subsectionmark}[1]{\markright{#1}}
+% \rfoot{\leftmark\\\rightmark}
+%
+% The following definitions give an approximation of the style used in the
+% LaTeX book:
+%
+% \documentstyle[fancyheadings]{book}
+% \pagestyle{fancyplain}
+% \addtolength{\headwidth}{\marginparsep}
+% \addtolength{\headwidth}{\marginparwidth}
+% \renewcommand{\chaptermark}[1]{\markboth{#1}{#1}} % remember chapter title
+% \renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
+%                                                 % section number and title
+% \lhead[\fancyplain{}{\bf\thepage}]{\fancyplain{}{\bf\rightmark}}
+% \rhead[\fancyplain{}{\bf\leftmark}]{\fancyplain{}{\bf\thepage}}
+% \cfoot{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\lhead{\@ifnextchar[{\@xlhead}{\@ylhead}}
+\def\@xlhead[#1]#2{\gdef\@elhead{#1}\gdef\@olhead{#2}}
+\def\@ylhead#1{\gdef\@elhead{#1}\gdef\@olhead{#1}}
+
+\def\chead{\@ifnextchar[{\@xchead}{\@ychead}}
+\def\@xchead[#1]#2{\gdef\@echead{#1}\gdef\@ochead{#2}}
+\def\@ychead#1{\gdef\@echead{#1}\gdef\@ochead{#1}}
+
+\def\rhead{\@ifnextchar[{\@xrhead}{\@yrhead}}
+\def\@xrhead[#1]#2{\gdef\@erhead{#1}\gdef\@orhead{#2}}
+\def\@yrhead#1{\gdef\@erhead{#1}\gdef\@orhead{#1}}
+
+\def\lfoot{\@ifnextchar[{\@xlfoot}{\@ylfoot}}
+\def\@xlfoot[#1]#2{\gdef\@elfoot{#1}\gdef\@olfoot{#2}}
+\def\@ylfoot#1{\gdef\@elfoot{#1}\gdef\@olfoot{#1}}
+
+\def\cfoot{\@ifnextchar[{\@xcfoot}{\@ycfoot}}
+\def\@xcfoot[#1]#2{\gdef\@ecfoot{#1}\gdef\@ocfoot{#2}}
+\def\@ycfoot#1{\gdef\@ecfoot{#1}\gdef\@ocfoot{#1}}
+
+\def\rfoot{\@ifnextchar[{\@xrfoot}{\@yrfoot}}
+\def\@xrfoot[#1]#2{\gdef\@erfoot{#1}\gdef\@orfoot{#2}}
+\def\@yrfoot#1{\gdef\@erfoot{#1}\gdef\@orfoot{#1}}
+
+\newdimen\headrulewidth
+\newdimen\footrulewidth
+\newdimen\plainheadrulewidth
+\newdimen\plainfootrulewidth
+\newdimen\headwidth
+\newif\if@fancyplain \@fancyplainfalse
+\def\fancyplain#1#2{\if@fancyplain#1\else#2\fi}
+
+% Initialization of the head and foot text.
+
+\headrulewidth 0pt       %%3001%%   was {0.4pt}
+\footrulewidth\z@
+\plainheadrulewidth\z@
+\plainfootrulewidth\z@
+
+\lhead[\fancyplain{}{\sl\rightmark}]{\fancyplain{}{\sl\leftmark}}
+%  i.e. empty on ``plain'' pages \rightmark on even, \leftmark on odd pages
+\chead{}
+\rhead[\fancyplain{}{\sl\leftmark}]{\fancyplain{}{\sl\rightmark}}
+%  i.e. empty on ``plain'' pages \leftmark on even, \rightmark on odd pages
+\lfoot{}
+\cfoot{\rm\thepage} % page number
+\rfoot{}
+
+% Put together a header or footer given the left, center and
+% right text, fillers at left and right and a rule.
+% The \lap commands put the text into an hbox of zero size,
+% so overlapping text does not generate an errormessage.
+
+\def\@fancyhead#1#2#3#4#5{#1\hbox to\headwidth{\vbox{\hbox
+{\rlap{\parbox[b]{\headwidth}{\raggedright#2\strut}}\hfill
+\parbox[b]{\headwidth}{\centering#3\strut}\hfill
+\llap{\parbox[b]{\headwidth}{\raggedleft#4\strut}}}\headrule}}#5}
+
+%%%%%%%%%%%%%%
+\def\@fancyfoot#1#2#3#4#5{#1\hbox to\headwidth{\vbox{\footrule
+\hbox{\rlap{\parbox[t]{\headwidth}{\raggedright#2\strut}}\hfill
+\parbox[t]{\headwidth}{\centering#3\strut}\hfill
+\llap{\parbox[t]{\headwidth}{\raggedleft#4\strut}}}}}#5}
+
+\def\headrule{{\if@fancyplain\headrulewidth\plainheadrulewidth\fi
+\hrule\@height\headrulewidth\@width\headwidth \vskip-\headrulewidth}}
+
+\def\footrule{{\if@fancyplain\footrulewidth\plainfootrulewidth\fi
+\vskip-0.3\normalbaselineskip\vskip-\footrulewidth
+\hrule\@width\headwidth\@height\footrulewidth\vskip0.3\normalbaselineskip}}
+
+\def\ps@fancy{
+\let\@mkboth\markboth
+\@ifundefined{chapter}{\def\sectionmark##1{\markboth
+{\uppercase{\ifnum \c@secnumdepth>\z@
+\thesection\hskip 1em\relax \fi ##1}}{}}
+\def\subsectionmark##1{\markright {\ifnum \c@secnumdepth >\@ne
+\thesubsection\hskip 1em\relax \fi ##1}}}
+{\def\chaptermark##1{\markboth {\uppercase{\ifnum \c@secnumdepth>\m@ne
+\@chapapp\ \thechapter. \ \fi ##1}}{}}
+\def\sectionmark##1{\markright{\uppercase{\ifnum \c@secnumdepth >\z@
+\thesection. \ \fi ##1}}}}
+\def\@oddhead{\@fancyhead\relax\@olhead\@ochead\@orhead\hss}
+\def\@oddfoot{\@fancyfoot\relax\@olfoot\@ocfoot\@orfoot\hss}
+\def\@evenhead{\@fancyhead\hss\@elhead\@echead\@erhead\relax}
+\def\@evenfoot{\@fancyfoot\hss\@elfoot\@ecfoot\@erfoot\relax}
+\headwidth\textwidth}
+\def\ps@fancyplain{\ps@fancy \let\ps@plain\ps@plain@fancy}
+\def\ps@plain@fancy{\@fancyplaintrue\ps@fancy}
+
+
+
+%%%%%%%%%%%  reset
+\headrulewidth\z@
+\footrulewidth\z@
+\plainheadrulewidth\z@
+\plainfootrulewidth\z@
+\def\underhead{\headrulewidth 0.4pt}
+\def\overfoot{\footrulewidth 0.4pt}
+\def\nounderhead{\headrulewidth 0pt}
+\def\nooverfoot{\footrulewidth 0pt}
+\def\underheadoverfoot{\underhead\overfoot}
+\def\overfootunderhead{\underhead\overfoot}
+\def\nounderheadoverfoot{\nounderhead\nooverfoot}
+\def\nooverfootunderhead{\nounderhead\nooverfoot}
+
+\lhead{}
+\chead{}
+\rhead{}
+\lfoot{}
+\cfoot{}
+\rfoot{}
+
+
+
+
+\def\TODAY{\number\day\space\ifcase\month\or January\or February\or March\or April\or
+May\or June\or July\or August\or September\or October\or November\or
+December\fi \space \number\year}
+\def\theto#1{\ifnum#1<10 0\fi \the#1}% eg. 1991-08-08 16.53
+\def\TODAYAT{\newcount\minut
+{\TODAY {\ at} \minut=\time \divide\time by 60 \theto\time:%
+\multiply\time by 60 \advance\minut by -\time \theto\minut}}
+\def\todayat{\newcount\minut
+{\today {\ at} \minut=\time \divide\time by 60 \theto\time:%
+\multiply\time by 60 \advance\minut by -\time \theto\minut}}
+
+\def\@cent{\count0 }                       % century number (1979 == 20)
+\def\@diy{\count1 }                        % day in the year
+\def\@dow{\count2 }                        % gets day of the week
+\def\@epact{\count3 }                      % age of the moon on Jan. 1
+\def\@golden{\count4 }                     % Moon's golden number
+\def\@leap{\count5 }                       % leap year fingaler
+\def\@x{\count6 }                          % temp register
+\def\@y{\count7 }                          % another temp register
+
+
+% --- A replacement for the ``plain'' TeX and LaTeX \today macro, to
+% --- to output the date in English-style.
+% --- They ensure the smaller text comes out in the right font by saving
+% --- the font family before reducing the size, then restoring it.  (This
+% --- was suggested by Leslie Lamport.)  Of course, it requires that the
+% --- font in use when today is invoked has a sensible family.
+
+\def\st{\@savestyle\kern-.5pt
+$^{{\hbox{%
+ \footnotesize\@setstyle st\fam=-1 }}}$}
+\def\nd{\@savestyle\kern.2pt$^{{\hbox{\footnotesize\@setstyle nd\fam=-1 }}}$}
+\def\rd{\@savestyle\kern.2pt$^{{\hbox{\footnotesize\@setstyle rd\fam=-1 }}}$}
+\def\th{\@savestyle$^{{\hbox{\footnotesize\@setstyle th\fam=-1 }}}$}
+%\def\@up#1{{\@savestyle\thinspace$^{{\hbox{%
+% \footnotesize\@setstyle#1\fam=-1 }}}$}}
+%\def\st{\@up{st}}
+%\def\nd{\@up{nd}}
+%\def\rd{\@up{rd}}
+%\def\th{\@up{th}}
+\def\@up#1{{\@savestyle$^{{\hbox{%
+ \footnotesize\@setstyle#1\fam=-1 }}}$}}
+\def\st{\@up{st}}
+\def\stbfp{\@up{\bfp st}}
+\def\stit{\@up{\em st}}
+\def\nd{\@up{nd}}
+\def\ndbfp{\@up{\bfp nd}}
+\def\ndit{\@up{\em nd}}
+\def\rd{\@up{rd}}
+\def\rdbfp{\@up{\bfp rd}}
+\def\rdit{\@up{\em rd}}
+\def\th{\@up{th}}
+\def\thbfp{\@up{\bfp th}}
+\def\thit{\@up{\em th}}
+\def\stb{\@up{\bfp st}}
+\def\ndb{\@up{\bfp nd}}
+\def\rdb{\@up{\bfp rd}}
+\def\thb{\@up{\bfp th}}
+
+
+% --- Macros to save and restore the font family.
+
+\def\@savestyle{\count0=\the\fam}
+\def\@setstyle{\ifcase\count0\rm\or\mit\or\cal\or\rm% what's family 3?
+ \or\it\or\sl\or\bf\or\tt\fi}
+
+% --- The date, English style (e.g. Thursday 4th October 1066).
+
+\def\uktoday{\dayoftheweek,\ \number\day%\ifcase\day
+%  \or\st\or\nd\or\rd\or\th\or\th\or\th\or\th\or\th\or\th\or\th
+%  \or\th\or\th\or\th\or\th\or\th\or\th\or\th\or\th\or\th\or\th
+%  \or\st\or\nd\or\rd\or\th\or\th\or\th\or\th\or\th\or\th\or\th\or\st\fi
+ \space\ifcase\month\or January\or February\or March\or April\or May\or
+ June\or July\or August\or September\or October\or November\or December\fi
+ \space\number\year}
+
+% --- The day of the week ("Sunday", etc.) is inserted into the text
+% --- by \dayofweek. (This uses registers \@dow, \@leap, \@x and \@y.)
+% --- I acquired this from elsewhere; I don't know who wrote it.
+
+\def\dayoftheweek{{%
+%            leap = year + (month - 14)/12;
+ \@leap=\month \advance\@leap by -14 \divide\@leap by 12
+ \advance\@leap by \year
+%            dow = (13 * (month + 10 - (month + 10)/13*12) - 1)/5
+ \@dow=\month \advance\@dow by 10
+ \@y=\@dow \divide\@y by 13 \multiply\@y by 12
+ \advance\@dow by -\@y \multiply\@dow by 13
+ \advance\@dow by -1 \divide\@dow by 5
+%            dow += day + 77 + 5 * (leap % 100)/4
+ \advance\@dow by \day \advance\@dow by 77
+ \@x=\@leap \@y=\@x \divide\@y by 100 \multiply\@y by 100 \advance\@x by -\@y
+ \multiply\@x by 5 \divide\@x by 4 \advance\@dow by \@x
+%            dow += leap / 400
+ \@x=\@leap \divide\@x by 400 \advance\@dow by \@x
+%            dow -= leap / 100 * 2;
+%            dow = (dow % 7)
+ \@x=\@leap \divide\@x by 100 \multiply\@x by 2 \advance\@dow by -\@x
+ \@x=\@dow \divide\@x by 7 \multiply\@x by 7 \advance\@dow by -\@x
+ \ifcase\@dow Sunday\or Monday\or Tuesday\or Wednesday\or
+     Thursday\or Friday\or Saturday\fi}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\complexnumbers{\mbox{C\hspace*{0.275ex}\llap{C}}}
+\def\naturalnumbers{\mbox{N\hspace*{0.275ex}\llap{N}}}
+\def\rationalnumbers{\mbox{Q\hspace*{0.275ex}\llap{Q}}}
+\def\integers{\mbox{Z\hspace*{0.275ex}\llap{Z}}}
+\def\realnumbers{\mbox{R\hspace*{0.275ex}\llap{R}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% **** added 9/16/92
+\def\Cents{\hbox{\rlap{\sl c}{$\,|$}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% **** added 23 February 1993
+\def\INDENT{{$\,$}{$\!$}\indent}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% **** added 13 February 1995
+
+% **********************************************************************
+%   bruce.sty    Macros by Bruce Shawyer - this version 22 January 1993
+% **********************************************************************
+\def\emptyunderbrace#1{\mathop{\vtop{\ialign{##\crcr\vspace*{-5pt}
+      $\hfil\displaystyle{#1}\hfil$\crcr\noalign{\kern3\p@\nointerlineskip}
+      \hfill\crcr\noalign{\kern3\p@}}}}\limits}
+\def\emptyoverbrace#1{\mathop{\vbox{\ialign{##\crcr\noalign{\kern3\p@}
+      \hfill\crcr\noalign{\kern3\p@\nointerlineskip\vspace*{-5pt}}
+      $\hfil\displaystyle{#1}\hfil$\crcr}}}\limits}
+%\def\approxeq{\lower.55ex\hbox{$\;\buildrel{\buildrel{\cdot}\over =}
+%      \over{\scriptstyle .}\;$}}
+\def\lessemptyunderbrace#1{\mathop{\vtop{\ialign{##\crcr\vspace*{-7pt}
+      $\hfil\displaystyle{\hspace{-2pt}#1}\hfil$\crcr\noalign{\kern3\p@\nointerlineskip}
+      \hfill\crcr\noalign{\kern3\p@}}}}\limits}
+\def\CEL{\v}
+% **********************************************************************
+% Next two lines taken from latex.tex as basis for other diagonal dots
+%\def\ddots{\mathinner{\mkern1mu\raise7\p@\vbox{\kern7\p@\hbox{.}}\mkern2mu
+%    \raise4\p@\hbox{.}\mkern2mu\raise\p@\hbox{.}\mkern1mu}}
+% **********************************************************************
+\def\udots{\mathinner{\mkern1mu\raise\p@\vbox{\kern7\p@\hbox{.}}\mkern2mu
+    \raise4\p@\hbox{.}\mkern2mu\raise7\p@\hbox{.}\mkern1mu}}
+\def\Ddots{\mathinner{\mkern1mu\raise9\p@\vbox{\kern7\p@\hbox{.}}\mkern2mu
+    \raise5\p@\hbox{.}\mkern2mu\raise\p@\hbox{.}\mkern1mu}}
+\def\Udots{\mathinner{\mkern1mu\raise\p@\vbox{\kern7\p@\hbox{.}}\mkern2mu
+    \raise5\p@\hbox{.}\mkern2mu\raise9\p@\hbox{.}\mkern1mu}}
+\def\DDots{\mathinner{\mkern1mu\raise11\p@\vbox{\kern7\p@\hbox{.}}\mkern2mu
+    \raise6\p@\hbox{.}\mkern2mu\raise\p@\hbox{.}\mkern1mu}}
+\def\UDots{\mathinner{\mkern1mu\raise\p@\vbox{\kern7\p@\hbox{.}}\mkern2mu
+    \raise6\p@\hbox{.}\mkern2mu\raise11\p@\hbox{.}\mkern1mu}}
+\def\DDOts{\mathinner{\mkern1mu\raise13\p@\vbox{\kern7\p@\hbox{.}}\mkern2mu
+    \raise7\p@\hbox{.}\mkern2mu\raise\p@\hbox{.}\mkern1mu}}
+\def\UDOts{\mathinner{\mkern1mu\raise\p@\vbox{\kern7\p@\hbox{.}}\mkern2mu
+    \raise7\p@\hbox{.}\mkern2mu\raise13\p@\hbox{.}\mkern1mu}}
+\def\DDOTs{\mathinner{\mkern1mu\raise15\p@\vbox{\kern7\p@\hbox{.}}\mkern2mu
+    \raise8\p@\hbox{.}\mkern2mu\raise\p@\hbox{.}\mkern1mu}}
+\def\UDOTs{\mathinner{\mkern1mu\raise\p@\vbox{\kern7\p@\hbox{.}}\mkern2mu
+    \raise8\p@\hbox{.}\mkern2mu\raise15\p@\hbox{.}\mkern1mu}}
+\def\DDOTS{\mathinner{\mkern1mu\raise17\p@\vbox{\kern7\p@\hbox{.}}\mkern2mu
+    \raise9\p@\hbox{.}\mkern2mu\raise\p@\hbox{.}\mkern1mu}}
+\def\UDOTS{\mathinner{\mkern1mu\raise\p@\vbox{\kern7\p@\hbox{.}}\mkern2mu
+    \raise9\p@\hbox{.}\mkern2mu\raise17\p@\hbox{.}\mkern1mu}}
+\def\lddots{\mathinner{\mkern1mu\raise5\p@\vbox{\kern7\p@\hbox{.}}\mkern2mu
+    \raise3\p@\hbox{.}\mkern2mu\raise\p@\hbox{.}\mkern1mu}}
+\def\ludots{\mathinner{\mkern1mu\raise\p@\vbox{\kern7\p@\hbox{.}}\mkern2mu
+    \raise3\p@\hbox{.}\mkern2mu\raise5\p@\hbox{.}\mkern1mu}}
+\def\Lddots{\mathinner{\mkern1mu\raise3\p@\vbox{\kern7\p@\hbox{.}}\mkern2mu
+    \raise2\p@\hbox{.}\mkern2mu\raise\p@\hbox{.}\mkern1mu}}
+\def\Ludots{\mathinner{\mkern1mu\raise\p@\vbox{\kern7\p@\hbox{.}}\mkern2mu
+    \raise2\p@\hbox{.}\mkern2mu\raise3\p@\hbox{.}\mkern1mu}}
+% **********************************************************************
+%\mathchardef\Box"0A32
+%\mathchardef\Diamond"0A33
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% **** added 9/16/92
+%\makeatletter
+\newdimen\@@@tmpa
+\newdimen\@@@tmpb
+\newdimen\@@@tmpc
+\newdimen\@@@tmpd
+\def\clap#1#2#3{% clap=centerlap
+       \setbox0=\hbox{#1}\setbox1=\hbox{#2}%
+       \@@@tmpa\wd0\@@@tmpb\wd1\advance\@@@tmpa-\@@@tmpb%
+       \ifdim\@@@tmpa>0pt\@@@tmpb\wd0%
+       \else\@@@tmpb\wd1\fi\@@@tmpc\ht0\@@@tmpd\ht1%
+       \advance\@@@tmpc\dp0\advance\@@@tmpd\dp1%
+       \advance\@@@tmpc-\@@@tmpd\divide\@@@tmpc2%
+       \ifdim\@@@tmpc>0pt\@@@tmpd\ht0\advance\@@@tmpd\dp0\@@@tmpc-\dp0%
+       \else\@@@tmpd\ht1\advance\@@@tmpd\dp1\advance\@@@tmpc-\dp0\fi%
+       \ifx#3\empty\else\advance\@@@tmpc#3\fi%
+       \leavevmode\raise\@@@tmpc\hbox to \@@@tmpb{\rlap{\hbox to \@@@tmpb{\hss%
+            \vbox to \@@@tmpd{\vss\box0\vss}\hss}}%
+            \hss\vbox to \@@@tmpd{\vss\box1\vss}\hss}%
+       }
+%\makeatother
+\def\tildechar{{\tt \char126}}                  % The ~ character
+\def\hatchar{{\tt \char94}}                     % The ^ character
+% registered - similar to copyright
+\def\registered{{\ooalign{\hfil\raise.07ex\hbox{\sc r}\hfil\crcr\mathhexbox20D}}\ }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% **** added 22 January 1993
+\def\cents{\hbox{\sl\rlap|c}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% **** added 23 February 1993
+\def\boxit#1{$$\fbox{$#1$}$$}
+\newdimen\tempfboxrule
+\tempfboxrule=\fboxrule
+\def\boxitt[#1]#2{\setlength{\fboxrule}{#1\fboxrule}$$\fbox{$#2$}$$%
+\fboxrule =\tempfboxrule}
+\newdimen\tempfboxsep
+\tempfboxsep=\fboxsep
+\def\boxits[#1]#2{\setlength{\fboxsep}{#1\fboxsep}$$\fbox{$#2$}$$%
+\fboxsep =\tempfboxsep}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ***** added 25 February 1993
+% To get the rule to sit exactly at the baseline of the surrounding text
+% Give   stuff     stuff
+%        ---------------
+%             stuff
+\def\proofrule#1#2{\vtop{\halign{\hfil\thinspace##\hfil\thinspace\cr
+   \vbox{\hbox{$\mathstrut #1$}%
+         \vskip .5pt
+         \hrule height0pt % invisible rule to put baseline at bottom
+        }\cr
+   \noalign{\hrule \vskip.5pt}% visible rule that expands to full width
+   $\mathstrut #2$\cr
+  }}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  added 17 June 1993
+\def\notdiv{\mbox{$\,\hspace{-2pt}\not\hspace{-.5pt}|\;$}} % was -.3pt
+\def\notdivv{\;\begin{picture}(5,1)\thicklines
+\put(3,-3){\line(0,1){21}}\put(-3,4.75){\line(5,4){12}}\end{picture}\;}
+\def\divv{\;\begin{picture}(5,1)\thicklines
+\put(3,-3){\line(0,1){21}}\end{picture}\;}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  added 14 July 1993
+%\def\square{\mathpalette\squarE{}}%
+\def\squarE#1{\rlap{\raise1pt\hbox{$#1\sqcap$}}{#1\sqcup}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  added 15 July 1993
+\def\avinash#1#2{\mathop{\vtop{\ialign{##\crcr
+      $\hfil\displaystyle{#1}\hfil$\crcr\noalign{\kern3\p@\nointerlineskip}
+      \hfil{}$\scriptstyle #2$\hfil\crcr\noalign{\kern3\p@}}}}\nolimits}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\def\therefore{\mathinner{\mkern1mu\raise0\p@\vbox{\kern7\p@\hbox{.}}\mkern2mu
+%    \raise5\p@\hbox{.}\mkern2mu\raise0\p@\hbox{.}\mkern1mu}}
+\def\Therefore{\mathinner{\mkern1mu\raise0\p@\vbox{\kern7\p@\hbox{.}}\mkern2mu
+    \raise8\p@\hbox{.}\mkern2mu\raise0\p@\hbox{.}\mkern1mu}}
+\def\THerefore{\mathinner{\mkern1mu\raise0\p@\vbox{\kern7\p@\hbox{.}}\mkern2mu
+    \raise12\p@\hbox{.}\mkern2mu\raise0\p@\hbox{.}\mkern1mu}}
+\def\THErefore{\mathinner{\mkern1mu\raise0\p@\vbox{\kern7\p@\hbox{.}}\mkern2mu
+    \raise15\p@\hbox{.}\mkern2mu\raise0\p@\hbox{.}\mkern1mu}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\smalloversim#1{\mathop{\vbox{\ialign{##\crcr\noalign{\kern3\p@}
+       \hfil{\small$\displaystyle{\sim}$}\hfil\crcr\noalign{\kern3\p@\nointerlineskip}
+      $\hfil\displaystyle{#1}\hfil$\crcr}}}\limits}
+\def\oversim#1{\mathop{\vbox{\ialign{##\crcr\noalign{\kern3\p@}
+       \hfil$\displaystyle{\sim}$\hfil\crcr\noalign{\kern3\p@\nointerlineskip}
+      $\hfil\displaystyle{#1}\hfil$\crcr}}}\limits}
+\def\largeoversim#1{\mathop{\vbox{\ialign{##\crcr\noalign{\kern3\p@}
+       \hfil{\large$\displaystyle{\sim}$}\hfil\crcr\noalign{\kern3\p@\nointerlineskip}
+      $\hfil\displaystyle{#1}\hfil$\crcr}}}\limits}
+\def\Largeoversim#1{\mathop{\vbox{\ialign{##\crcr\noalign{\kern3\p@}
+       \hfil{\Large$\displaystyle{\sim}$}\hfil\crcr\noalign{\kern3\p@\nointerlineskip}
+      $\hfil\displaystyle{#1}\hfil$\crcr}}}\limits}
+\def\LARGEoversim#1{\mathop{\vbox{\ialign{##\crcr\noalign{\kern3\p@}
+       \hfil{\LARGE$\displaystyle{\sim}$}\hfil\crcr\noalign{\kern3\p@\nointerlineskip}
+      $\hfil\displaystyle{#1}\hfil$\crcr}}}\limits}
+\def\hugeoversim#1{\mathop{\vbox{\ialign{##\crcr\noalign{\kern3\p@}
+       \hfil{\huge$\displaystyle{\sim}$}\hfil\crcr\noalign{\kern3\p@\nointerlineskip}
+      $\hfil\displaystyle{#1}\hfil$\crcr}}}\limits}
+\def\Hugeoversim#1{\mathop{\vbox{\ialign{##\crcr\noalign{\kern3\p@}
+       \hfil{\Huge$\displaystyle{\sim}$}\hfil\crcr\noalign{\kern3\p@\nointerlineskip}
+      $\hfil\displaystyle{#1}\hfil$\crcr}}}\limits}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\undersim#1{\mathop{\vtop{\ialign{##\crcr
+      $\hfil\displaystyle{#1}\hfil$\crcr\noalign{\kern3\p@\nointerlineskip}
+      \hfil$\sim$\hfil\crcr\noalign{\kern3\p@}}}}\nolimits}
+\def\Undersim#1{\mathop{\vtop{\ialign{##\crcr
+      $\hfil\displaystyle{#1}\hfil$\crcr\noalign{\kern3\p@\nointerlineskip\vspace*{-1pt}}
+      \hfil$\sim$\hfil\crcr\noalign{\kern3\p@}}}}\nolimits}
+\def\UNdersim#1{\mathop{\vtop{\ialign{##\crcr
+      $\hfil\displaystyle{#1}\hfil$\crcr\noalign{\kern3\p@\nointerlineskip\vspace*{-2pt}}
+      \hfil$\sim$\hfil\crcr\noalign{\kern3\p@}}}}\nolimits}
+\def\largeundersim#1{\mathop{\vtop{\ialign{##\crcr
+      $\hfil\displaystyle{#1}\hfil$\crcr\noalign{\kern3\p@\nointerlineskip}
+      \hfil{\large$\sim$}\hfil\crcr\noalign{\kern3\p@}}}}\nolimits}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% from the net
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand\rotate[2]{\special{ps:gsave currentpoint currentpoint
+translate  -#1\space rotate neg exch neg exch
+translate}#2\special{ps:grestore}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  2 February 1994
+%  some special style of fractions
+\def\fracs#1#2{{}^{#1}\!\!/\!_{#2}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 27 August 1994
+% for use in continued fractions
+\def\l@l{\setlength\unitlength{1em}\begin{picture}(1,1)\put(0,.1){\rule{0.5pt}{1em}}\end{picture}}
+\def\r@r{\setlength\unitlength{1em}\begin{picture}(1,1)\put(1,-.45){\rule{0.5pt}{1em}}\end{picture}}
+\def\contfrac#1#2{\;\frac{\quad\hfill#1\hfill\r@r}{\l@l\hfill#2\hfill\quad}\;}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% November 1995
+\def\r#1{\rule{0pt}{#1em}}
+\def\vs#1{\vskip #1ex}
+\def\toi{\to\infty} % October 1996
+\def\lintpart{[\hspace*{.25ex}\llap[}
+\def\rintpart{]\hspace*{.25ex}\llap]}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Sept 1996
+\def\drawrectangle(#1,#2)(#3,#4){\path(#1,#2)(#1,#4)(#3,#4)%
+(#3,#2)(#1,#2)}
+\def\dottedrectangle#1(#2,#3)(#4,#5){\dottedline#1(#2,#3)(#2,#5)%
+(#4,#5)(#4,#3)(#2,#3)}
+\def\dashrectangle#1(#2,#3)(#4,#5){\dashline{#1}(#2,#3)(#2,#5)%
+(#4,#5)(#4,#3)(#2,#3)}
+%
+\def\drawtriangle(#1,#2)(#3,#4)(#5,#6){\path(#1,#2)(#3,#4)%
+(#5,#6)(#1,#2)}
+\def\dottedtriangle#1(#2,#3)(#4,#5)(#6,#7){
+\dottedline#1(#2,#3)(#4,#5)(#6,#7)(#2,#3)}
+\def\dashtriangle#1(#2,#3)(#4,#5)(#6,#7){
+\dashline{#1}(#2,#3)(#4,#5)(#6,#7)(#2,#3)}
+%
+
+% Save file as: EPIC.STY               Source: FILESERV@SHSU.BITNET
+\typeout{%
+Enhancements to Picture Environment. Version 1.2 - Released June 1, 1986}
+%----------------------------------------------------------------------
+% Copyright (C) podar@sbcs (Sunil Podar) July 14,1986.
+% You may use this file in whatever way you wish. You are requested to
+% leave this notice intact, and report any bugs, enhancements, comments,
+% suggestions, etc. to:
+% USmail: Sunil Podar,Dept. of Computer Science,SUNY at Stony Brook,NY 11794.
+%  CSNET: podar@sbcs.csnet
+%   ARPA: podar%suny-sb.csnet@csnet-relay.arpa
+%   UUCP: {allegra, hocsd, philabs, ogcvax}!sbcs!podar
+%----------------------------------------------------------------------
+% This file contains implementation of:
+% \multiputlist	\matrixput	\grid		\picsquare
+% \dottedline	\dashline	\drawline	\jput
+% \putfile
+% Environments: dottedjoin, dashjoin and drawjoin
+%
+% For documentation, see the accompanying manual.
+%----------------------------------------------------------------------
+% usage: \multiputlist(x,y)(delta-x,delta-y)[tbrl]{item1,item2,item3,.....}
+% \lop and \lopoff taken from TeXbook.
+%----------------------------------------------------------------------
+\def\lop#1\to#2{\expandafter\lopoff#1\lopoff#1#2}
+\long\def\lopoff,#1,#2\lopoff#3#4{\def#4{#1}\def#3{,#2}}
+\def\@@mlistempty{,}
+\newif\iflistnonempty
+\def\multiputlist(#1,#2)(#3,#4){\@ifnextchar
+[{\@imultiputlist(#1,#2)(#3,#4)}{\@imultiputlist(#1,#2)(#3,#4)[]}}
+
+\long\def\@imultiputlist(#1,#2)(#3,#4)[#5]#6{{%
+\@xdim=#1\unitlength \@ydim=#2\unitlength
+\listnonemptytrue \def\@@mlist{,#6,} % need this for end condition
+\loop
+\lop\@@mlist\to\@@firstoflist
+\@killglue\raise\@ydim\hbox to\z@{\hskip
+\@xdim\@imakepicbox(0,0)[#5]{\@@firstoflist}\hss}
+\advance\@xdim #3\unitlength\advance\@ydim #4\unitlength
+\ifx\@@mlist\@@mlistempty \listnonemptyfalse\fi
+\iflistnonempty
+\repeat\relax
+\ignorespaces}}
+%----------------------------------------------------------------------
+% two-dimensional version of \multiput
+% \matrixput(0,0)(20,0){5}(0,20){3}{\circle{2}}
+%----------------------------------------------------------------------
+\newcount\@@multicnt
+\def\matrixput(#1,#2)(#3,#4)#5(#6,#7)#8#9{%
+\ifnum#5>#8\@matrixput(#1,#2)(#3,#4){#5}(#6,#7){#8}{#9}%
+\else\@matrixput(#1,#2)(#6,#7){#8}(#3,#4){#5}{#9}\fi}
+
+%% here #5 >= #8
+\long\def\@matrixput(#1,#2)(#3,#4)#5(#6,#7)#8#9{{\@killglue%
+\@multicnt=#5\relax\@@multicnt=#8\relax%
+\@xdim=0pt%
+\@ydim=0pt%
+\setbox\@tempboxa\hbox{\@whilenum \@multicnt > 0\do {%
+%%\typeout{\the\@multicnt, \the\@@multicnt}%
+\raise\@ydim\hbox to \z@{\hskip\@xdim #9\hss}%
+\advance\@multicnt \m@ne%
+\advance\@xdim #3\unitlength\advance\@ydim #4\unitlength}}%
+\@xdim=#1\unitlength%
+\@ydim=#2\unitlength%
+\@whilenum \@@multicnt > 0\do {%
+\raise\@ydim\hbox to \z@{\hskip\@xdim \copy\@tempboxa\hss}%
+\advance\@@multicnt \m@ne%
+\advance\@xdim #6\unitlength\advance\@ydim #7\unitlength}%
+\ignorespaces}}
+%----------------------------------------------------------------------
+%\grid(wd,ht)(delta-wd,delta-ht)[initial-X-integer,initial-Y-integer]
+% example: 1. \put(0,0){\grid(95,100)(9.5,10)}
+%          2. \put(0,0){\grid(100,100)(10,5)[-10,0]}
+%          or \put(0,0){\tiny \grid(100,100)(5,5)[0,0]}%numbers in \tiny font
+%----------------------------------------------------------------------
+\newcount\d@lta
+\newdimen\@delta
+\newdimen\@@delta
+\newcount\@gridcnt
+\def\grid(#1,#2)(#3,#4){\@ifnextchar [{\@igrid(#1,#2)(#3,#4)}%
+{\@igrid(#1,#2)(#3,#4)[@,@]}}
+
+\long\def\@igrid(#1,#2)(#3,#4)[#5,#6]{%
+\makebox(#1,#2){%
+\@delta=#1pt\@@delta=#3pt\divide\@delta \@@delta\d@lta=\@delta%
+\advance\d@lta \@ne\relax\message{grid=\the\d@lta\space x}%
+%% copied the definition of \line(0,1){#2} for some efficiency!.
+\multiput(0,0)(#3,0){\d@lta}{\hbox to\z@{\hskip -\@halfwidth \vrule
+	 \@width \@wholewidth \@height #2\unitlength \@depth \z@\hss}}%
+\ifx#5@\relax\else%
+\global\@gridcnt=#5%
+\multiput(0,0)(#3,0){\d@lta}{
+\makebox(0,-.2)[t]{\number\@gridcnt\global\advance\@gridcnt by #3}}%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% was   (0,-2)[t]  which was wrong  corrected  19 March 1993  BLRS %%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\global\@gridcnt=#5%
+\multiput(0,#2)(#3,0){\d@lta}{\makebox(0,0)[b]{\number\@gridcnt\vspace{2mm}%
+\global\advance\@gridcnt by #3}}%
+\fi%
+\@delta=#2pt\@@delta=#4pt\divide\@delta \@@delta\d@lta=\@delta%
+\advance\d@lta \@ne\relax\message{\the\d@lta . }%
+%% copied the definition of \line(1,0){#1} for some efficiency!.
+\multiput(0,0)(0,#4){\d@lta}{\vrule \@height \@halfwidth \@depth \@halfwidth
+	 \@width #1\unitlength}%
+\ifx#6@\relax\else
+\global\@gridcnt=#6%
+\multiput(0,0)(0,#4){\d@lta}{%
+\makebox(0,0)[r]{\number\@gridcnt\ \global\advance\@gridcnt by #4}}%
+\global\@gridcnt=#6%
+\multiput(#1,0)(0,#4){\d@lta}{%
+\makebox(0,0)[l]{\ \number\@gridcnt\global\advance\@gridcnt by #4}}%
+\fi}}
+%----------------------------------------------------------------------
+% \picsquare is a centered square of dimensions governed by \thinlines,
+% \thicklines or \linethickness declarations.
+\def\picsquare{\hskip -0.5\@wholewidth%
+\vrule height \@halfwidth depth \@halfwidth width \@wholewidth}
+%
+% just a square dot with reference point at bottom-left
+\def\picsquare@bl{\vrule height \@wholewidth depth \z@  width \@wholewidth}
+%----------------------------------------------------------------------
+% \begin{dottedjoin}{interdot-gap in units}
+% .....			
+% \end{dottedjoin}
+% \begin{dashjoin}{dash-length in units}{interdotgap in each dash}
+% .....			
+% \end{dashjoin}
+% \begin{drawjoin}
+% .....
+% \end{drawjoin}
+% \jput(x,y){character}
+% \dottedline[opt. dotcharacter]{dotgap in units}(x1,y1)(x2,y2)...(xN,yN)
+% \dashline[#]{dash-length}[opt. dotgap](x1,y1)(x2,y2)...(xN,yN)
+% \drawline[#](x1,y1)(x2,y2)...(xN,yN)
+%----------------------------------------------------------------------
+% definitions for *join environment. had to do all this mess because of
+% optional arguments.
+%----------------------------------------------------------------------
+\newif\if@jointhem \global\@jointhemfalse
+\newif\if@firstpoint \global\@firstpointtrue
+\newcount\@joinkind
+%\newenvironment{dottedjoin}[1]%[opt char]{dotgap}
+%{\global\@jointhemtrue \gdef\dotgap@join{#1}\global\@joinkind=0\relax}%
+%{\global\@jointhemfalse \global\@firstpointtrue}
+%----------------------------------------------------------------------
+\def\dottedjoin{\global\@jointhemtrue \global\@joinkind=0\relax
+ \bgroup\@ifnextchar[{\@idottedjoin}{\@idottedjoin[\picsquare@bl]}}
+\def\@idottedjoin[#1]#2{\gdef\dotchar@join{#1}\gdef\dotgap@join{#2}}
+\def\enddottedjoin{\global\@jointhemfalse \global\@firstpointtrue\egroup}
+%----------------------------------------------------------------------
+\def\dashjoin{\global\@jointhemtrue \global\@joinkind=1\relax
+ \bgroup\@ifnextchar[{\@idashjoin}{\@idashjoin[\dashlinestretch]}}
+\def\@idashjoin[#1]#2{\edef\dashlinestretch{#1}\gdef\dashlen@join{#2}%
+\@ifnextchar[{\@iidashjoin}{\gdef\dotgap@join{}}}
+\def\@iidashjoin[#1]{\gdef\dotgap@join{#1}}
+\let\enddashjoin\enddottedjoin
+%----------------------------------------------------------------------
+\def\drawjoin{\global\@jointhemtrue \global\@joinkind=2\relax
+ \bgroup\@ifnextchar[{\@idrawjoin}{}}
+\def\@idrawjoin[#1]{\def\drawlinestretch{#1}}
+\let\enddrawjoin\enddottedjoin
+%----------------------------------------------------------------------
+%% this is equiv to \put(x,y){#1} when not in {dot*join} environment.
+\long\def\jput(#1,#2)#3{{\@killglue\raise#2\unitlength\hbox to \z@{\hskip
+#1\unitlength #3\hss}\ignorespaces}
+\if@jointhem
+\if@firstpoint \gdef\x@one{#1} \gdef\y@one{#2} \global\@firstpointfalse
+\else\ifcase\@joinkind
+	\@dottedline[\dotchar@join]{\dotgap@join\unitlength}%
+(\x@one\unitlength,\y@one\unitlength)(#1\unitlength,#2\unitlength)
+	\or\@dashline[\dashlinestretch]{\dashlen@join}[\dotgap@join]%
+(\x@one,\y@one)(#1,#2)
+	\else\@drawline[\drawlinestretch](\x@one,\y@one)(#1,#2)\fi
+   \gdef\x@one{#1} \gdef\y@one{#2}
+\fi
+\fi}
+%----------------------------------------------------------------------
+\newdimen\@dotgap
+\newdimen\@ddotgap
+\newcount\@x@diff
+\newcount\@y@diff
+\newdimen\x@diff
+\newdimen\y@diff
+\newbox\@dotbox
+\newcount\num@segments
+\newcount\num@segmentsi
+\newif\ifsqrt@done
+%% from sqrtandstuff func basically need \num@segments.
+%% given a deltax, deltay and dotgap, it calculates \num@segments = number of
+%% segments along the hypotenuse. used by \dottedline & \dashline.
+%% It finishes quickly if any of deltax or deltay are zero or close to zero.
+\def\sqrtandstuff#1#2#3{
+\ifdim #1 <0pt \@x@diff= -#1 \else\@x@diff=#1\fi
+\ifdim #2 <0pt \@y@diff= -#2 \else\@y@diff=#2\fi
+%% @diff's will be positive and diff's will retain their sign.
+\@dotgap=#3 \divide\@dotgap \tw@
+\advance\@x@diff \@dotgap \advance\@y@diff \@dotgap% for round-off errors
+\@dotgap=#3
+\divide\@x@diff \@dotgap \divide\@y@diff \@dotgap
+\sqrt@donefalse
+\ifnum\@x@diff < 2
+  \ifnum\@y@diff < 2 \num@segments=\@x@diff \advance\num@segments \@y@diff
+		      \sqrt@donetrue
+       \else\num@segments=\@y@diff \sqrt@donetrue\fi
+  \else\ifnum\@y@diff < 2 \num@segments=\@x@diff \sqrt@donetrue\fi
+\fi
+\ifsqrt@done \ifnum\num@segments=\z@ \num@segments=\@ne\fi\relax
+\else \ifnum\@y@diff >\@x@diff
+		 \@tempcnta=\@x@diff \@x@diff=\@y@diff \@y@diff=\@tempcnta
+      \fi    		%exchange @x@diff & @y@diff, so now @x@diff > @y@diff
+ \num@segments=\@y@diff
+ \multiply\num@segments \num@segments
+ \multiply\num@segments by 457
+ \divide\num@segments \@x@diff
+ \advance\num@segments by 750 % for round-off, going to divide by 1000.
+ \divide\num@segments \@m
+ \advance\num@segments \@x@diff
+		%num@segments = @x@diff + (0.457*sqr(@y@diff)/@x@diff)
+\fi}
+%----------------------------------------------------------------------
+% \dottedline[opt. char]{interdot gap in units}(x1,y1)(x2,y2)....(xN,yN)
+%----------------------------------------------------------------------
+%% Used the following construction earlier but that results in box memory
+%% full much too soon although it works perfectly.
+%% \setbox\@dotbox\vbox to\z@{\vss \hbox to\z@{\hss #1\hss}\vss}\relax}
+%% The cenetering of characters is achieved by substracting half the ht, wd
+%% of character from the (x,y) coordinates where they are to be put. We
+%% chose to use a macro for the ``dot'' instead of \copy\box to save memory
+%% at the expense of extra cpu, since memory becomes an issue very soon.
+%% \picsquare is already centered, whereas other characters, except \circle,
+%% will not be cenetered, hence to handle them all in a similar fashion,
+%% used \picsquare@bl.
+%
+% kind of tail recursion.
+\def\dottedline{\@ifnextchar [{\@idottedline}{\@idottedline[\picsquare@bl]}}
+\def\@idottedline[#1]#2(#3,#4){\@ifnextchar (%
+{\@iidottedline[#1]{#2}(#3,#4)}{\relax}}
+\def\@iidottedline[#1]#2(#3,#4)(#5,#6){\@dottedline[#1]{#2\unitlength}%
+(#3\unitlength,#4\unitlength)(#5\unitlength,#6\unitlength)%
+\@idottedline[#1]{#2}(#5,#6)}
+%
+%% user not supposed to use this directly. arguments in absolute dimensions.
+%% need to pass absolute dimens here because dashline calls dottedline and
+%% can supply only absolute dimensions.
+\long\def\@dottedline[#1]#2(#3,#4)(#5,#6){{%
+\x@diff=#5\relax\advance\x@diff by -#3\relax
+\y@diff=#6\relax\advance\y@diff by -#4\relax
+\sqrtandstuff{\x@diff}{\y@diff}{#2}
+\divide\x@diff \num@segments
+\divide\y@diff \num@segments
+\advance\num@segments \@ne     % to put the last point at destination.
+%%\typeout{num@segments= \the\num@segments}
+\setbox\@dotbox\hbox{#1}% just to get the dimensions of the character.
+\@xdim=#3 \@ydim=#4
+\ifdim\ht\@dotbox >\z@% otherwise its a circle.
+ \advance\@xdim -0.5\wd\@dotbox
+ \advance\@ydim -0.5\ht\@dotbox
+ \advance\@ydim .5\dp\@dotbox\fi
+%%circle's have a ht=0, this is one way I could think of to catch circles.
+%%following loop is equiv to
+%%\multiput(\@xdim,\@ydim)(\x@diff,\y@diff){\num@segments}{#1}
+%%with arguments in absolute dimensions.
+\@killglue
+\loop \ifnum\num@segments > 0
+\unskip\raise\@ydim\hbox to\z@{\hskip\@xdim #1\hss}%
+\advance\num@segments \m@ne\advance\@xdim\x@diff\advance\@ydim\y@diff%
+\repeat
+\ignorespaces}}
+%----------------------------------------------------------------------
+% \dashline[#]{dash-length}[optional dotgap](x1,y1)(x2,y2)...(xN,yN)
+% The minimum # of dashes put is 2, one at either end point; dash-length is
+% reduced accordingly if necessary. Also have to some dirty work to account
+% for stretch & shrink.
+% \renewcommand{\dashlinestretch}{-50}  %ONLY INTEGERS PERMITTED.
+%----------------------------------------------------------------------
+\def\dashlinestretch{0} %well, could have used a counter.
+\def\dashline{\@ifnextchar [{\@idashline}{\@idashline[\dashlinestretch]}}
+\def\@idashline[#1]#2{\@ifnextchar [{\@iidashline[#1]{#2}}%
+{\@iidashline[#1]{#2}[\@empty]}} %\@empty needed-- later checked with \ifx
+\def\@iidashline[#1]#2[#3](#4,#5){\@ifnextchar (%
+{\@iiidashline[#1]{#2}[#3](#4,#5)}{\relax}}
+%
+\def\@iiidashline[#1]#2[#3](#4,#5)(#6,#7){%
+\@dashline[#1]{#2}[#3](#4,#5)(#6,#7)%
+\@iidashline[#1]{#2}[#3](#6,#7)}
+%
+\long\def\@dashline[#1]#2[#3](#4,#5)(#6,#7){{%
+\x@diff=#6\unitlength \advance\x@diff by -#4\unitlength
+\y@diff=#7\unitlength \advance\y@diff by -#5\unitlength
+%% correction to get actual width since the dash-length as taken in arguement
+%% is the center-to-center of the end-points.
+\@tempdima=#2\unitlength \advance\@tempdima -\@wholewidth
+\sqrtandstuff{\x@diff}{\y@diff}{\@tempdima}
+\ifnum\num@segments <3 \num@segments=3\fi% min number of dashes I can plot
+% is 2, 1 at either end, thus min num@segments is 3 (including 'empty dash').
+\@tempdima=\x@diff \@tempdimb=\y@diff
+\divide\@tempdimb by\num@segments
+\divide\@tempdima by\num@segments
+%% ugly if-then-else. If optional dotgap specified, then use it otherwise
+%% make a solid looking dash.
+{\ifx#3\@empty \relax
+   \ifdim\@tempdima < 0pt \x@diff=-\@tempdima\else\x@diff=\@tempdima\fi
+   \ifdim\@tempdimb < 0pt \y@diff=-\@tempdimb\else\y@diff=\@tempdimb\fi
+   \ifdim\x@diff < 0.3pt %it's a vertical dashline
+          \ifdim\@tempdimb > 0pt
+	        \global\setbox\@dotbox\hbox{\hskip -\@halfwidth \vrule
+		 \@width \@wholewidth \@height \@tempdimb}
+	   \else\global\setbox\@dotbox\hbox{\hskip -\@halfwidth \vrule
+		 \@width \@wholewidth \@height\z@ \@depth -\@tempdimb}\fi
+      \else\ifdim\y@diff < 0.3pt %it's a horizontal dashline
+              \ifdim\@tempdima >0pt
+		  \global\setbox\@dotbox\hbox{\vrule \@height \@halfwidth
+		 		\@depth \@halfwidth \@width \@tempdima}
+		\else\global\setbox\@dotbox\hbox{\hskip \@tempdima
+			 \vrule \@height \@halfwidth \@depth \@halfwidth
+				 \@width -\@tempdima \hskip \@tempdima}\fi
+	    \else\global\setbox\@dotbox\hbox{%
+\@dottedline[\picsquare]{0.98\@wholewidth}(0pt,0pt)(\@tempdima,\@tempdimb)}
+\fi\fi
+\else\global\setbox\@dotbox\hbox{%
+\@dottedline[\picsquare]{#3\unitlength}(0pt,0pt)(\@tempdima,\@tempdimb)}
+\fi}
+\advance\x@diff by -\@tempdima % both have same sign
+\advance\y@diff by -\@tempdimb
+%
+%%here we correct the number of dashes to be put by reducing them
+%%appropriately. (num@segments*\@wholewidth) is in some way the slack we
+%%have,and division by dash-length gives the reduction. reduction =
+%%(2*num@segments*\@wholewidth)/dash-length
+%% (num@segments includes empty ones)
+\@tempdima=\num@segments\@wholewidth \@tempdima=2\@tempdima
+\@tempcnta=\@tempdima \@tempdima=#2\unitlength \@tempdimb=0.5\@tempdima
+\@tempcntb=\@tempdimb \advance\@tempcnta by \@tempcntb % round-off error
+\divide\@tempcnta by\@tempdima \advance\num@segments by -\@tempcnta
+%
+\ifnum #1=0 \relax\else\ifnum #1 < -100
+ \typeout{***dashline: reduction > -100 percent implies blankness!***}
+\else\num@segmentsi=#1 \advance\num@segmentsi by 100
+    \multiply\num@segments by\num@segmentsi \divide\num@segments by 100
+\fi\fi
+%
+\divide\num@segments by 2 % earlier num@segments included 'empty dashes' too.
+\ifnum\num@segments >0 % if =0 then don't divide => \x@diff & \y@diff
+\divide\x@diff by\num@segments%   remain same.
+\divide\y@diff by\num@segments
+\advance\num@segments by\@ne %for the last segment for which I subtracted
+	 		     %\@tempdima & \@tempdimb from \x@diff & \y@diff
+\else\num@segments=2 % one at each end.
+\fi
+%%\typeout{num@segments finally = \the\num@segments}
+%% equiv to \multiput(#4,#5)(\x@diff,\y@diff){\num@segments}{\copy\@dotbox}
+%% with arguements in absolute dimensions.
+\@xdim=#4\unitlength \@ydim=#5\unitlength
+\@killglue
+\loop \ifnum\num@segments > 0
+\unskip\raise\@ydim\hbox to\z@{\hskip\@xdim \copy\@dotbox\hss}%
+\advance\num@segments \m@ne\advance\@xdim\x@diff\advance\@ydim\y@diff%
+\repeat
+\ignorespaces}}
+%----------------------------------------------------------------------
+%%1.00   .833333  .80  .75  .66666   .60  .50  .40  .33333    .25 .20  .16666
+%% .916666 .816666 .775 .708333 .633333 .55 .45 .366666 .291666 .225 .183333
+%% 0.0
+%%0.083333
+%% the first line has absolute slopes corresponding to various permissible
+%% integer combinations representing slopes. The second line is the midpoint
+%% of all those slopes (attempted to show them in the middle of two entries).
+%%
+%% \lineslope(x@diff dimen, y@diff dimen)
+%% Given base (x@diff) and height (y@diff) in dimensions, determines the
+%% closest available slope and returns the two required integers in \@xarg
+%% and \@yarg. The given base and height can be ANYTHING, -ve or +ve, or
+%% even 0pt. \lineslope knows about (0,1) and (1,0) slopes too and returns
+%% correct values if the conditions regarding x@diff & y@diff are obeyed
+%% (see NOTE). Used by \drawline. This is the simplest and only way I could
+%% figure out to accomplish it!.
+%% NOTE: both the dimensions (x@diff & y@diff) must be in SAME units and the
+%% larger of the two dimensions must be atleast 1pt (i.e. 65536sp). To avoid
+%% dividing by 0, I make the larger dimension = 1pt if it is < 1pt.
+%% will need a similar one for vectors, or maybe this can be used. For
+%% vectors the range is -4, 4 unlike lines where it is -6, 6.
+\newif\if@flippedargs
+\def\lineslope(#1,#2){%
+\ifdim #1 <0pt \@xdim= -#1 \else\@xdim=#1\fi
+\ifdim #2 <0pt \@ydim= -#2 \else\@ydim=#2\fi
+%%\typeout{xdim,ydim= \the\@xdim, \the\@ydim}
+\ifdim\@xdim >\@ydim \@tempdima=\@xdim \@xdim=\@ydim \@ydim=\@tempdima
+\@flippedargstrue\else\@flippedargsfalse\fi% x < y
+\ifdim\@ydim >1pt \@tempcnta=\@ydim
+           \divide\@tempcnta by 65536% now \@tempcnta=integral part of #1.
+           \divide\@xdim \@tempcnta\fi
+\ifdim\@xdim <.083333pt \@xarg=1 \@yarg=0
+\else\ifdim\@xdim <.183333pt	\@xarg=6 \@yarg=1
+\else\ifdim\@xdim <.225pt 	\@xarg=5 \@yarg=1
+\else\ifdim\@xdim <.291666pt 	\@xarg=4 \@yarg=1
+\else\ifdim\@xdim <.366666pt 	\@xarg=3 \@yarg=1
+\else\ifdim\@xdim <.45pt 	\@xarg=5 \@yarg=2
+\else\ifdim\@xdim <.55pt 	\@xarg=2 \@yarg=1
+\else\ifdim\@xdim <.633333pt 	\@xarg=5 \@yarg=3
+\else\ifdim\@xdim <.708333pt 	\@xarg=3 \@yarg=2
+\else\ifdim\@xdim <.775pt 	\@xarg=4 \@yarg=3
+\else\ifdim\@xdim <.816666pt 	\@xarg=5 \@yarg=4
+\else\ifdim\@xdim <.916666pt 	\@xarg=6 \@yarg=5
+      \else			\@xarg=1 \@yarg=1%
+\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi
+\if@flippedargs\relax\else\@tempcnta=\@xarg \@xarg=\@yarg
+			  \@yarg=\@tempcnta\fi
+\ifdim #1 <0pt \@xarg= -\@xarg\fi
+\ifdim #2 <0pt \@yarg= -\@yarg\fi
+%%\typeout{closest slope integers = \the\@xarg, \the\@yarg}
+}
+%----------------------------------------------------------------------
+% usage: \drawline[#](x1,y1)(x2,y2)....(xN,yN)
+%       		 % # is an optional integer between -100 & infinity.
+% \renewcommand{\drawlinestretch}{-50}  %ONLY INTEGERS PERMITTED.
+%----------------------------------------------------------------------
+\newif\if@toosmall
+\newif\if@drawit
+\newif\if@horvline
+\def\drawlinestretch{0} %well, could have used a counter.
+% kind of tail recursion.
+\def\drawline{\@ifnextchar [{\@idrawline}{\@idrawline[\drawlinestretch]}}
+\def\@idrawline[#1](#2,#3){\@ifnextchar ({\@iidrawline[#1](#2,#3)}{\relax}}
+\def\@iidrawline[#1](#2,#3)(#4,#5){\@drawline[#1](#2,#3)(#4,#5)
+\@idrawline[#1](#4,#5)}
+%
+\def\@drawline[#1](#2,#3)(#4,#5){{%
+\x@diff=#4\unitlength \advance\x@diff by -#2\unitlength
+\y@diff=#5\unitlength \advance\y@diff by -#3\unitlength
+%% override any linethickness declarations, and since horiz & vertical lines
+%% come out thinner than the slanted ones, assign slightly larger values.
+%% default values are: thinlines=0.4pt, thicklines=0.8pt
+\ifx\@linefnt\tenln \linethickness{0.5pt} \else \linethickness{0.9pt}\fi
+\lineslope(\x@diff,\y@diff)% returns the two integers in \@xarg & \@yarg.
+%------
+\@toosmalltrue
+{\ifdim\x@diff <\z@ \x@diff=-\x@diff\fi
+\ifdim\y@diff <\z@ \y@diff=-\y@diff\fi
+\ifdim\x@diff >10pt \global\@toosmallfalse\fi
+\ifdim\y@diff >10pt \global\@toosmallfalse\fi}
+%------
+%% For efficiency, if the line is horiz or vertical then we draw it in one
+%% shot, only if the stretch is not -ve and the line is not too small.
+\@drawitfalse\@horvlinefalse
+\ifnum#1 <0 \relax\else\@horvlinetrue\fi
+\if@toosmall\@horvlinetrue\fi% to get 'or' condition. We necessarily draw a
+% solid line if the line is too small ignoring any -ve stretch.
+\if@horvline
+\ifdim\x@diff =0pt \put(#2,#3){\ifdim\y@diff >0pt \@linelen=\y@diff \@upline
+				\else\@linelen=-\y@diff \@downline\fi}%
+\else\ifdim\y@diff =0pt
+         \ifdim\x@diff >0pt \put(#2,#3){\vrule \@height \@halfwidth \@depth
+				\@halfwidth \@width \x@diff}
+		\else \put(#4,#5){\vrule \@height \@halfwidth \@depth
+				\@halfwidth \@width -\x@diff}\fi
+      \else\@drawittrue\fi\fi % construct the line explicitly
+\else\@drawittrue\fi
+%-------------------------------
+\if@drawit
+\ifnum\@xarg< 0 \@negargtrue\else\@negargfalse\fi
+\ifnum\@xarg =0 \setbox\@linechar%
+\hbox{\hskip -\@halfwidth \vrule \@width \@wholewidth \@height 10.2pt
+\@depth \z@}
+\else \ifnum\@yarg =0 \setbox\@linechar%
+\hbox{\vrule \@height \@halfwidth \@depth \@halfwidth \@width 10.2pt}
+\else \if@negarg \@xarg -\@xarg \@yyarg -\@yarg
+       \else \@yyarg \@yarg\fi
+\ifnum\@yyarg >0 \@tempcnta\@yyarg \else \@tempcnta -\@yyarg\fi
+\setbox\@linechar\hbox{\@linefnt\@getlinechar(\@xarg,\@yyarg)}%
+\fi\fi
+%------
+\if@toosmall% => it isn't a horiz or vert line and is toosmall.
+ \@dottedline[\picsquare]{.98\@wholewidth}%
+(#2\unitlength,#3\unitlength)(#4\unitlength,#5\unitlength)%
+\else
+%% following is neat. The last segment takes \wd\@linechar & \ht\@linechar
+%% so plot the line as though it were from (#2,#3) to
+%% (#4-\wd\@linechar,#5-\ht\@linechar) (i.e. for positive slope; of course,
+%% signs are reversed for other slopes). For horizontal & vertical dashes we
+%% don't have to subtract the ht & wd resp. since they are already centered.
+\ifnum\@xarg=0\relax\else\ifdim\x@diff >\z@ \advance\x@diff -\wd\@linechar
+ \else\advance\x@diff \wd\@linechar\fi\fi
+\ifnum\@yarg=0\relax\else\ifdim\y@diff >\z@\advance\y@diff -\ht\@linechar
+ \else\advance\y@diff \ht\@linechar\fi\fi
+\ifdim\x@diff <\z@ \@x@diff=-\x@diff \else\@x@diff=\x@diff\fi
+\ifdim\y@diff <\z@ \@y@diff=-\y@diff \else\@y@diff=\y@diff\fi
+%%\typeout{x@diff,y@diff=\the\x@diff , \the\y@diff}
+\num@segments=0 \num@segmentsi=0
+\ifdim\wd\@linechar >1pt
+\num@segmentsi=\@x@diff \divide\num@segmentsi \wd\@linechar\fi
+\ifdim\ht\@linechar >1pt
+\num@segments=\@y@diff \divide\num@segments \ht\@linechar\fi
+\ifnum\num@segmentsi >\num@segments \num@segments=\num@segmentsi\fi
+\advance\num@segments \@ne %to account for round-off error
+%
+\ifnum #1=0 \relax \else\ifnum #1 < -99
+ \typeout{***drawline: reduction <= -100 percent implies blankness!***}
+\else\num@segmentsi=#1 \advance\num@segmentsi by 100
+    \multiply\num@segments \num@segmentsi
+    \divide\num@segments by 100
+    \ifnum \num@segments=0 \num@segments=1 \fi
+\fi\fi
+%%\typeout{num@segments after = \the\num@segments}
+%
+\divide\x@diff \num@segments
+\divide\y@diff \num@segments
+\advance\num@segments \@ne %for the last segment for which I subtracted
+			  %\wd & \ht of \@linechar from \@x@diff & \@y@diff.
+%%\typeout{numseg,x@diff,y@diff= \the\num@segments, \the\x@diff, \the\y@diff}
+%
+\@xdim=#2\unitlength \@ydim=#3\unitlength
+\if@negarg \advance\@xdim -\wd\@linechar\fi
+\ifnum\@yarg <0 \advance\@ydim -\ht\@linechar\fi
+%%following loop equiv to \multiput@abs(\@xdim,\@ydim)%
+%%(\x@diff,\y@diff){\num@segments}{\copy\@linechar}
+%%with arguements in absolute dimensions.
+\@killglue
+\loop \ifnum\num@segments > 0
+\unskip\raise\@ydim\hbox to\z@{\hskip\@xdim \copy\@linechar\hss}%
+\advance\num@segments \m@ne\advance\@xdim\x@diff\advance\@ydim\y@diff%
+\repeat
+\ignorespaces
+\fi%the if of @toosmall
+\fi}}% for \if@drawit
+%----------------------------------------------------------------------
+%usage: \putfile{datafile}{OBJECT}
+% The OBJECT is plotted at EACH of the coordinates read from the datafile.
+% The idea of these macros is to generate (x,y) pairs using some program
+% and then directly use those coordinates. Since TeX doesn't have real
+% floating point calculations, it is much more efficient and accurate to do
+% things this way. One can also use the unix facility 'spline' now to
+% generate smooth curves with equidistant ``dots''.
+% NOTE: the external file of coordinates must have x y pairs with a space
+% between them. Also it is suggested that some extension such as '.put'
+% be used for such datafiles to distinguish them in which case it must
+% be explicitely specified in the 1st argument so that TeX doesn't look
+% for a .tex extension.
+% The % char remains valid as a comment char and such lines are ignored;
+% however, there should be atleast one space after the second entry if a
+% comment is on the same line as data since % eats up the newline.
+%-----------------------------------------------------------------------
+\long\def\splittwoargs#1 #2 {(#1,#2)}
+%
+\newif\if@stillmore
+\newread\@datafile
+\long\def\putfile#1#2{\openin\@datafile = #1
+\@stillmoretrue
+\loop
+\ifeof\@datafile\relax\else\read\@datafile to\@dataline\fi
+%if file nonexistent, do nothing.
+\ifeof\@datafile\@stillmorefalse
+\else\ifx\@dataline\@empty \relax
+    \else
+\expandafter\expandafter\expandafter\put\expandafter\splittwoargs%
+\@dataline{#2}
+    \fi
+\fi
+\if@stillmore
+\repeat
+\closein\@datafile
+}
+%----------------------------------------------------------------------
+
+
+
+% Save file as: EEPICEMU.STY           Source: FILESERV@SHSU.BITNET
+% eepicemu Version 1.1a < February 1, 1988 >
+%	Written by Conrad Kwok
+%
+% Internet : kwok@iris.ucdavis.edu
+% csnet    : kwok@ucd.csnet
+% csnet    : kwok%iris.ucdavis.edu@csnet.relay
+% UUCP	   : ...!ucbvax!ucdavis!iris!kwok
+%
+% The macros are in public domain.
+% You may distribute or modify it in any ways you like.
+% Please report any bugs, enhancements, comments, suggestions, etc.
+%
+% Change logs:
+% o February 1, 1989
+%   Add \newdimen\maxovaldiam for compatility with eepic
+%
+% o February 1, 1989
+%   Enhanced to handle new commands in eepic 1.1
+%
+\makeatletter
+\typeout{Emulation of EEPIC using EPIC. Version 1.1a - Released February 1, 1988}
+\let\path\drawline
+\def\ellipse{%
+   \@ifstar{\@ellipse}{\@ellipse}}
+\def\@ellipse#1#2{%
+   \ifnum #1=#2%
+	\circle{#1}%
+   \else
+	\oval(#1,#2)
+   \fi\relax}
+\let\Thicklines\thicklines
+\def\circle{%
+   \@ifstar
+	{\@emudot}%
+	{\@emucirc}%
+}
+\def\@emudot#1{%
+   \@tempdimb #1\unitlength
+   \ifdim \@tempdimb > 15pt
+       \oval(#1,#1)%
+   \else
+       \@dot{#1}%
+   \fi
+}
+\def\@emucirc#1{%
+    \@tempdimb #1\unitlength
+    \ifdim \@tempdimb > 40pt
+	\oval(#1,#1)%
+    \else
+	\@circle{#1}%
+    \fi
+}
+%\def\arc#1#2#3{\typeout{arc function is not supported in emulation package}}
+\newcount\@spxcnt
+\newcount\@spycnt
+\newcount\@ispxcnt
+\newcount\@ispycnt
+\newcount\@cmidxcnt
+\newcount\@cmidycnt
+
+\def\spline(#1,#2){%
+   \@ifnextchar ({\@ispline(#1,#2)}%
+		  {\ignorespaces}}
+\def\@ispline(#1,#2)(#3,#4){%
+   \@ifnextchar ({\@iispline(#1,#2)(#3,#4)}%
+	          {\@drawline[0](#1,#2)(#3,#4)\ignorespaces}}
+\def\@iispline(#1,#2)(#3,#4)(#5,#6){%
+   \@ifnextchar ({%
+       \@spxcnt=#3 \advance\@spxcnt by #5 \divide\@spxcnt by 2\relax
+       \@spycnt=#4 \advance\@spycnt by #6 \divide\@spycnt by 2\relax
+       \@chaikin{#1}{#2}{#3}{#4}{\@spxcnt}{\@spycnt}%
+       \@ispxcnt=\@spxcnt\relax \@ispycnt=\@spycnt\relax
+       \@iispline(\@ispxcnt,\@ispycnt)(#5,#6)}%
+%   else
+      {\@chaikin{#1}{#2}{#3}{#4}{#5}{#6}}}
+\def\@chaikin#1#2#3#4#5#6{%
+   \@cmidxcnt=#1 \advance\@cmidxcnt by #3
+   \advance\@cmidxcnt by #3 \advance\@cmidxcnt by #5
+   \divide\@cmidxcnt by 4
+   \@cmidycnt=#2 \advance\@cmidycnt by #4
+   \advance\@cmidycnt by #4 \advance\@cmidycnt by #6
+   \divide\@cmidycnt by 4
+   \@drawline[0](#1,#2)(\@cmidxcnt,\@cmidycnt)%
+   \@drawline[0](\@cmidxcnt,\@cmidycnt)(#5,#6)%
+}
+\def\allinethickness#1{\thicklines\linethickness{#1}}
+%
+\newdimen\maxovaldiam \maxovaldiam 40pt\relax
+%
+\def\filltype#1{}
+\def\blacken{}
+\def\whiten{}
+\def\shade{}
+\def\texture{}
+\makeatother
+
+\setlength{\textwidth}{6.5in}
+\setlength{\oddsidemargin}{0in} %{-.25in}  % new system requirements
+\setlength{\evensidemargin}{0in} %{-.25in} % February 2001
+\setlength{\textheight}{9in}
+\setlength{\topmargin}{-.5in}
+\def\di{\displaystyle}\def\ds{\displaystyle}\def\dstyle{\displaystyle}
+
+\def\headers#1#2#3{\lhead[#3]{#1}\chead{#2}\rhead[#1]{#3}}
+\def\footers#1#2#3{\lfoot[#3]{#1}\cfoot{#2}\rfoot[#1]{#3}}
+
+%\newwrite\cmt
+%\newcounter{comt}
+%\immediate\openout\cmt=\jobname.cmt
+%\newenvironment{comment}[1]
+%{\stepcounter{comt}\immediate\write\cmt{Comment:\thecomt}}{\par}
+
+\pagestyle{fancy}
+
+%%%%%%%%%%%%%%%%%%%%%%%%  fullpict.sty  %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%       Written by Bruce Shawyer 14 March 1995       %%%%%%
+%%%%%%       Updated and improved 14 November 1995        %%%%%%
+%%%%%%       Second update September 1996                 %%%%%%
+%%%%%%       Third  update August    1998                 %%%%%%
+%%%%%%       Fourth update March     2001                 %%%%%%
+%%%%%%       Fifth  update April     2001                 %%%%%%
+\makeatletter
+\newcount\gs@ \newcount\gs@d \newcount\a@@@a
+
+\def\g@odfullunit#1{\gs@=\number\hsize
+\divide\gs@ by72820\divide\gs@ by#1\setlength\unitlength{\gs@ pt}}
+
+\def\fullpicture(#1,#2){\@ifnextchar({\@fullpicture(#1,#2)}%
+{\@fullpicture(#1,#2)(0,0)}}
+\def\@fullpicture(#1,#2)(#3,#4){\begin{center}
+\g@odfullunit{#1}\@picht #2\unitlength
+\setbox\@picbox\hbox to#1\unitlength\bgroup
+\hskip -#3\unitlength \lower #4\unitlength \hbox\bgroup\ignorespaces}
+\def\endfullpicture{\egroup\hss\egroup\ht\@picbox\@picht
+\dp\@picbox\z@\mbox{\box\@picbox}\end{center}}
+
+\def\g@odhalfunit#1{\gs@=\number\hsize
+\divide\gs@ by145640\divide\gs@ by#1\setlength\unitlength{\gs@ pt}}
+
+\def\halfpicture(#1,#2){\@ifnextchar({\@halfpicture(#1,#2)}%
+{\@halfpicture(#1,#2)(0,0)}}
+\def\@halfpicture(#1,#2)(#3,#4){\begin{center}
+\g@odhalfunit{#1}\@picht #2\unitlength
+\setbox\@picbox\hbox to#1\unitlength\bgroup
+\hskip -#3\unitlength \lower #4\unitlength \hbox\bgroup\ignorespaces}
+\def\endhalfpicture{\egroup\hss\egroup\ht\@picbox\@picht
+\dp\@picbox\z@\mbox{\box\@picbox}\end{center}}
+
+\def\sc@leunit#1#2{\gs@=\number\hsize
+\divide\gs@ by72820\divide\gs@ by#1\multiply\gs@ by#2\divide\gs@ by100
+\setlength\unitlength{\gs@ pt}}
+
+\def\scalepicture#1(#2,#3){\@ifnextchar({\@scalepicture#1(#2,#3)}%
+{\@scalepicture#1(#2,#3)(0,0)}}
+\def\@scalepicture#1(#2,#3)(#4,#5){\begin{center}
+\sc@leunit{#2}{#1}\@picht #3\unitlength
+\setbox\@picbox\hbox to#2\unitlength\bgroup
+\hskip -#4\unitlength \lower #5\unitlength \hbox\bgroup\ignorespaces}
+\def\endscalepicture{\egroup\hss\egroup\ht\@picbox\@picht
+\dp\@picbox\z@\mbox{\box\@picbox}\end{center}}
+
+\def\sc@leunit#1#2{\gs@=\number\hsize
+\divide\gs@ by72820\divide\gs@ by#1\multiply\gs@ by#2\divide\gs@ by100
+\setlength\unitlength{\gs@ pt}}
+
+\def\Scalepicture#1(#2,#3){\@ifnextchar({\@Scalepicture#1(#2,#3)}%
+{\@Scalepicture#1(#2,#3)(0,0)}}
+\def\@Scalepicture#1(#2,#3)(#4,#5){
+\sc@leunit{#2}{#1}\@picht #3\unitlength
+\setbox\@picbox\hbox to#2\unitlength\bgroup
+\hskip -#4\unitlength \lower #5\unitlength \hbox\bgroup\ignorespaces}
+\def\endScalepicture{\egroup\hss\egroup\ht\@picbox\@picht
+\dp\@picbox\z@\mbox{\box\@picbox}}
+
+% new environments July 1998
+%  ticks2.sty %  version  beta3 % 13 March 2001 % Bruce Shawyer
+
+\newcount\t@ck\newcount\s@ck \newcount\xt@ck\newcount\yt@ck
+\newdimen\t@@k\newdimen\t@@k@\newdimen\s@@k
+\newdimen\t@y@k\newdimen\t@x@k\newdimen\t@z@k
+\newdimen\ty@@k\newdimen\sy@@k \newdimen\xt@@k\newdimen\xs@@k
+\newdimen\yt@@k\newdimen\ys@@k
+\def\scaledpicture#1(#2,#3){\@ifnextchar({\@scaledpicture#1(#2,#3)}%
+{\@scaledpicture#1(#2,#3)(0,0)}}
+\def\@scaledpicture#1(#2,#3)(#4,#5){\t@x{#1}\begin{center}\a@@@a=#1
+\sc@leunit{#2}{#1}\@picht #3\unitlength
+\setbox\@picbox\hbox to#2\unitlength\bgroup
+\hskip -#4\unitlength \lower #5\unitlength \hbox\bgroup\ignorespaces
+
+\def\xaxis{\put(#4,0){\Vector(1,0){#2}}}
+\def\yaxis{\put(0,#5){\Vector(0,1){#3}}}
+\def\axes{\xaxis\yaxis}
+
+\t@@k=#2pt \t@y@k=#3pt \xt@@k=#4pt \divide\xt@@k by65536
+\yt@@k=#5pt \divide\yt@@k by65536
+}
+\def\endscaledpicture{\egroup\hss\egroup\ht\@picbox\@picht
+\dp\@picbox\z@\mbox{\box\@picbox}\end{center}}
+
+\def\Scaledpicture#1(#2,#3){\@ifnextchar({\@Scaledpicture#1(#2,#3)}%
+{\@Scaledpicture#1(#2,#3)(0,0)}}
+\def\@Scaledpicture#1(#2,#3)(#4,#5){\t@x{#1}
+\sc@leunit{#2}{#1}\@picht #3\unitlength
+\setbox\@picbox\hbox to#2\unitlength\bgroup
+\hskip -#4\unitlength \lower #5\unitlength \hbox\bgroup\ignorespaces
+
+\def\xaxis{\put(#4,0){\Vector(1,0){#2}}}
+\def\yaxis{\put(0,#5){\Vector(0,1){#3}}}
+\def\axes{\xaxis\yaxis}
+
+\t@@k=#2pt \t@y@k=#3pt \xt@@k=#4pt \divide\xt@@k by65536
+\yt@@k=#5pt \divide\yt@@k by65536
+}
+\def\endScaledpicture{\egroup\hss\egroup\ht\@picbox\@picht
+\dp\@picbox\z@\mbox{\box\@picbox}}
+
+\gdef\Vector(#1,#2)#3{\@xarg #1\relax \@yarg #2\relax
+  \@tempcnta \ifnum\@xarg<\z@ -\@xarg\else\@xarg\fi
+  \ifnum\@tempcnta<5\relax
+  \@linelen #3\unitlength \divide\@linelen by200 \multiply\@linelen by203
+  \ifnum\a@@@a<86  \divide\@linelen by200 \multiply\@linelen by201\fi
+  \ifnum\a@@@a<76  \divide\@linelen by200 \multiply\@linelen by201\fi
+  \ifnum\a@@@a<51  \divide\@linelen by200 \multiply\@linelen by202\fi
+  \ifnum\a@@@a<46  \divide\@linelen by200 \multiply\@linelen by201\fi
+  \ifnum\a@@@a<41  \divide\@linelen by200 \multiply\@linelen by201\fi
+  \ifnum\a@@@a<36  \divide\@linelen by200 \multiply\@linelen by201\fi
+  \ifnum\a@@@a<31  \divide\@linelen by200 \multiply\@linelen by201\fi
+  \ifnum\a@@@a<26  \divide\@linelen by200 \multiply\@linelen by201\fi
+  \ifnum\a@@@a<21  \divide\@linelen by200 \multiply\@linelen by201\fi
+  \ifdim\@linelen<\z@\@badlinearg\else
+    \ifnum\@xarg =\z@ \@vvector
+      \else \ifnum\@yarg =\z@ \@hvector \else \@svector\fi
+    \fi
+  \fi
+  \else\@badlinearg\fi}
+
+\newdimen\xy@@
+\def\xticks#1{\@ifnextchar [{\@xticks#1}{\@xticks#1[1]}}
+\def\@xticks#1[#2]{\t@@k@=\t@@k\s@@k=#1pt\divide\s@@k by256 \advance\t@@k@
+by-1pt
+\ifnum\s@@k<65536 \advance\t@@k@ by1pt \fi \multiply\t@@k@ by256
+\divide\t@@k@ by\number\s@@k \t@ck=\number\t@@k@ \divide\t@ck by65536
+\advance\t@ck by1
+\xy@@=#2pt
+\ifnum\xy@@>0
+\multiput(\number\xt@@k,0)(#1,0){\t@ck}{\line(0,-1){#2}} \else
+\multiput(\number\xt@@k,0)(#1,0){\t@ck}{\line(0,1){-#2}} \fi}
+
+\def\yticks#1{\@ifnextchar [{\@yticks#1}{\@yticks#1[1]}}
+\def\@yticks#1[#2]{\t@@k@=\t@y@k\s@@k=#1pt\divide\s@@k by256 \advance\t@@k@
+by-1pt
+\ifnum\s@@k<65536 \advance\t@@k@ by1pt \fi \multiply\t@@k@ by256
+\divide\t@@k@ by\number\s@@k \t@ck=\number\t@@k@ \divide\t@ck by65536
+\advance\t@ck by1
+\xy@@=#2pt
+\ifnum\xy@@>0
+\multiput(0,\number\yt@@k)(0,#1){\t@ck}{\line(-1,0){#2}}\else
+\multiput(0,\number\yt@@k)(0,#1){\t@ck}{\line(1,0){-#2}}\fi}
+
+\def\ticks#1{\@ifnextchar [{\@ticks#1}{\@ticks#1[1]}}
+\def\@ticks#1[#2]{\xticks{#1}[#2]\yticks{#1}[#2]}
+
+\def\origin#1{\put(0,0){\circle{#1}}}
+
+\def\xnums#1{\@ifnextchar [{\@xnums#1}{\@xnums#1[.25]}}
+\def\@xnums#1[#2]{
+\cput(\number\xt@@k,-#2){\number\xt@@k}
+\xt@ck=\number\xt@@k
+\s@ck=\xt@@k\multiply\s@ck by 65536 \advance\s@ck by\t@@k
+\divide\s@ck by65536
+\loop \advance\xt@ck by#1 \ifnum\xt@ck=0 \advance\xt@ck by#1 \fi
+\ifnum\xt@ck<\number\s@ck
+\cput(\number\xt@ck,-#2){\number\xt@ck}\repeat
+\ifnum\xt@ck=\number\s@ck\cput(\number\xt@ck,-#2){\number\xt@ck}\fi
+}
+
+\def\ynums#1{\@ifnextchar [{\@ynums#1}{\@ynums#1[.25]}}
+\def\@ynums#1[#2]{
+\cput(-#2,\number\yt@@k){\number\yt@@k} \xt@ck=\number\yt@@k
+\s@ck=\yt@@k\multiply\s@ck by 65536 \advance\s@ck by\t@y@k
+\divide\s@ck by65536
+\loop \advance\xt@ck by#1 \ifnum\xt@ck=0 \advance\xt@ck by#1 \fi
+\ifnum\xt@ck<\number\s@ck
+\cput(-#2,\number\xt@ck){\number\xt@ck}\repeat
+\ifnum\xt@ck=\number\s@ck\cput(-#2,\number\xt@ck){\number\xt@ck}\fi
+}
+\def\nums#1{\@ifnextchar [{\@nums#1}{\@nums#1[.25]}}
+\def\@nums#1[#2]{\xnums{#1}[#2]\ynums{#1}[#2]}
+
+% font size calculation
+
+\newcount\gs@dfont
+\newcount\gs@done\newcount\gs@dtwo\newcount\gs@dthree\newcount\gs@dfour
+\gs@done=39\gs@dtwo=49\gs@dthree=59\gs@dfour=74
+%                                   % percentages for font size changes
+\def\t@x#1{\gs@d=\number\textwidth\divide\gs@d by\number\hsize
+\multiply\gs@done by\number\gs@d \multiply\gs@dtwo by\number\gs@d
+\multiply\gs@dthree by\number\gs@d \multiply\gs@dfour by\number\gs@d
+\gs@dfont=5
+\tiny\ifnum#1>\gs@done\scriptsize \gs@dfont=4
+\ifnum#1>\gs@dtwo\footnotesize \gs@dfont=3
+\ifnum#1>\gs@dthree\small \gs@dfont=2
+\ifnum#1>\gs@dfour\normalsize \gs@dfont=1
+\fi\fi\fi\fi}
+
+% additions August 1998
+\newdimen\@dx\newdimen\@dy\newdimen\@dz\newdimen\@d@x\newdimen\@d@y
+\newdimen\@d@z\newdimen\@dzz\newcount\s@c
+
+% calculation of  #1*#2 +#3 or  xa+b  -  answer is \@d@x
+\def\m@l#1#2#3{\@d@z=#1 \divide\@d@z by32
+\@d@x=#2pt \multiply\@d@x by\@d@z \divide\@d@x by2048
+\@d@y=#3pt \advance\@d@x by\@d@y}
+% main macro calculation - #1 is the angle in degrees, #x is the object put
+%                          #3 is the multiplier for extra distance
+\def\@x@p#1#2#3{\rm\@dz=#1pt \@dzz=720pt \advance\@dz by2\@dzz
+\divide\@dz by65536 \s@c=\number\@dz \divide\s@c by360 \multiply\s@c by360
+\@dzz=\s@c pt \divide\@dzz by65536 \advance\@dz by-1\@dzz
+% \@dz is now in [0,360)
+\@d@z=1\@dz \divide\@dz by15 \s@c=\number\@dz \multiply\@dz by15
+\advance\@dzz by-1\@dz \advance\s@c by1 \@dz=65536\@d@z
+% \@d@z is angle in range[0,15) in dodecant \s@c all measured positively
+\ifnum\s@c=1		%time zone 1
+\m@l{\@dz}{-0.00227161}{+1}
+\@dx=\@d@x
+\m@l{\@dz}{0.0172546}{+0}
+\@dy=\@d@x\fi
+\ifnum\s@c=2		%time zone 2
+\m@l{\@dz}{-0.00666002}{+1.06582}
+\@dx=\@d@x
+\m@l{\@dz}{0.0160787}{+0.0176380}
+\@dy=\@d@x\fi
+\ifnum\s@c=3		%time zone 3
+\m@l{\@dz}{-0.0105945}{+1.18386}
+\@dx=\@d@x
+\m@l{\@dz}{0.0138071}{+0.0857865}
+\@dy=\@d@x\fi
+\ifnum\s@c=4		%time zone 4
+\m@l{\@dz}{-0.0138071}{+1.32842}
+\@dx=\@d@x
+\m@l{\@dz}{0.0105945}{+0.230350}
+\@dy=\@d@x\fi
+\ifnum\s@c=5		%time zone 5
+\m@l{\@dz}{-0.0160787}{+1.46472}
+\@dx=\@d@x
+\m@l{\@dz}{0.00666002}{+0.466424}
+\@dy=\@d@x\fi
+\ifnum\s@c=6		%time zone 6
+\m@l{\@dz}{-0.0172546}{+1.55291}
+\@dx=\@d@x
+\m@l{\@dz}{0.00227161}{+0.795555}
+\@dy=\@d@x\fi
+\ifnum\s@c=7		%time zone 7
+\m@l{\@dz}{-0.0172546}{+1.55291}
+\@dx=\@d@x
+\m@l{\@dz}{-0.00227161}{+1.20444}
+\@dy=\@d@x\fi
+\ifnum\s@c=8		%time zone 8
+\m@l{\@dz}{-0.0160787}{+1.42944}
+\@dx=\@d@x
+\m@l{\@dz}{-0.00666002}{+1.66522}
+\@dy=\@d@x\fi
+\ifnum\s@c=9		%time zone 9
+\m@l{\@dz}{-0.0138071}{+1.15685}
+\@dx=\@d@x
+\m@l{\@dz}{-0.0105945}{+2.13737}
+\@dy=\@d@x\fi
+\ifnum\s@c=10		%time zone 10
+\m@l{\@dz}{-0.0105945}{+0.723161}
+\@dx=\@d@x
+\m@l{\@dz}{-0.0138071}{+2.57106}
+\@dy=\@d@x\fi
+\ifnum\s@c=11		%time zone 11
+\m@l{\@dz}{-0.00666002}{+0.132979}
+\@dx=\@d@x
+\m@l{\@dz}{-0.0160787}{+2.91180}
+\@dy=\@d@x\fi
+\ifnum\s@c=12		%time zone 12
+\m@l{\@dz}{-0.00227161}{-0.591111}
+\@dx=\@d@x
+\m@l{\@dz}{-0.0172546}{+3.10582}
+\@dy=\@d@x\fi
+\ifnum\s@c=13		%time zone 13
+\m@l{\@dz}{0.00227161}{-1.40889}
+\@dx=\@d@x
+\m@l{\@dz}{-0.0172546}{+3.10582}
+\@dy=\@d@x\fi
+\ifnum\s@c=14		%time zone 14
+\m@l{\@dz}{0.00666002}{-2.26462}
+\@dx=\@d@x
+\m@l{\@dz}{-0.0160787}{+2.87653}
+\@dy=\@d@x\fi
+\ifnum\s@c=15		%time zone 15
+\m@l{\@dz}{0.0105945}{-3.09088}
+\@dx=\@d@x
+\m@l{\@dz}{-0.0138071}{+2.39949}
+\@dy=\@d@x\fi
+\ifnum\s@c=16		%time zone 16
+\m@l{\@dz}{0.0138071}{-3.81370}
+\@dx=\@d@x
+\m@l{\@dz}{-0.0105945}{+1.67667}
+\@dy=\@d@x\fi
+\ifnum\s@c=17		%time zone 17
+\m@l{\@dz}{0.0160787}{-4.35889}
+\@dx=\@d@x
+\m@l{\@dz}{-0.00666002}{+0.732385}
+\@dy=\@d@x\fi
+\ifnum\s@c=18		%time zone 18
+\m@l{\@dz}{0.0172546}{-4.65874}
+\@dx=\@d@x
+\m@l{\@dz}{-0.00227161}{-0.386666}
+\@dy=\@d@x\fi
+\ifnum\s@c=19		%time zone 19
+\m@l{\@dz}{0.0172546}{-4.65874}
+\@dx=\@d@x
+\m@l{\@dz}{0.00227161}{-1.61333}
+\@dy=\@d@x\fi
+\ifnum\s@c=20		%time zone 20
+\m@l{\@dz}{0.0160787}{-4.32361}
+\@dx=\@d@x
+\m@l{\@dz}{0.00666002}{-2.86403}
+\@dy=\@d@x\fi
+\ifnum\s@c=21		%time zone 21
+\m@l{\@dz}{0.0138071}{-3.64213}
+\@dx=\@d@x
+\m@l{\@dz}{0.0105945}{-4.04439}
+\@dy=\@d@x\fi
+\ifnum\s@c=22		%time zone 22
+\m@l{\@dz}{0.0105945}{-2.63018}
+\@dx=\@d@x
+\m@l{\@dz}{0.0138071}{-5.05635}
+\@dy=\@d@x\fi
+\ifnum\s@c=23		%time zone 23
+\m@l{\@dz}{0.00666002}{-1.33178}
+\@dx=\@d@x
+\m@l{\@dz}{0.0160787}{-5.80598}
+\@dy=\@d@x\fi
+\ifnum\s@c=24		%time zone 24
+\m@l{\@dz}{0.00227161}{+0.182227}
+\@dx=\@d@x
+\m@l{\@dz}{0.0172546}{-6.21165}
+\@dy=\@d@x\fi
+
+\@d@x=1.25pt \divide\@d@x by2048
+\multiply\@dx by\@d@x \divide\@dx by32
+\multiply\@dy by\@d@x \divide\@dy by32
+
+% increasing the distance by  #3
+\@dz=#3pt \divide\@dz by2048
+\multiply\@dx by\number\@dz \multiply\@dy by\number\@dz
+\divide\@dx by32 \divide\@dy by32
+% adjusting for font size
+% normal 8, small 7, foot 6, script 5, tiny 4
+% what we have here is for  crux.sty -3.8, -3.95, -4.1,  -4.4, -5.5
+% and we need for           2130.sty -3.8, -3.95, -3.95, -4.1, -4.8
+\rm
+\ifnum\gs@dfont=1 \multiply\@dx by8 \multiply\@dy by8 \advance\@dx by-3.8ex
+\fi
+\ifnum\gs@dfont=2 \multiply\@dx by7 \multiply\@dy by7 \advance\@dx by-3.95ex
+\fi
+\ifnum\gs@dfont=3 \multiply\@dx by6 \multiply\@dy by6 \advance\@dx by-3.95ex
+\fi
+\ifnum\gs@dfont=4 \multiply\@dx by5 \multiply\@dy by5 \advance\@dx by-4.1ex
+\fi
+\ifnum\gs@dfont=5 \multiply\@dx by4 \multiply\@dy by4 \advance\@dx by-4.8ex
+\fi
+% moving the origin - #2 is the object to be put
+\setbox0=\hbox{#2} \advance\@dx by-0.5\wd0
+\@dz=\dp0\advance\@dz by-\ht0 \divide\@dz by2
+\advance\@dy by\@dz \raisebox{\@dy}{\kern\@dx #2}}
+% the MAIN macro
+\def\angleput#1{\@ifnextchar [{\@ngleput#1}{\@ngleput#1[1]}}
+\def\@ngleput#1[#2](#3,#4)#5{\put(#3,#4){\@x@p{#1}{#5}{#2}}}
+% USAGE
+% \angleput{degrees}[multiplier](xcoord,ycoord){object}
+% SHORTFORMS
+% geographic putting commands
+\def\cput(#1,#2)#3{\angleput{0}[0](#1,#2){#3}}  % centre #3 on (#1,#2)
+\def\eput(#1,#2)#3{\angleput{0}(#1,#2){#3}}     % put #3 east  of (#1,#2)
+\def\nput(#1,#2)#3{\angleput{90}(#1,#2){#3}}    % put #3 north of (#1,#2)
+\def\sput(#1,#2)#3{\angleput{270}(#1,#2){#3}}   % put #3 south of (#1,#2)
+\def\wput(#1,#2)#3{\angleput{180}(#1,#2){#3}}   % put #3 west  of (#1,#2)
+\def\neput(#1,#2)#3{\angleput{45}(#1,#2){#3}}   % put #3 ne of (#1,#2)
+\def\seput(#1,#2)#3{\angleput{315}(#1,#2){#3}}  % put #3 se of (#1,#2)
+\def\nwput(#1,#2)#3{\angleput{135}(#1,#2){#3}}  % put #3 nw of (#1,#2)
+\def\swput(#1,#2)#3{\angleput{225}(#1,#2){#3}}  % put #3 sw of (#1,#2)
+\def\lcm{\mathop{\operator@font lcm}}
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%  END  fullpict.sty  %%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%  END  fullpict.sty  %%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\dist{\mathop{\rm dist}}
+\def\slope{\mathop{\rm slope}}
+\def\per{\mbox{\rm$\,$.}} \def\com{\rm\mbox{$\,$,}}
+\def\sem{\rm\mbox{$\,$;}} \def\col{\rm\mbox{$\,$:}}
+\def\equ{{\mbox{\ $\;=\;$\ }}}
+\def\lbk{\linebreak}
+\def\pbk{\pagebreak}
+\def\Sum{\mathop{\mbox{\large$\di\sum$}}}
+\def\SUm{\mathop{\mbox{\Large$\di\sum$}}}
+\def\SUM{\mathop{\mbox{\LARGE$\di\sum$}}}
+\def\LOngleftrightarrow{\Leftarrow\joinrel\Relbar\joinrel\Relbar%
+\joinrel\Rightarrow}
+\def\LONgleftrightarrow{\Leftarrow\joinrel\Relbar\joinrel\Relbar%
+\joinrel\Relbar\joinrel\Rightarrow}
+\def\LONGleftrightarrow{\Leftarrow\joinrel\Relbar\joinrel\Relbar%
+\joinrel\Relbar\joinrel\Relbar\joinrel\Rightarrow}
+
+\def\LOngleftarrow{\Leftarrow\joinrel\Relbar\joinrel\Relbar%
+\joinrel\Relbar}
+\def\LONgleftarrow{\Leftarrow\joinrel\Relbar\joinrel\Relbar%
+\joinrel\Relbar\joinrel\Relbar}
+\def\LONGleftarrow{\Leftarrow\joinrel\Relbar\joinrel\Relbar%
+\joinrel\Relbar\joinrel\Relbar\joinrel\Relbar}
+
+\def\LOngrightarrow{\Relbar\joinrel\Relbar\joinrel\Relbar%
+\joinrel\Rightarrow}
+\def\LONgrightarrow{\Relbar\joinrel\Relbar\joinrel\Relbar%
+\joinrel\Relbar\joinrel\Rightarrow}
+\def\LONGrightarrow{\Relbar\joinrel\Relbar\joinrel\Relbar%
+\joinrel\Relbar\joinrel\Relbar\joinrel\Rightarrow}
+
+\def\IFF{<\joinrel\joinrel\Relbar\joinrel\Relbar\joinrel\joinrel>}
+
+\makeatletter\newdimen\d@shfill\newdimen\dashf@ll
+\def\dashfill#1{\@ifnextchar [{\@ashfill#1}{\@ashfill#1[1]}}
+\def\@ashfill#1[#2]{\dashf@ll=#2pt \divide\dashf@ll by1024
+\d@shfill=.44em\multiply\d@shfill by\number\dashf@ll \divide\d@shfill by64
+\leavevmode\cleaders \hb@xt@\d@shfill
+{\hss #1\hss}\hfill\kern\z@}\makeatother
+
+%\makeatletter
+%\DeclareRobustCommand\em
+%        {\@nomath\em \ifdim \fontdimen\@ne\font >\z@
+%                       \rmp \else \itp \fi}
+%\makeatother
+
+\def\ARC#1{\setbox0=\hbox{#1}\unitlength=\wd0 \divide\unitlength by4
+\begin{picture}(4,1)\put(0,0){#1}
+\ifnum\unitlength<200000\curve(0,3.5,2,4,4,3.5)\else
+\ifnum\unitlength<250000\curve(0,3,2,3.5,4,3)\else
+\ifnum\unitlength<300000\curve(0,2.6,2,3.1,4,2.6)\else
+\ifnum\unitlength<320000\curve(0,2.4,2,2.9,4,2.4)\else
+\ifnum\unitlength<340000\curve(0,2.2,2,2.7,4,2.2)\else
+\ifnum\unitlength<360000\curve(0,2,2,2.5,4,2)\else%
+\ifnum\unitlength<380000\curve(0,1.875,2,1.375,4,1.875)\else
+\ifnum\unitlength<400000\curve(0,1.75,2,2.25,4,1.75)\else
+\ifnum\unitlength<420000\curve(0,1.625,2,2.125,4,1.625)\else
+\ifnum\unitlength<440000\curve(0,1.5,2,2,4,1.5)\else%
+\ifnum\unitlength<460000\curve(0,1.423,2,1.923,4,1.423)\else
+\ifnum\unitlength<480000\curve(0,1.375,2,1.875,4,1.375)\else
+\ifnum\unitlength<500000\curve(0,1.323,2,1.823,4,1.323)\else
+\ifnum\unitlength<520000\curve(0,1.25,2,1.75,4,1.25)\else%
+\ifnum\unitlength<540000\curve(0,1.2,2,1.7,4,1.2)\else
+\ifnum\unitlength<560000\curve(0,1.15,2,1.65,4,1.15)\else
+\ifnum\unitlength<580000\curve(0,1.1,2,1.6,4,1.1)\else
+\ifnum\unitlength<600000\curve(0,1.05,2,1.55,4,1.05)\else
+\ifnum\unitlength<620000\curve(0,1.,2,1.5,4,1.)\else%%
+\ifnum\unitlength<640000\curve(0,.967.24,2,1.447,4,.967)\else
+\ifnum\unitlength<660000\curve(0,.933,2,1.433,4,.933)\else
+\ifnum\unitlength<680000\curve(0,.9,2,1.35,4,.9)\else %%
+\ifnum\unitlength<700000\curve(0,.875,2,1.325,4,.875)\else
+\ifnum\unitlength<720000\curve(0,.825,2,1.275,4,.825)\else
+\ifnum\unitlength<740000\curve(0,.8,2,1.25,4,.8)\else
+\ifnum\unitlength<800000\curve(0,.75,2,1.2,4,.75)\else
+\ifnum\unitlength<1000000\curve(0,.7,2,1.15,4,.7)\else
+\curve(0,.7,2,1,4,.7)
+\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi
+\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi
+\end{picture}}
+
+\def\upcurve{\unitlength=1ex\begin{picture}(3,1)\curve(0,0,1.5,1,3,0)
+\end{picture}}
+\def\dncurve{\unitlength=1ex\begin{picture}(3,1)\curve(0,1,1.5,0,3,1)
+\end{picture}}
+\def\rtangle#1#2{\rotate{#1}{\join(0,0)(0,#2)(#2,#2)(#2,0)(0,0)}}
+% added July 2000
+\newdimen\cjo\newdimen\cjoh \newdimen\cjt\newdimen\cjth
+\makeatletter
+\def\curvejoin(#1,#2)(#3,#4){\@ifnextchar
+[{\c@rvejoin(#1,#2)(#3,#4)}{\c@rvejoin(#1,#2)(#3,#4)[0]}}
+\def\c@rvejoin(#1,#2)(#3,#4)[#5]{
+\cjoh=#1\unitlength\advance\cjoh by#3\unitlength
+\cjth=#2\unitlength\advance\cjth by#4\unitlength
+\divide\cjoh by2\divide\cjth by2
+
+\cjt=#4\unitlength\advance\cjt by-#2\unitlength
+\cjo=#3\unitlength\advance\cjo by-#1\unitlength
+\divide\cjt by8096\divide\cjo by8096
+\ifnum#5=0\relax\else\multiply\cjt by\number#5\multiply\cjo by\number#5
+\multiply\cjt by256\multiply\cjo by256\fi
+\advance\cjoh by-\cjt
+\advance\cjth by\cjo
+\curve(#1,#2,\cjoh\unitlength,\cjth\unitlength,#3,#4)
+}\makeatother
+
+%2002 macros
+
+\def\fsize#1{\normalsize \ifnum #1=1 \large\fi \ifnum #1=2 \Large\fi \ifnum
+#1=3 \LARGE\fi \ifnum #1=4 \huge\fi \ifnum #1>4 \Huge\fi \ifnum #1=-1
+\small\fi \ifnum #1=-2 \footnotesize\fi \ifnum #1=-3 \scriptsize\fi \ifnum
+#1<-3 \tiny\fi}
+
+\def\frack#1#2{\mbox{\small$\di\frac{#1}{#2}$}}
+\def\fracf#1#2{\mbox{\footnotesize$\di\frac{#1}{#2}$}}
+
+\def\Binom#1#2{\mbox{$\left(\raisebox{-.9ex}%
+{$\stackrel{\textstyle#1}{\rule{0pt}{1.75ex}#2}$}\right)$}}
+\def\binom#1#2{{{#1}\choose{#2}}}
+
+\def\VEC#1{\mathop{\overrightarrow{\rule{0pt}{1.8ex}#1\:\,}}}
+
+\def\vect#1#2{\rotate{#1}{\put(0,0){\vector(1,0){#2}}}}
+
+% style  vectorb.sty
+% written by Bruce Shawyer, Department of Mathematics and Statistics
+% Memorial University of Newfoundland, St. John's, Newfoundland,
+% Canada  A1C 5S7     email  bshawyer@math.mun.ca
+% makes use of  curvesb.sty (UNIX) or  curveslb.sty (emtex)
+% makes use of  \rotate{deg}{object}
+% may not preview the arrows on the end of the vectors properly
+% requires Postscript to implement for printing
+%
+% draws a vector (arrow) from point (a,b) to point (c,d)
+% no restriction on the slope as with  \vector
+\makeatletter
+\newdimen\x@ne \newdimen\y@ne \newdimen\xtw@ \newdimen\ytw@
+\newdimen\md@n \newdimen\mn@m \newdimen\sl@p \newcount\fl@g
+\def\VECTOR(#1,#2)(#3,#4){
+\x@ne=#1pt \y@ne=#2pt \xtw@=#3pt \ytw@=#4pt
+\divide\x@ne by655 \divide\y@ne by655 \divide\xtw@ by655 \divide\ytw@ by655
+% unit is now 100
+% x change
+\md@n=\xtw@ \advance\md@n by-\x@ne
+% y change
+\mn@m=\ytw@ \advance\mn@m by-\y@ne
+% slope
+\ifnum\md@n=0 \ifnum\mn@m>0 \fl@g=90\fi \fi
+\ifnum\md@n=0 \ifnum\mn@m<0 \fl@g=270\fi\else
+\sl@p=\mn@m\multiply\sl@p by100 \divide\md@n by10 \divide\sl@p by\md@n
+\multiply\md@n by10
+% make slope positive
+\ifnum\sl@p<0  \multiply\sl@p by-1\fi
+% unit is now 1000
+\ifnum\sl@p< 57290 \fl@g= 89\fi \ifnum\sl@p< 28636 \fl@g= 88\fi
+\ifnum\sl@p< 19081 \fl@g= 87\fi \ifnum\sl@p< 14301 \fl@g= 86\fi
+\ifnum\sl@p< 11430 \fl@g= 85\fi \ifnum\sl@p< 9514 \fl@g= 84\fi
+\ifnum\sl@p< 8144 \fl@g= 83\fi \ifnum\sl@p< 7115 \fl@g= 82\fi
+\ifnum\sl@p< 6314 \fl@g= 81\fi \ifnum\sl@p< 5671 \fl@g= 80\fi
+\ifnum\sl@p< 5145 \fl@g= 79\fi \ifnum\sl@p< 4705 \fl@g= 78\fi
+\ifnum\sl@p< 4331 \fl@g= 77\fi \ifnum\sl@p< 4011 \fl@g= 76\fi
+\ifnum\sl@p< 3732 \fl@g= 75\fi \ifnum\sl@p< 3487 \fl@g= 74\fi
+\ifnum\sl@p< 3271 \fl@g= 73\fi \ifnum\sl@p< 3078 \fl@g= 72\fi
+\ifnum\sl@p< 2904 \fl@g= 71\fi \ifnum\sl@p< 2747 \fl@g= 70\fi
+\ifnum\sl@p< 2605 \fl@g= 69\fi \ifnum\sl@p< 2475 \fl@g= 68\fi
+\ifnum\sl@p< 2356 \fl@g= 67\fi \ifnum\sl@p< 2246 \fl@g= 66\fi
+\ifnum\sl@p< 2145 \fl@g= 65\fi \ifnum\sl@p< 2050 \fl@g= 64\fi
+\ifnum\sl@p< 1963 \fl@g= 63\fi \ifnum\sl@p< 1881 \fl@g= 62\fi
+\ifnum\sl@p< 1804 \fl@g= 61\fi \ifnum\sl@p< 1732 \fl@g= 60\fi
+\ifnum\sl@p< 1664 \fl@g= 59\fi \ifnum\sl@p< 1600 \fl@g= 58\fi
+\ifnum\sl@p< 1540 \fl@g= 57\fi \ifnum\sl@p< 1483 \fl@g= 56\fi
+\ifnum\sl@p< 1428 \fl@g= 55\fi \ifnum\sl@p< 1376 \fl@g= 54\fi
+\ifnum\sl@p< 1327 \fl@g= 53\fi \ifnum\sl@p< 1280 \fl@g= 52\fi
+\ifnum\sl@p< 1235 \fl@g= 51\fi \ifnum\sl@p< 1192 \fl@g= 50\fi
+\ifnum\sl@p< 1150 \fl@g= 49\fi \ifnum\sl@p< 1111 \fl@g= 48\fi
+\ifnum\sl@p< 1072 \fl@g= 47\fi \ifnum\sl@p< 1036 \fl@g= 46\fi
+\ifnum\sl@p< 1001 \fl@g= 45\fi \ifnum\sl@p< 966 \fl@g= 44\fi
+\ifnum\sl@p< 933 \fl@g= 43\fi \ifnum\sl@p< 900 \fl@g= 42\fi
+\ifnum\sl@p< 869 \fl@g= 41\fi \ifnum\sl@p< 839 \fl@g= 40\fi
+\ifnum\sl@p< 810 \fl@g= 39\fi \ifnum\sl@p< 781 \fl@g= 38\fi
+\ifnum\sl@p< 754 \fl@g= 37\fi \ifnum\sl@p< 727 \fl@g= 36\fi
+\ifnum\sl@p< 700 \fl@g= 35\fi \ifnum\sl@p< 675 \fl@g= 34\fi
+\ifnum\sl@p< 649 \fl@g= 33\fi \ifnum\sl@p< 625 \fl@g= 32\fi
+\ifnum\sl@p< 601 \fl@g= 31\fi \ifnum\sl@p< 577 \fl@g= 30\fi
+\ifnum\sl@p< 554 \fl@g= 29\fi \ifnum\sl@p< 532 \fl@g= 28\fi
+\ifnum\sl@p< 510 \fl@g= 27\fi \ifnum\sl@p< 488 \fl@g= 26\fi
+\ifnum\sl@p< 466 \fl@g= 25\fi \ifnum\sl@p< 445 \fl@g= 24\fi
+\ifnum\sl@p< 424 \fl@g= 23\fi \ifnum\sl@p< 404 \fl@g= 22\fi
+\ifnum\sl@p< 384 \fl@g= 21\fi \ifnum\sl@p< 364 \fl@g= 20\fi
+\ifnum\sl@p< 344 \fl@g= 19\fi \ifnum\sl@p< 325 \fl@g= 18\fi
+\ifnum\sl@p< 306 \fl@g= 17\fi \ifnum\sl@p< 287 \fl@g= 16\fi
+\ifnum\sl@p< 268 \fl@g= 15\fi \ifnum\sl@p< 249 \fl@g= 14\fi
+\ifnum\sl@p< 231 \fl@g= 13\fi \ifnum\sl@p< 213 \fl@g= 12\fi
+\ifnum\sl@p< 194 \fl@g= 11\fi \ifnum\sl@p< 176 \fl@g= 10\fi
+\ifnum\sl@p< 158 \fl@g= 9\fi \ifnum\sl@p< 141 \fl@g= 8\fi
+\ifnum\sl@p< 123 \fl@g= 7\fi \ifnum\sl@p< 105 \fl@g= 6\fi
+\ifnum\sl@p< 87 \fl@g= 5\fi \ifnum\sl@p< 70 \fl@g= 4\fi
+\ifnum\sl@p< 52 \fl@g= 3\fi \ifnum\sl@p< 35 \fl@g= 2\fi
+\ifnum\sl@p< 17 \fl@g= 1\fi \ifnum\sl@p< 0 \fl@g= 0\fi
+
+\ifnum\mn@m>0 \ifnum\md@n<0 \advance\fl@g by-180 \multiply\fl@g by-1\fi\fi
+\ifnum\mn@m<0 \ifnum\md@n<0 \advance\fl@g by180\fi\fi
+\ifnum\mn@m<0 \ifnum\md@n>0 \advance\fl@g by-360 \multiply\fl@g by-1\fi\fi
+\ifnum\mn@m=0 \ifnum\md@n<0 \fl@g=180\fi\fi
+\fi
+\join(#1,#2)(#3,#4) \put(#3,#4){\rotate{\number\fl@g}{\vector(1,0){.05}}}}
+\makeatother
+
+%%%%%%%%%%% August 2003  from TUGBOAT
+
+\def\clap#1{\hbox to 0pt{\hss#1\hss}}
+\def\mathllap{\mathpalette\mathllapinternal}
+\def\mathrlap{\mathpalette\mathrlapinternal}
+\def\mathclap{\mathpalette\mathclapinternal}
+\def\mathllapinternal#1#2{\llap{$\mathsurround=0pt#1{#2}$}}
+\def\mathrlapinternal#1#2{\rlap{$\mathsurround=0pt#1{#2}$}}
+\def\mathclapinternal#1#2{\clap{$\mathsurround=0pt#1{#2}$}}
+
