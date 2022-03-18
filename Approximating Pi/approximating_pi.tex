@@ -1,8 +1,9 @@
 \documentclass[12pt]{article}
 \usepackage{2130}
 \usepackage{amsmath}
-\usepackage{tikz}
 \usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{enumitem}
 
 \lhead{Project 2}
 \rhead{MATH 2130} % appears in the header on the right
@@ -26,12 +27,9 @@ Mar. 17, 2022
 \end{tabular}
 \end{titlepage}
 
-\bf{ABSTRACT} \\
-We aim to demonstrate in this paper how Archimedes devices a simple and clear
-algorithm of approximating the value of $\pi$.\\
-Sentence 2: dash is the approach or the method we are going to use to study this topic.\\
-Sentence 3: blah blah blah are the results that we obtain.\\
-Sentence 4: blah blah blah are the major conclusions that we draw.\\
+\section*{Abstract}
+We aim to demonstrate Archimedes simple and clear algorithm of approximating the value of $\pi$ using inscribed and circumscribed regular n-gons for a given circle. Moreover, with the means of a computer program, we will compute the approximation of $\pi$ in each iteration as the number of sides of the n-gon increase.
+We observe that with the increase in the number of sides of the n-gon, the lower and the upper estimates of $\pi$ approach the actual value of $\pi$.\\
 
 \section {Introduction}
 $\pi$ (also known as Archimedes constant) is an irrational number which is defined as the ratio of the circumference and the diameter of a circle. Surprisingly, it is independent of the size of a circle and it was around 2000 BCE when the Babylonians and the Egyptians realized that $\pi$ is a constant. Babylonians used $\frac{25}{8}$ as an approximate of $\pi$, whereas the Egyptians estimated it to be $4\cdot(\frac{8}{9})^2$. Later, a more accurate value $\frac{22}{7}$ came into everyday use. Over a period of time, significant efforts were made to improve the estimation of $\pi$ and nowadays, computing millions of digits of $\pi$  is considered as one of the most popular methods of testing the latest computer architectures. But before the realm of modern computing, many mathematicians like Archimedes had already formed algorithms for computing $\pi$.
@@ -257,7 +255,8 @@ gons and then calculates perimeter of the inscribed and circumscribed 2n-gons. I
   \end{center}
 \end{table}
 
-We see that when a square is taken as a starting polygon, both lower and upper bounds approach $\pi$ as we increase the number of iterations from $0$ to $4$. At each iteration, the number of sides of the n-gon are doubled and thus, increased accuracy of the approximation is achieved. So, we observe that the approximation of $\pi$ increases as the number of sides increase.\\
+
+In Table \ref{tab:table1}, we see that when a square is taken as a starting polygon, both lower and upper bounds approach $\pi$ as we increase the number of iterations from $0$ to $4$. At each iteration, the number of sides of the n-gon are doubled and thus, increased accuracy of the approximation is achieved. So, we observe that the approximation of $\pi$ increases as the number of sides increase.\\
 \bigskip
 \bigskip
 \bigskip
@@ -289,7 +288,7 @@ We see that when a square is taken as a starting polygon, both lower and upper b
   \end{center}
 \end{table}
 
-We see that when a pentagon is taken as a starting polygon, both lower and upper bounds approach $\pi$ as we increase the number of iterations from $0$ to $10$. At each iteration, the number of sides of the n-gon are doubled and thus, increased accuracy of the approximation is achieved. So, we observe that the approximation of $\pi$ increases as the number of sides increase.
+In Table \ref{tab:table2}, we see that when a pentagon is taken as a starting polygon, both lower and upper bounds approach $\pi$ as we increase the number of iterations from $0$ to $10$. At each iteration, the number of sides of the n-gon are doubled and thus, increased accuracy of the approximation is achieved. So, we observe that the approximation of $\pi$ increases as the number of sides increase.
 
 \begin{table}[h!]
   \begin{center}
@@ -312,28 +311,42 @@ We see that when a pentagon is taken as a starting polygon, both lower and upper
       6144 & 10 & 3.1415925165881546 & 3.141592927385097\\ % <--
       12288 & 11 & 3.1415926186407894 & 3.1415927220386135\\ % <--
       24576 & 12 & 3.1415926453212157 & 3.141592670701998\\ % <--
-      49152 & 13 & 3.1415926453212157 & 3.141592657867844\\ % <--
-      98304 & 14 & 0 & 3.1415926546593056\\ % <--
-      196608 & 15 & 0 & 3.1415926538571712\\ % <--
+      49152 & 13 & 3.1415926453212157 & 3.141592670701998\\ % <--
+      98304 & 14 & 0 & 0\\ % <--
+      196608 & 15 & 0 & 0\\ % <--
     \end{tabular}
   \end{center}
 \end{table}
 \bigskip
 \bigskip
-We see that when a hexagon is taken as a starting polygon, both lower and upper bounds approach $\pi$ as we increase the number of iterations from $0$ to $13$. At each iteration, the number of sides of the n-gon are doubled and thus, increased accuracy of the approximation is achieved. But beyond iteration $13$, lower bound and the upper bounds are observed to be $0$. This may happen due to the limitation of the data type (floating point numbers) used to store the side length in the computer program. It is possible that after iteration $13$, the interpreter may not be able to differentiate between the extremely small values of the side lengths of the polygons and hence produce $0$ as the upper and lower bounds.
+In Table \ref{tab:table3}, we see that when a hexagon is taken as a starting polygon, both lower and upper bounds approach $\pi$ as we increase the number of iterations from $0$ to $13$. At each iteration, the number of sides of the n-gon are doubled and thus, increased accuracy of the approximation is achieved. But beyond iteration $13$, lower bound and the upper bounds are observed to be $0$. This may happen due to the limitation of the data type (floating point numbers) used to store the side length in the computer program. It is possible that after iteration $13$, the interpreter may not be able to differentiate between the extremely small values of the side lengths of the polygons and hence produce $0$ as the upper and lower bounds.
 
-\section {CONCLUSION}
+\section {Conclusion}
 %summarize findings, acknowledge potential future research, indicate any results which could not be obtained.
+We explored Archimedes method of approximating $\pi$ by using inscribed and
+circumscribed regular n-gons in a circle and verified using a computer program
+that the lower and upper bounds approach $\pi$ as we increase the number of
+sides of the regular n-gon. Due to the limitations of the floating point numbers,
+the python interpreter only produces correct output which approaches $\pi$
+upto 13 iterations, beyond which the side length of the regular n-gon becomes
+too small and hence inaccurate results are generated for further iterations.
 
 
+\section {References}
 
-\section {REFERENCES}
-%should not be numbered
-Cite the following:\\
---pythagorean theorem\\
+Wikipedia contributors. ”Pythagorean theorem.” Wikipedia, The Free Encyclo-
+pedia. Wikipedia, The Free Encyclopedia, 8 Mar. 2022. Web. 17 Mar. 2022.
+
+\bigskip
+Wikipedia contributors. ”Pi.” Wikipedia, The Free Encyclopedia. Wikipedia,
+The Free Encyclopedia, 17 Mar. 2022. Web. 17 Mar. 2022.
 
 
-\section {APPENDICES}
-includes computer code, any other related info which is not strongly related but you want the reader to have access to. Number them in a different notation from sections.
-
+\section {Appendices}
+\begin{enumerate}[label=(\Alph*)]
+\item \href{https://ijpam.eu/contents/2003-7-2/4/4.pdf}{An Improvement of Archimedes Method of Approximating $\pi$}
+\item \href{http://educ.jmu.edu/~lucassk/Papers/more\%20on\%20pi.pdf}{Integral approximations to $\pi$ with non-negative integrands}
+\item \href{https://arxiv.org/ftp/arxiv/papers/2008/2008.07995.pdf}{How Archimedes showed that $\pi$ is approximately equal to 22/7}
+\item \href{https://link.springer.com/chapter/10.1007/978-3-642-36736-6_24}{The Life of $\pi$: From Archimedes to ENIAC and Beyond.}
+\end{enumerate}
 \end{document}
