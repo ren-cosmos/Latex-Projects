@@ -1,6 +1,7 @@
 \documentclass[12pt]{article}
 \usepackage{2130}
 \usepackage{amsmath}
+\usepackage{tikz}
 
 \lhead{Project 2}
 \rhead{MATH 2130} % appears in the header on the right
@@ -11,7 +12,7 @@
 \begin{document}
 \begin{titlepage}
 \begin{center}
-\large APPROXIMATING $\displaystyle \pi$
+\large Approximating $\displaystyle \pi$
 \end{center}
 \vspace{6cm}
 \hfill\begin{tabular}{ll}
@@ -25,18 +26,188 @@ Mar. 17, 2022
 \end{titlepage}
 
 \bf{ABSTRACT} \\
-Sentence 1: blah blah blah is the topic of this study.\\
+We aim to demonstrate in this paper how Archimedes devices a simple and clear
+algorithm of approximating the value of $\pi$.\\
 Sentence 2: dash is the approach or the method we are going to use to study this topic.\\
 Sentence 3: blah blah blah are the results that we obtain.\\
 Sentence 4: blah blah blah are the major conclusions that we draw.\\
 
 \section {INTRODUCTION}
-$\pi$ is an irrational number which is defined as the ratio of the circumference and the diameter of a circle. Surprisingly, it is independent of the size of a circle and it was around 2000 BCE when the Babylonians and the Egyptians realized that $\pi$ is a constant. Babylonians used $\frac{25}{8}$ as an approximate of $\pi$, whereas the Egyptians estimated it to be $4\cdot(\frac{8}{9})^2$. Later, a more accurate value $\frac{22}{7}$ came into everyday use. Over a period of time, significant efforts were made to improve the estimation of $\pi$ and nowadays, computing millions of digits of $\pi$  is considered as one of the most popular methods of testing the latest computer architectures. But before the realm of modern computing, many mathematicians like Archimedes had already formed algorithms for computing $\pi$ with controlled accuracy. But, what do we mean by controlled accuracy?
+$\pi$ (also known as Archimedes constant) is an irrational number which is defined as the ratio of the circumference and the diameter of a circle. Surprisingly, it is independent of the size of a circle and it was around 2000 BCE when the Babylonians and the Egyptians realized that $\pi$ is a constant. Babylonians used $\frac{25}{8}$ as an approximate of $\pi$, whereas the Egyptians estimated it to be $4\cdot(\frac{8}{9})^2$. Later, a more accurate value $\frac{22}{7}$ came into everyday use. Over a period of time, significant efforts were made to improve the estimation of $\pi$ and nowadays, computing millions of digits of $\pi$  is considered as one of the most popular methods of testing the latest computer architectures. But before the realm of modern computing, many mathematicians like Archimedes had already formed algorithms for computing $\pi$.
 
 
 \section {TECHNICAL DETAILS}
-It gives the mathematical background of the topic and states the methodology used for studying the topic. Can also include computer program. If run for 5 or 6 pages, then you should mke sub sections for background, methodology and code. You should explain the inputs of the program, explain what the programs does on higher level and what are the outputs of the program.
+\iffalse It gives the mathematical background of the topic and states the methodology used for studying the topic. Can also include computer program. If run for 5 or 6 pages, then you should make sub sections for background, methodology and code. You should explain the inputs of the program, explain what the programs does on higher level and what are the outputs of the program.\fi
 
+\subsection{Background}
+Archimedes developed a simple but ingenious algorithm to approximate $\pi$. He found that we can approximate $\pi$ by using a n-sided regular polygon (also called n-gon) for a given circle. The lower bound of $\pi$ can be approximated by using an inscribed regular n-gon inside the circle. Whereas, the upper bound of $\pi$ can be estimated by using a circumscribed regular n-gon. He realised that the perimeter of the regular n-gon can be used to estimate the circumference of the given circle and hence $\pi$ can be approximated by taking the ratio of the circumference of the regular n-gon and diameter of the given circle.
+
+% show a figure of inscribed and circumscribed regular hexagon
+
+
+\subsection{Methodology}
+% Show the figure 2 containing an inscribed hexagon and dodecagon in a unit circle.
+we start off by taking an inscribed regular hexagon inside a unit circle as shown in the [[fig 2]] and then find the side length of the regular hexagon. \\
+
+Let $d$ be the diameter of the unit circle, $l_{6}$ and $l_{12}$ be the lengths of each side of regular hexagon and dodecagon respectively.
+Then, it is evident from [[fig 2]] that\\
+$$d = 2 \cdot l_{6}$$
+$$2 = 2 \cdot l_{6}$$
+$$l_{6} = 1$$
+
+
+Now, we find the perimeter $p_{6}$ of the hexagon.\\
+$$p_{6} = 6 \cdot l_{6}$$
+$$p_{6} = 6 \cdot 1$$
+$$p_{6} = 6$$
+This perimeter $p$ is used as an approximation for the circumference of the unit circle.\\
+
+To find the lower bound of $\pi$, we take the ratio of the perimeter $p_{6}$ and diameter $d$ of the unit circle as follows:\\
+$$\pi = \frac{p_{6}}{d}$$
+$$\pi = \frac{6}{2}$$
+$$\pi = 3$$
+
+To get a better approximation of the lower bound of $\pi$, we need to increase the number of sides of the inscribed polygon. For this, we can double the number of sides of the inscribed hexagon and form a regular dodecagon. We can construct a dodecagon from the hexagon by grabbing the midpoints of the sides of the hexagon and pull them to the circumference of the unit circle in the radially outward direction as shown in [[figure 3]]. \\
+
+To find the length of the sides of the regular dodecagon,  we need to increase the
+number of sides of the inscribed polygon. For this, we can double the number of
+sides of the inscribed hexagon and form a regular dodecagon. We can construct
+a dodecagon from the hexagon by grabbing the midpoints of the sides of the
+hexagon and pull them to the circumference of the unit circle in the radially
+outward direction as shown in [[figure 3]]. \\
+
+To find the length of the sides of the regular dodecagon, we first establish a
+general relation between each side of a n-gon and a 2n-gon. Then use side length
+of the hexagon to determine the side length of the dodecagon.\\
+
+\textbf{Relationship between the side lengths of a n-gon and a 2n-gon:}\\
+
+% Insert the figure 4 here. Figure 4 shows the relation between the side of a n-gon and a 2n-gon.
+
+From [[fig 4]], we can clearly see that $\bigtriangleup$AOC and $\bigtriangleup$ABC are right angled triangles. By using pythagorean theorem in $\bigtriangleup$AOC, we get
+$$OC^{2}+AC^{2}=OA^{2}$$
+$$x^{2}+(\frac{l_{n}}{2})^{2} = 1^{2}$$
+$$x = \sqrt{1-\frac{(l_{n})^{2}}{4}}$$
+
+Now using pythagorean theorem in $\bigtriangleup$ABC, we get\\
+$$AB^{2}+BC^{2}=AC^{2}$$
+$$(\frac{l_{n}}{2})^{2}+(1-x)^{2} = (l_{2n})^{2}$$
+$$(\frac{l_{n}}{2})^{2} + 1-2x+x^{2} = (l_{2n})^{2}$$
+$$\frac{(l_{n})^{2}}{4}+1-2\cdot\sqrt{1-\frac{(l_{n})^{2}}{4}}+(1-\frac{(l_{n})^{2}}{4})=(l_{2n})^{2}$$
+$$2-2\cdot\sqrt{1-\frac{(l_{n})^{2}}{4}}=(l_{2n})^{2}$$
+$$2-2\cdot\sqrt{\frac{4-(l_{n})^{2}}{4}}=(l_{2n})^{2}$$
+$$2-\sqrt{4-(l_{n})^{2}}=(l_{2n})^{2}$$
+$$l_{2n}=\sqrt{2-\sqrt{4-(l_{n})^{2}}}$$
+this is the required relationship between each side of a n-gon and a 2n-gon.\\
+
+Now, we already know that $l_{6}=1$. By using this value in the derived relation, we can find the side $l_{12}$ of the regular dodecagon as follows:\\
+$$l_{12} = \sqrt{2-\sqrt{4-(1)^{2}}}$$
+$$l_{12} = \sqrt{2-\sqrt{3}}$$
+
+Again, we find the perimeter $p_{12}$ of the dodecagon.
+$$p_{6}=6\cdot l_{12}$$
+$$p_{6}=6\sqrt{2-\sqrt{3}}$$
+
+Now, we can find the better approximation of $\pi$ as follows:
+$$\pi = \frac{p_{12}}{d}$$
+$$\pi = \frac{6\sqrt{2-\sqrt{3}}}{2}$$
+$$\pi = 3\sqrt{2-\sqrt{3}}$$
+
+In this iterative fashion, we can continue to find length of sides of a regular 24-gon, then a 48-gon and so on. And these lengths can be used to find the lower and upper bounds of $\pi$ in each of the n-gons as described above.\\
+
+We can also start with an inscribed and circumscribed square (a 4-gon) and make use of regular octagons (8-gons), then 16-gons, and so on to approximate the lower and upper bounds of $\pi$. Or we can also begin with a regular pentagon, making use of the following relation:
+$$\cos(\frac{\pi}{5})=\frac{1+\sqrt{5}}{4}$$
+and continue to proceed in the similar way to find the approximations of upper and lower bounds of $\pi$ using inscribed and circumscribed regular decagons (10-gon), 20-gon, and so on.\\
+
+\subsection{Pseudo Code}  
+
+We can perform the above iterative process by the means of a
+computer program where a user is asked for the number of sides to indicate the
+starting n-gon as well as the number of iterations. The program determines an
+estimate of $\pi$ based on the Archimedes method of approximating $\pi$. The Pseudo
+code for Archimedes method is represented as follows:
+
+\begin{verbatim}
+# Archimedes Method of Approximating Pi using circumscribed and inscribed
+regular n-gons inside a circle
+
+# m --> number of iterations
+# n0 --> number of sides of the starting regular n-gon
+# diameter --> diameter of the unit circle
+# ln --> side length of starting inscribed n-gon
+# Ln --> side length of starting circumscribed n-gon
+# l2n --> side length of inscribed 2n-gon
+# L2n --> side length of circumscribed 2n-gon
+# num_sides --> number of sides of the n-gon
+# cn --> circumference of the inscribed n-gon
+# Cn --> circumference of the circumscribed n-gon
+# lower_pi --> lower bound of pi
+# upper_pi --> upper bound of pi
+
+from math import sqrt
+
+def print_approx_pi(m, n0):
+	for i in range(m+1):
+		diameter = 2
+		ln = 1 if n0 == 6 else (sqrt(10-2*sqrt(5))/2 if n0 == 5 else sqrt(2))
+		Ln = 2/sqrt(3) if n0 == 6 else ((2*sqrt(10-2*sqrt(5)))/(sqrt(5)+1)
+		if n0 == 5 else 2)
+		l2n = determine_l2n(i, ln, n0)
+		L2n = determine_L2n(i, Ln, n0)
+		num_sides = (2**i)*n0
+		cn = num_sides*l2n
+		Cn = num_sides*L2n
+		lower_pi = cn/diameter
+		upper_pi = Cn/diameter
+		print("lower bound (iteration ", i, ") = ", lower_pi, end = "")
+		print()
+		print("upper bound (iteration ", i, ") = ", upper_pi, end ="")
+		print("\n\n***************************************\n")
+		
+def determine_l2n(m, l, n0):
+
+	if m == 0:
+		return l if n0 == 6 else (sqrt(10-2*sqrt(5))/2 if n0 == 5 else sqrt(2))
+
+	l2n = sqrt(2-sqrt(4-l**2))
+	return determine_l2n(m-1, l2n, n0)
+	
+def determine_L2n(m, l, n0): 
+	if m == 0:
+		return 2/sqrt(3) if n0 == 6 else ((2*sqrt(10-2*sqrt(5)))/(sqrt(5)+1)
+		if n0 == 5 else 2)
+		
+	l2n = (2*l)/(2+sqrt(4+l*l))
+	return determine_L2n(m-1, l2n, n0)
+	
+n0 = int(input("Enter the initial value (4, 5 or 6): "))
+m = int(input("Enter the number of iterations: "))
+print()
+print_approx_pi(m, n0)
+	
+\end{verbatim}
+The above program can be understood by the following explanation:
+
+\begin{enumerate}
+\item Inputs: User gives the number of sides of the starting regular n-gon and
+the number of iterations
+\item Program Main Functions: It consists of three major functions which are
+print\_approx\_pi(), determine\_l2n() and determine\_L2n().
+\begin{enumerate}
+\item determine\_l2n(): it takes number of iterations, side length of starting
+inscribed n-gon and number of sides in the starting n-gon as an input. It produces
+the side length of inscribed 2n-gon as an output.
+\item determine\_L2n(): it takes number of iterations, side length of starting
+circumscribed n-gon and number of sides in the starting n-gon as an input. It produces the
+side length of circumscribed 2n-gon as an output.
+\item print\_approx\_pi(): It mainly calls the determine\_l2n() and determine\_L2n()
+to obtain the lengths of each side of inscribed and circumscribed 2n-
+gons and then calculates perimeter of the inscribed and circumscribed 2n-gons. It then generates the lower and upper bounds of $\pi$ by taking the ratios of the perimeters of polygons and the diameter of the unit circle.
+\end{enumerate}
+\item Outputs: Lower and Upper bounds of $\pi$ are generated.
+\end{enumerate}
+
+\iffalse
 \section {RESULTS}
 we can represent the results in the form of a table, or graph, etc.
 
@@ -52,11 +223,13 @@ summarize findings, acknowledge potential future research, indicate any results 
 
 
 \section {REFERENCES}
-should not be numbered
+%should not be numbered
+Cite the following:\\
+--pythagorean theorem\\
+
 
 \section {APPENDICES}
 includes computer code, any other related info which is not strongly related but you want the reader to have access to. Number them in a different notation from sections.
-
+\fi
 
 \end{document}
-
