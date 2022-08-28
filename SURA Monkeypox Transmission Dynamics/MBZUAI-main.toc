@@ -1,14 +1,13 @@
-\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}%
-\contentsline {section}{\numberline {1.1}Background}{1}{section.1.1}%
-\contentsline {section}{\numberline {1.2}Symptoms}{2}{section.1.2}%
-\contentsline {section}{\numberline {1.3}OutBreak in Endemic and Non-Endemic Countries}{2}{section.1.3}%
-\contentsline {section}{\numberline {1.4}Vaccinations}{2}{section.1.4}%
-\contentsline {chapter}{\numberline {2}Model Description}{3}{chapter.2}%
-\contentsline {section}{\numberline {2.1}Methods of Computing}{3}{section.2.1}%
-\contentsline {chapter}{\textbf {Nomenclature}}{4}{section.2.1}%
-\contentsline {chapter}{\numberline {A}Proof of Concept}{5}{appendix.A}%
-\contentsline {chapter}{\textbf {References}}{4}{section*.3}%
-\contentsline {chapter}{APPENDICES}{4}{section*.3}%
-\contentsline {chapter}{\numberline {B}Python Implementation}{6}{appendix.B}%
-\contentsline {section}{\numberline {B.1}Libraries}{6}{section.B.1}%
-\contentsline {section}{\numberline {B.2}Code}{6}{section.B.2}%
+\contentsline {chapter}{\numberline {1}Introduction}{2}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Background}{2}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Symptoms}{3}{section.1.2}%
+\contentsline {section}{\numberline {1.3}OutBreak in Endemic and Non-Endemic Countries}{3}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Vaccinations}{3}{section.1.4}%
+\contentsline {chapter}{\numberline {2}Model Description}{4}{chapter.2}%
+\contentsline {chapter}{\textbf {Nomenclature}}{6}{figure.2.1}%
+\contentsline {chapter}{\numberline {A}Proof of Concept}{7}{appendix.A}%
+\contentsline {chapter}{\textbf {References}}{6}{section*.4}%
+\contentsline {chapter}{APPENDICES}{6}{section*.4}%
+\contentsline {chapter}{\numberline {B}Python Implementation}{8}{appendix.B}%
+\contentsline {section}{\numberline {B.1}Libraries}{8}{section.B.1}%
+\contentsline {section}{\numberline {B.2}Code}{8}{section.B.2}%
