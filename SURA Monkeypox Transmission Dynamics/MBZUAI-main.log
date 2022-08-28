@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.8.22)  22 AUG 2022 17:05
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.8.22)  27 AUG 2022 14:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -487,99 +487,51 @@ LaTeX Info: Redefining \nameref on input line 72.
 \@outlinefile=\write4
 \openout4 = `MBZUAI-main.out'.
 
- (./private/frontpage.tex
-LaTeX Font Info:    Trying to load font information for U+msa on input line 16.
+ (./private/frontpage.tex [1
 
+
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]) (./Chapters/Abstract.tex 
+[2
+
+
+])
+(./private/toc-lot-lof.tex (./MBZUAI-main.toc
+LaTeX Font Info:    Trying to load font information for U+msa on input line 2.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 16.
-
+LaTeX Font Info:    Trying to load font information for U+msb on input line 2.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) [1
-
-
-
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]) (./private/examiners.tex 
-[2
-
-
-
-
-])
-(./private/declarationpage.tex [3
-
-
-]) (./Chapters/Abstract.tex [4
-
-
-])
-(./Chapters/Acknowledgements.tex [5
-
-
-]) (./Chapters/Dedication.tex [6
-
-
-])
-(./private/toc-lot-lof.tex (./MBZUAI-main.toc)
+))
 \tf@toc=\write5
 \openout5 = `MBZUAI-main.toc'.
 
- [7
+ [3
 
 
 
 
-] (./MBZUAI-main.lot)
-\tf@lot=\write6
-\openout6 = `MBZUAI-main.lot'.
-
- [8
-
-
-
-
-]
-(./MBZUAI-main.lof)
-\tf@lof=\write7
-\openout7 = `MBZUAI-main.lof'.
-
- [9
-
-
-
-
-]) (./Chapters/List_of_Abbreviations.tex) [1
-
-
-
-
-]
+])
 \openout2 = `Chapters/Chapter_01.aux'.
 
 
 (./Chapters/Chapter_01.tex
 Chapter 1.
-) [2
+[1
 
 
 
-]
+
+
+]) [2]
 \openout2 = `Chapters/Chapter_02.aux'.
 
  (./Chapters/Chapter_02.tex
 Chapter 2.
-
-LaTeX Warning: Citation `al2020generalizing' on page 3 undefined on input line 
-13.
-
-
-LaTeX Warning: Citation `elayan2021digital' on page 3 undefined on input line 1
-4.
-
 ) [3
 
 
@@ -626,30 +578,31 @@ Appendix B.
 ] (./MBZUAI-main.aux (./Chapters/Chapter_01.aux) (./Chapters/Chapter_02.aux) (.
 /private/list-of-symbols.aux) (./Chapters/Appendix_A.aux)
 (./Chapters/Appendix_B.aux))
-
-LaTeX Warning: There were undefined references.
-
 Package rerunfilecheck Info: File `MBZUAI-main.out' has not changed.
-(rerunfilecheck)             Checksum: A16B8BFFB93682DE51BC3AF38CE88E99;1611.
+(rerunfilecheck)             Checksum: 46DF94F23998B05E338580505C7E465D;1755.
  )
 (\end occurred when \ifx on line 51 was incomplete) 
 Here is how much of TeX's memory you used:
- 11609 strings out of 480204
- 187830 string characters out of 5895010
- 509059 words of memory out of 5000000
- 29283 multiletter control sequences out of 15000+600000
- 480107 words of font info for 69 fonts, out of 8000000 for 9000
+ 11539 strings out of 480204
+ 186440 string characters out of 5895010
+ 511023 words of memory out of 5000000
+ 29244 multiletter control sequences out of 15000+600000
+ 475760 words of font info for 52 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 129i,5n,123p,358b,343s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 129i,5n,123p,950b,343s stack positions out of 5000i,500n,10000p,200000b,80000s
  </home/recosmos/.texlive202
 1/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1200.600pk></usr/share/texlive/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist
-/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/
-type1/public/amsfonts/cm/cmr17.pfb>
-Output written on MBZUAI-main.pdf (15 pages, 57693 bytes).
+/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/
+public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cms
+y10.pfb>
+Output written on MBZUAI-main.pdf (9 pages, 98703 bytes).
 PDF statistics:
- 176 PDF objects out of 1000 (max. 8388607)
- 150 compressed objects within 2 object streams
- 36 named destinations out of 1000 (max. 500000)
+ 166 PDF objects out of 1000 (max. 8388607)
+ 138 compressed objects within 2 object streams
+ 26 named destinations out of 1000 (max. 500000)
  113 words of extra memory for PDF output out of 10000 (max. 10000000)
 
