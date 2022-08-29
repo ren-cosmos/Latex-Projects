@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.8.22)  28 AUG 2022 20:12
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.8.22)  29 AUG 2022 02:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -387,8 +387,8 @@ File: l3backend-pdftex.def 2022-01-12 L3 backend support: PDF output (pdfTeX)
 \l__pdf_internal_box=\box60
 )
 (./MBZUAI-main.aux (./Chapters/Chapter_01.aux) (./Chapters/Chapter_02.aux)
-(./private/list-of-symbols.aux) (./Chapters/Appendix_A.aux)
-(./Chapters/Appendix_B.aux))
+(./Chapters/Chapter_03.aux) (./private/list-of-symbols.aux)
+(./Chapters/Appendix_A.aux) (./Chapters/Appendix_B.aux))
 \openout1 = `MBZUAI-main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 73.
@@ -534,7 +534,7 @@ Chapter 1.
 
  (./Chapters/Chapter_02.tex
 Chapter 2.
-<./images//flow-diagram.png, id=101, 1894.07625pt x 1001.7425pt>
+<./images//flow-diagram.png, id=125, 1894.07625pt x 1001.7425pt>
 File: ./images//flow-diagram.png Graphic file (type png)
 <use ./images//flow-diagram.png>
 Package pdftex.def Info: ./images//flow-diagram.png  used on input line 18.
@@ -546,11 +546,22 @@ Package pdftex.def Info: ./images//flow-diagram.png  used on input line 18.
 
 
  <./images//flow-diagram.png>]
-Overfull \hbox (74.7979pt too wide) detected at line 50
+Overfull \hbox (74.07762pt too wide) detected at line 56
 []
  []
 
 ) [5]
+\openout2 = `Chapters/Chapter_03.aux'.
+
+ (./Chapters/Chapter_03.tex
+Chapter 3.
+[6
+
+
+
+
+
+]) [7]
 \openout2 = `private/list-of-symbols.aux'.
 
  (./private/list-of-symbols.tex
@@ -559,7 +570,7 @@ No file MBZUAI-main.nls.
 No file MBZUAI-main.bbl.
 \openout2 = `Chapters/Appendix_A.aux'.
 
-(./Chapters/Appendix_A.tex [6
+(./Chapters/Appendix_A.tex [8
 
 
 
@@ -573,7 +584,7 @@ No file MBZUAI-main.bbl.
 
 ]
 Appendix A.
-) [7
+) [9
 
 
 ]
@@ -581,24 +592,34 @@ Appendix A.
 
  (./Chapters/Appendix_B.tex
 Appendix B.
-) [8
+) [10
 
 
 
 
 
-] (./MBZUAI-main.aux (./Chapters/Chapter_01.aux) (./Chapters/Chapter_02.aux) (.
-/private/list-of-symbols.aux) (./Chapters/Appendix_A.aux)
+] (./MBZUAI-main.aux (./Chapters/Chapter_01.aux)
+(./Chapters/Chapter_02.aux) (./Chapters/Chapter_03.aux)
+(./private/list-of-symbols.aux) (./Chapters/Appendix_A.aux)
 (./Chapters/Appendix_B.aux))
-Package rerunfilecheck Info: File `MBZUAI-main.out' has not changed.
-(rerunfilecheck)             Checksum: 0CBD22E61E3AA2386F65A0150A76BD9A;1593.
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package rerunfilecheck Warning: File `MBZUAI-main.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `MBZUAI-main.out':
+(rerunfilecheck)             Before: 108205BDA20E1E907F7C2E084FC71394;2303
+(rerunfilecheck)             After:  B1A77C332B16484DC65DA9FE48B00C2F;2190.
  )
 (\end occurred when \ifx on line 51 was incomplete) 
 Here is how much of TeX's memory you used:
- 11565 strings out of 480204
- 187019 string characters out of 5895010
- 516071 words of memory out of 5000000
- 29260 multiletter control sequences out of 15000+600000
+ 11626 strings out of 480204
+ 188410 string characters out of 5895010
+ 518968 words of memory out of 5000000
+ 29296 multiletter control sequences out of 15000+600000
  475760 words of font info for 52 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
  129i,9n,123p,950b,343s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -606,17 +627,18 @@ Here is how much of TeX's memory you used:
 1/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1200.600pk></usr/share/texlive/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist
 /fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts
-/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1
-/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
-/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfon
-ts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/c
-mr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb
-></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr
-/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
-Output written on MBZUAI-main.pdf (11 pages, 216496 bytes).
+/type1/public/amsfonts/cmextra/cmex8.pfb></usr/share/texlive/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
+ublic/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts
+/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr
+17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><
+/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/s
+hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
+Output written on MBZUAI-main.pdf (13 pages, 232560 bytes).
 PDF statistics:
- 190 PDF objects out of 1000 (max. 8388607)
- 152 compressed objects within 2 object streams
- 30 named destinations out of 1000 (max. 500000)
- 110 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 252 PDF objects out of 1000 (max. 8388607)
+ 209 compressed objects within 3 object streams
+ 48 named destinations out of 1000 (max. 500000)
+ 150 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -1,0 +1,51 @@
+%======================================================================
+\chapter{Analysis}
+%======================================================================
+
+%----------------------------------------------------------------------
+\section{Positivity}
+%----------------------------------------------------------------------
+In equations \ref{eqn:exposed} and \ref{eqn:vaccinated}, we can clearly see that the integrand is positive, and thus, the integral i.e $E_{h}(t)$ and $V_{h}(t)$ will also be positive.
+
+Now, assume that $S_{h}(0)>0$. From equation \ref{meq1}, we get
+\begin{align}
+S_{h}'(t) = -kS_{h}(t)+a_{h}-\int_{0}^{t} bS_{h}(\mu)e^{-d_{h}(t-\mu)}P'(t-\mu) \,d\mu \label{positive}
+\end{align}
+where $ k = d_{h}+b+\beta_{h}I_{r}+\alpha_{h}I_{h} $
+In equation \ref{positive}, we see that $a_{h}-\int_{0}^{t} bS_{h}(\mu)e^{-d_{h}(t-\mu)}P'(t-\mu) \,d\mu$ is positive. Hence, we get
+\[S_{h}'(t)\geq-kS_{h}(t)\]
+By using Gronwall Inequality, we get
+\[S_{h}(t) \geq S_{h}(0)e^{-\int_{}^{} k \,dt}\]
+\[\Rightarrow S_{h}(t) \geq 0 \hspace{10mm} \forall \hspace{1mm} t \geq 0\]
+
+Similarly by assuming that $I_{h}(0) \geq 0$, $R_{h}(0) \geq 0$, $S_{r}(0) \geq 0$, $I_{r}(0) \geq 0$ and $R_{r}(0) \geq 0$, we can show that $I_{h}$, $R_{h}$, $S_{r}$, $I_{r}$ and $R_{r}$ are all positive respectively $\forall \hspace{1mm} t \geq 0$.
+
+%----------------------------------------------------------------------
+\section{Boundedness}
+%----------------------------------------------------------------------
+Let $R = \lbrace(S_{h}(t), V_{h}(t), E_{h}(t), I_{h}(t), R_{h}(t), S_{r}(t), I_{r}(t), R_{r}(t)) \in \Re^8+\rbrace$ represent the region. By adding the equations \ref{meq1} - \ref{meq5}, we get
+\[N_{h}'(t) = a_{h}-d_{h}N_{h}(t)-\delta_{h}I_{h}(t)\]
+\[\Rightarrow N_{h}'(t) \leq a_{h}-d_{h}N_{h}(t)\]
+By using Gronwall Inequality, we get
+\[N_{h}(t) \leq \frac{a_{h}}{d_{h}} + (N_{h}(0)-\frac{a_{h}}{d_{h}})e^{-d_{h}t}\]
+now if $N_{h}(0) \leq \frac{a_{h}}{d_{h}}$, then
+\[N_{h}(t) \leq \frac{a_{h}}{d_{h}}\]
+and if $N_{h}(0) \geq \frac{a_{h}}{d_{h}}$, then
+\[N_{h}(t) \leq N_{h}(0)\]
+and similarly, we can show that\\
+if $N_{r}(0) \leq \frac{a_{r}}{d_{r}}$, then
+\[N_{r}(t) \leq \frac{a_{r}}{d_{r}}\]
+and if $N_{h}(0) \geq \frac{a_{r}}{d_{r}}$, then
+\[N_{r}(t) \leq N_{r}(0)\]
+Now since both $N_{h}(t)$ and $N_{r}(t)$ are bounded, all the solutions are also bounded.
+
+%----------------------------------------------------------------------
+\section{Existence of DFE and EE}
+%----------------------------------------------------------------------
+
+
+%----------------------------------------------------------------------
+\section{Vaccinations}
+%----------------------------------------------------------------------
+There are several vaccines available for prevention of smallpox that also provide some protection against monkeypox. A newer vaccine that was developed for smallpox (MVA-BN, also known as Imvamune, Imvanex or Jynneos) was approved in 2019 for use in preventing monkeypox and is not yet widely available. Vaccinia is also known to deliver long-lasting immunity against
+monkeypox, with 85\% efficacy.

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.8.22)  28 AUG 2022 20:06
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.8.22)  28 AUG 2022 23:37
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1528,7 +1528,6 @@ Missing character: There is no t in font nullfont!
 Missing character: There is no i in font nullfont!
 Missing character: There is no m in font nullfont!
 Missing character: There is no e in font nullfont!
-Missing character: There is no t in font nullfont!
 Missing character: There is no i in font nullfont!
 Missing character: There is no s in font nullfont!
 Missing character: There is no g in font nullfont!
@@ -1554,14 +1553,19 @@ Overfull \hbox (20.83334pt too wide) in paragraph at lines 29--30
  []
 
 
-Overfull \hbox (271.60612pt too wide) detected at line 30
+Overfull \hbox (3.61111pt too wide) in paragraph at lines 29--30
+\OML/cmm/m/it/10 t$
+ []
+
+
+Overfull \hbox (271.60612pt too wide) detected at line 32
 \OML/cmm/m/it/10 E[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) = [][]
 (\OML/cmm/m/it/10 ^^L[]S[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 ^^V\OT1/cmr/m/n/10 
 )\OML/cmm/m/it/10 I[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 ^^V\OT1/cmr/m/n/10 ) + \
 OML/cmm/m/it/10 []S[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 ^^V\OT1/cmr/m/n/10 )\OM
 L/cmm/m/it/10 I[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 ^^V\OT1/cmr/m/n/10 ))\OML/cm
 m/m/it/10 e[]Q\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t \OMS/cmsy/m/n/10 ^^@ \OML/cmm
-/m/it/10 ^^V\OT1/cmr/m/n/10 ) \OML/cmm/m/it/10 d^^V
+/m/it/10 ^^V\OT1/cmr/m/n/10 ) \OML/cmm/m/it/10 d^^V[]
  []
 
 Missing character: There is no a in font nullfont!
@@ -1652,7 +1656,6 @@ Missing character: There is no t in font nullfont!
 Missing character: There is no i in font nullfont!
 Missing character: There is no m in font nullfont!
 Missing character: There is no e in font nullfont!
-Missing character: There is no t in font nullfont!
 Missing character: There is no i in font nullfont!
 Missing character: There is no s in font nullfont!
 Missing character: There is no g in font nullfont!
@@ -1663,26 +1666,31 @@ Missing character: There is no n in font nullfont!
 Missing character: There is no b in font nullfont!
 Missing character: There is no y in font nullfont!
 
-Overfull \hbox (20.0pt too wide) in paragraph at lines 32--33
+Overfull \hbox (20.0pt too wide) in paragraph at lines 35--36
 []
  []
 
 
-Overfull \hbox (15.46988pt too wide) in paragraph at lines 32--33
+Overfull \hbox (15.46988pt too wide) in paragraph at lines 35--36
 \OML/cmm/m/it/10 ^^V \OMS/cmsy/m/n/10 2
  []
 
 
-Overfull \hbox (20.83334pt too wide) in paragraph at lines 32--33
+Overfull \hbox (20.83334pt too wide) in paragraph at lines 35--36
 \OT1/cmr/m/n/10 (0\OML/cmm/m/it/10 ; t\OT1/cmr/m/n/10 )$
  []
 
 
-Overfull \hbox (166.82169pt too wide) detected at line 33
+Overfull \hbox (3.61111pt too wide) in paragraph at lines 35--36
+\OML/cmm/m/it/10 t$
+ []
+
+
+Overfull \hbox (166.82169pt too wide) detected at line 38
 \OML/cmm/m/it/10 V[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) = [][]
  \OML/cmm/m/it/10 bS[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 ^^V\OT1/cmr/m/n/10 )\OM
 L/cmm/m/it/10 e[]P\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t \OMS/cmsy/m/n/10 ^^@ \OML
-/cmm/m/it/10 ^^V\OT1/cmr/m/n/10 ) \OML/cmm/m/it/10 d^^V
+/cmm/m/it/10 ^^V\OT1/cmr/m/n/10 ) \OML/cmm/m/it/10 d^^V[]
  []
 
 Missing character: There is no T in font nullfont!
@@ -1723,14 +1731,14 @@ Missing character: There is no o in font nullfont!
 Missing character: There is no w in font nullfont!
 Missing character: There is no s in font nullfont!
 
-! LaTeX Error: Environment align* undefined.
+! LaTeX Error: Environment flalign* undefined.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.41 \begin{align*}
-                   
+l.47 \begin{flalign*}
+                     
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
@@ -1739,20 +1747,100 @@ Missing character: There is no S in font nullfont!
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.42 S_
-       {h}'(t) = a_{h}-d_{h}S_{h}(t)-bS_{h}(t)-(\alpha_{h}S_{h}(t)I_{h}(t)+\...
+l.48 S_
+       {h}'(t) &= a_{h}-d_{h}S_{h}(t)-bS_{h}(t)-(\alpha_{h}S_{h}(t)I_{h}(t)+...
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
 
+! Misplaced alignment tab character &.
+l.48 S_{h}'(t) &
+                = a_{h}-d_{h}S_{h}(t)-bS_{h}(t)-(\alpha_{h}S_{h}(t)I_{h}(t)+...
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
 
-! LaTeX Error: \begin{document} ended by \end{align*}.
+! Misplaced alignment tab character &.
+l.49 V_{h}'(t) &
+                = bS_{h}(t)-d_{h}V_{h}(t)+\int_{0}^{t} bS_{h}(\mu)e^{-d_{h}(...
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Misplaced alignment tab character &.
+l.50 E_{h}'(t) &
+                = \alpha_{h}S_{h}(t)I_{h}(t)+\beta_{h}S_{h}(t)I_{r}(t))-d_{h...
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Misplaced alignment tab character &.
+l.51 I_{h}'(t) &
+                = -\int_{0}^{t} (\alpha_{h}S_{h}(\mu)I_{h}(\mu)+\beta_{h}S_{...
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Misplaced alignment tab character &.
+l.52 R_{h}'(t) &
+                = r_{h}I_{h}(t) -d_{h}R_{h}(t) \\
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Misplaced alignment tab character &.
+l.53 S_{r}'(t) &
+                = a_{r}-d_{r}S_{r}(t)-\alpha_{r}S_{r}(t)I_{r}(t) \\
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Misplaced alignment tab character &.
+l.54 I_{r}'(t) &
+                = \alpha_{r}S_{r}(t)I_{r}(t) -d_{r}I_{r}(t) -\delta_{r}I_{r}...
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Misplaced alignment tab character &.
+l.55 R_{r}'(t) &
+                = r_{r}I_{r}(t) -d_{r}R_{r}(t) \\
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+
+! LaTeX Error: \begin{document} ended by \end{flalign*}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.50 \end{align*}
-                 
+l.56 \end{flalign*}
+                   
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
@@ -1760,13 +1848,261 @@ or  <return>  to continue without it.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.50 \end{align*}
-                 
+l.56 \end{flalign*}
+                   
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
 With luck, this will get me unwedged. But if you
 really didn't forget anything, try typing `2' now; then
 my insertion and my current dilemma will both disappear.
+
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 46--57
+[]
+ []
+
+
+Overfull \hbox (27.12617pt too wide) in paragraph at lines 46--57
+[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) =
+ []
+
+
+Overfull \hbox (18.24544pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 a[] \OMS/cmsy/m/n/10 ^^@
+ []
+
+
+Overfull \hbox (40.86702pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 d[]S[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) \OM
+S/cmsy/m/n/10 ^^@
+ []
+
+
+Overfull \hbox (34.77206pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 bS[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) \OMS/
+cmsy/m/n/10 ^^@
+ []
+
+
+Overfull \hbox (66.91458pt too wide) in paragraph at lines 46--57
+\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 []S[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1
+/cmr/m/n/10 )\OML/cmm/m/it/10 I[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/
+n/10 ) +
+ []
+
+
+Overfull \hbox (65.42032pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 ^^L[]S[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )\O
+ML/cmm/m/it/10 I[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )) \OMS/cm
+sy/m/n/10 ^^@
+ []
+
+
+Overfull \hbox (107.74533pt too wide) in paragraph at lines 46--57
+[][] \OML/cmm/m/it/10 bS[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 ^^V\OT1/cmr/m/n/10 
+)\OML/cmm/m/it/10 e[]P[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t \OMS/cmsy/m/n/10 ^^
+@
+ []
+
+
+Overfull \hbox (22.81136pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 ^^V\OT1/cmr/m/n/10 ) \OML/cmm/m/it/10 d^^V[] 
+ []
+
+
+Overfull \hbox (32.9595pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 V[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) =
+ []
+
+
+Overfull \hbox (34.77206pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 bS[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) \OMS/
+cmsy/m/n/10 ^^@
+ []
+
+
+Overfull \hbox (40.5684pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 d[]V[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) +
+ []
+
+
+Overfull \hbox (107.74533pt too wide) in paragraph at lines 46--57
+[][] \OML/cmm/m/it/10 bS[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 ^^V\OT1/cmr/m/n/10 
+)\OML/cmm/m/it/10 e[]P[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t \OMS/cmsy/m/n/10 ^^
+@
+ []
+
+
+Overfull \hbox (22.81136pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 ^^V\OT1/cmr/m/n/10 ) \OML/cmm/m/it/10 d^^V[] 
+ []
+
+
+Overfull \hbox (34.50812pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 E[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) =
+ []
+
+
+Overfull \hbox (63.02568pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 []S[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )\OML
+/cmm/m/it/10 I[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) +
+ []
+
+
+Overfull \hbox (65.42032pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 ^^L[]S[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )\O
+ML/cmm/m/it/10 I[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )) \OMS/cm
+sy/m/n/10 ^^@
+ []
+
+
+Overfull \hbox (42.11702pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 d[]E[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) +
+ []
+
+
+Overfull \hbox (81.93083pt too wide) in paragraph at lines 46--57
+[][]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 []S[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 ^
+^V\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 I[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 ^^V\OT
+1/cmr/m/n/10 ) +
+ []
+
+
+Overfull \hbox (129.05032pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 ^^L[]S[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 ^^V\OT1/cmr/m/n/10 )
+\OML/cmm/m/it/10 I[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 ^^V\OT1/cmr/m/n/10 ))\OML
+/cmm/m/it/10 e[]Q[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t \OMS/cmsy/m/n/10 ^^@
+ []
+
+
+Overfull \hbox (22.81136pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 ^^V\OT1/cmr/m/n/10 ) \OML/cmm/m/it/10 d^^V[] 
+ []
+
+
+Overfull \hbox (31.52202pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 I[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) =
+ []
+
+
+Overfull \hbox (91.37526pt too wide) in paragraph at lines 46--57
+\OMS/cmsy/m/n/10 ^^@ [][]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 []S[]\OT1/cmr/m/n/1
+0 (\OML/cmm/m/it/10 ^^V\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 I[]\OT1/cmr/m/n/10 (\O
+ML/cmm/m/it/10 ^^V\OT1/cmr/m/n/10 ) +
+ []
+
+
+Overfull \hbox (129.05032pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 ^^L[]S[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 ^^V\OT1/cmr/m/n/10 )
+\OML/cmm/m/it/10 I[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 ^^V\OT1/cmr/m/n/10 ))\OML
+/cmm/m/it/10 e[]Q[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t \OMS/cmsy/m/n/10 ^^@
+ []
+
+
+Overfull \hbox (30.58916pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 ^^V\OT1/cmr/m/n/10 ) \OML/cmm/m/it/10 d^^V \OMS/cmsy/m/n/10 ^^
+@
+ []
+
+
+Overfull \hbox (39.13092pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 d[]I[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) \OM
+S/cmsy/m/n/10 ^^@
+ []
+
+
+Overfull \hbox (38.3705pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 ^^N[]I[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) \
+OMS/cmsy/m/n/10 ^^@
+ []
+
+
+Overfull \hbox (30.65984pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 r[]I[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )[] 
+ []
+
+
+Overfull \hbox (34.71907pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 R[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) =
+ []
+
+
+Overfull \hbox (38.43764pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 r[]I[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) \OM
+S/cmsy/m/n/10 ^^@
+ []
+
+
+Overfull \hbox (34.55017pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 d[]R[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )[] 
+ []
+
+
+Overfull \hbox (32.50462pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 S[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) =
+ []
+
+
+Overfull \hbox (17.49194pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 a[] \OMS/cmsy/m/n/10 ^^@
+ []
+
+
+Overfull \hbox (39.36003pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 d[]S[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) \OM
+S/cmsy/m/n/10 ^^@
+ []
+
+
+Overfull \hbox (52.9874pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 []S[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )\OML
+/cmm/m/it/10 I[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )[] 
+ []
+
+
+Overfull \hbox (30.76852pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 I[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) =
+ []
+
+
+Overfull \hbox (60.7652pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 []S[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )\OML
+/cmm/m/it/10 I[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) \OMS/cmsy/
+m/n/10 ^^@
+ []
+
+
+Overfull \hbox (37.62393pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 d[]I[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) \OM
+S/cmsy/m/n/10 ^^@
+ []
+
+
+Overfull \hbox (36.86351pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 ^^N[]I[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) \
+OMS/cmsy/m/n/10 ^^@
+ []
+
+
+Overfull \hbox (29.15285pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 r[]I[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )[] 
+ []
+
+
+Overfull \hbox (33.96558pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 R[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) =
+ []
+
+
+Overfull \hbox (36.93065pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 r[]I[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) \OM
+S/cmsy/m/n/10 ^^@
+ []
+
+
+Overfull \hbox (33.04318pt too wide) in paragraph at lines 46--57
+\OML/cmm/m/it/10 d[]R[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )[] 
+ []
 
 )
 ! Emergency stop.
@@ -1776,11 +2112,11 @@ my insertion and my current dilemma will both disappear.
 
  
 Here is how much of TeX's memory you used:
- 22 strings out of 480204
- 467 string characters out of 5895010
- 287111 words of memory out of 5000000
- 18073 multiletter control sequences out of 15000+600000
+ 23 strings out of 480204
+ 473 string characters out of 5895010
+ 289111 words of memory out of 5000000
+ 18074 multiletter control sequences out of 15000+600000
  469259 words of font info for 28 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 18i,3n,12p,628b,62s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 18i,3n,12p,628b,69s stack positions out of 5000i,500n,10000p,200000b,80000s
 !  ==> Fatal error occurred, no output PDF file produced!
