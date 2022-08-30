@@ -45,6 +45,9 @@
 % Specify the document class, default style attributes, and page dimensions
 % For hyperlinked PDF, suitable for viewing on a computer, use this:
 \documentclass[letterpaper,12pt,titlepage,oneside,final]{book}
+\makeatletter
+\newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
 \usepackage{graphicx}
 \graphicspath{ {./images/} }
 % For PDF, suitable for double-sided printing, change the PrintVersion variable below
