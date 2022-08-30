@@ -42,10 +42,30 @@ Now since both $N_{h}(t)$ and $N_{r}(t)$ are bounded, all the solutions are also
 %----------------------------------------------------------------------
 \section{Existence of DFE and EE}
 %----------------------------------------------------------------------
+Disease free equilibrium exists at $(S_{h}(t), V_{h}(t), 0, 0, 0, S_{r}(t), 0, 0)$. Equation \ref{meq6} at the disease free equilibrium point becomes
+\[a_{r}-d_{r}S_{r}(t) = 0\]
+\[\Rightarrow S_{r}(t) = \frac{a_{r}}{d_{r}}\]
+Now, consider equation \ref{meq1}. At the disease free equilibrium point, equation \ref{meq1} becomes
+\[a_{h}-d_{h}S_{h}(t)-bS_{h}(t)-\int_{0}^{t} bS_{h}(\mu)e^{-d_{h}(t-\mu)}P'(t-\mu) \,d\mu = 0\]
+At $t \rightarrow \infty$, by assuming that $S_{h}(t) \rightarrow S^{*}_{h}(t)$, we get
+\[a_{h}-d_{h}S^{*}_{h}(t)-bS^{*}_{h}(t)-bS^{*}_{h}(t)\int_{0}^{t}e^{-d_{h}(t-\mu)}P'(t-\mu) \,d\mu = 0\]
+%-------------------------------------------------------------
+By substituting $v = t-\mu$, we get
+\[a_{h}-d_{h}S^{*}_{h}(t)-bS^{*}_{h}(t)-bS^{*}_{h}(t)\int_{0}^{t}e^{-d_{h}(v)}P'(v) \,d\mu = 0\]
+%-------------------------------------------------------------
+\[\Rightarrow a_{h}-d_{h}S^{*}_{h}(t)-bS^{*}_{h}(t)\left(\left[e^{-d_{h}v}P(v)\right]^{t}_{0}-\int_{0}^{t}(-d_{h})P(v)e^{-d_{h}v} \,dv\right) = 0\]
+%-------------------------------------------------------------
+\[\Rightarrow d_{h}(1-bP^{*})S^{*}_{h}(t) = a_{h}\]
+where $P^{*} = -\int_{0}^{\infty}e^{-d_{h}v} \,dP(v) $ is the average time an individual spends in the vaccinated class
+%-------------------------------------------------------------
+\[\Rightarrow S^{*}_{h}(t) = \frac{a_{h}}{d_{h}(1-bP^{*})}\]
+%-------------------------------------------------------------
+Similarly, we can find that
+\[V^{*}_{h}(t) = \frac{-ba_{h}P^{*}}{d_{h}(1-bP^{*})}\]
 
+Hence, disease free equilibrium exists at $\left(\frac{a_{h}}{d_{h}(1-bP^{*})},\frac{-ba_{h}P^{*}}{d_{h}(1-bP^{*})},0,0,0,\frac{a_{r}}{d_{r}},0,0\right)$
 
 %----------------------------------------------------------------------
-\section{Vaccinations}
+\section{Stability Analysis}
 %----------------------------------------------------------------------
-There are several vaccines available for prevention of smallpox that also provide some protection against monkeypox. A newer vaccine that was developed for smallpox (MVA-BN, also known as Imvamune, Imvanex or Jynneos) was approved in 2019 for use in preventing monkeypox and is not yet widely available. Vaccinia is also known to deliver long-lasting immunity against
-monkeypox, with 85\% efficacy.
+Here, you need to check the type of equilibrium point and identify whether it is stable, unstable or semi-stable.

@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.8.22)  29 AUG 2022 15:31
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.8.22)  29 AUG 2022 19:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**MBZUAI-main.tex
-(./MBZUAI-main.tex
+**main.tex
+(./main.tex
 LaTeX2e <2021-11-15> patch level 1
 L3 programming layer <2022-01-21>
 (/usr/share/texlive/texmf-dist/tex/latex/base/book.cls
@@ -235,10 +235,9 @@ Package: array 2021/10/04 v2.5f Tabular extension package (FMi)
 \ar@cellbox=\box59
 ))
 \@nomenclaturefile=\write3
-\openout3 = `MBZUAI-main.nlo'.
+\openout3 = `main.nlo'.
 
-Package nomencl Info: Writing nomenclature file MBZUAI-main.nlo on input line 3
-4.
+Package nomencl Info: Writing nomenclature file main.nlo on input line 34.
 
 (/usr/share/texlive/texmf-dist/tex/generic/iftex/ifpdf.sty
 Package: ifpdf 2019/10/25 v3.4 ifpdf legacy package. Use iftex instead.
@@ -386,9 +385,9 @@ File: l3backend-pdftex.def 2022-01-12 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count294
 \l__pdf_internal_box=\box60
 )
-(./MBZUAI-main.aux (./Chapters/Chapter_01.aux) (./Chapters/Chapter_02.aux)
+(./main.aux (./Chapters/Chapter_01.aux) (./Chapters/Chapter_02.aux)
 (./Chapters/Chapter_03.aux))
-\openout1 = `MBZUAI-main.aux'.
+\openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 73.
 LaTeX Font Info:    ... okay on input line 73.
@@ -481,9 +480,9 @@ LaTeX Info: Redefining \ref on input line 73.
 LaTeX Info: Redefining \pageref on input line 73.
 LaTeX Info: Redefining \nameref on input line 73.
 
-(./MBZUAI-main.out) (./MBZUAI-main.out)
+(./main.out) (./main.out)
 \@outlinefile=\write4
-\openout4 = `MBZUAI-main.out'.
+\openout4 = `main.out'.
 
  (./private/frontpage.tex [1
 
@@ -494,7 +493,7 @@ LaTeX Info: Redefining \nameref on input line 73.
 
 
 ])
-(./private/toc-lot-lof.tex (./MBZUAI-main.toc
+(./private/toc-lot-lof.tex (./main.toc
 LaTeX Font Info:    Trying to load font information for U+msa on input line 2.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
@@ -506,7 +505,7 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 2.
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ))
 \tf@toc=\write5
-\openout5 = `MBZUAI-main.toc'.
+\openout5 = `main.toc'.
 
  [3
 
@@ -557,22 +556,22 @@ Chapter 3.
 
 
 
-]) [6]
-No file MBZUAI-main.bbl.
-(./MBZUAI-main.aux (./Chapters/Chapter_01.aux) (./Chapters/Chapter_02.aux)
+] [6]) [7]
+No file main.bbl.
+(./main.aux (./Chapters/Chapter_01.aux) (./Chapters/Chapter_02.aux)
 (./Chapters/Chapter_03.aux))
-Package rerunfilecheck Info: File `MBZUAI-main.out' has not changed.
+Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: B398A3B371A5964A3C447B37C9E19D0D;1466.
  )
 (\end occurred when \ifx on line 51 was incomplete) 
 Here is how much of TeX's memory you used:
- 11512 strings out of 480204
- 184733 string characters out of 5895010
- 517712 words of memory out of 5000000
+ 11513 strings out of 480204
+ 184578 string characters out of 5895010
+ 517679 words of memory out of 5000000
  29220 multiletter control sequences out of 15000+600000
  475760 words of font info for 52 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 129i,9n,123p,950b,343s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 129i,9n,123p,943b,343s stack positions out of 5000i,500n,10000p,200000b,80000s
  </home/recosmos/.texlive202
 1/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1200.600pk></usr/share/texlive/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist
@@ -584,11 +583,12 @@ msfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts
 /cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr
 17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><
 /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/s
-hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
-Output written on MBZUAI-main.pdf (9 pages, 229258 bytes).
+hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/te
+xlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
+Output written on main.pdf (10 pages, 242474 bytes).
 PDF statistics:
- 193 PDF objects out of 1000 (max. 8388607)
- 155 compressed objects within 2 object streams
- 35 named destinations out of 1000 (max. 500000)
+ 205 PDF objects out of 1000 (max. 8388607)
+ 164 compressed objects within 2 object streams
+ 36 named destinations out of 1000 (max. 500000)
  94 words of extra memory for PDF output out of 10000 (max. 10000000)
 
