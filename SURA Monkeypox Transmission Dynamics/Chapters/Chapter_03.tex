@@ -5,7 +5,7 @@
 %----------------------------------------------------------------------
 \section{Positivity}
 %----------------------------------------------------------------------
-In equations \ref{eqn:exposed} and \ref{eqn:vaccinated}, we can clearly see that the integrand is positive, and thus, the integral i.e $E_{h}(t)$ and $V_{h}(t)$ will also be positive.
+In equations \ref{exposed} and \ref{vaccinated}, we can clearly see that the integrand is positive, and thus, the integral i.e $E_{h}(t)$ and $V_{h}(t)$ will also be positive.
 
 Now, assume that $S_{h}(0)>0$. From equation \ref{meq1}, we get
 \begin{align}
@@ -69,4 +69,80 @@ Endemic Equilibrium point
 %----------------------------------------------------------------------
 \section{Stability Analysis}
 %----------------------------------------------------------------------
-Here, you need to check the type of equilibrium point and identify whether it is stable, unstable or semi-stable.
+The basics reproduction number of the model represented in Case \rom{1} is calculated using the next generation matrix method as follows
+
+From the equations \ref{case1meq3}, \ref{case1meq4} and \ref{case1meq7}, we get 
+
+$f = \begin{pmatrix}
+	\alpha_{h}S_{h}(t)I_{h}(t)+\beta_{h}S_{h}(t)I_{r}(t)\\
+	0\\
+	\alpha_{r}S_{r}(t)I_{r}(t)
+	\end{pmatrix}$ and
+$v = -\begin{pmatrix}
+	-(d_{h}+\omega_{2})E_{h}(t)\\
+	\omega_{2} E_{h}(t) -(d_{h} +\delta_{h} +r_{h})I_{h}(t)\\
+	-(d_{h} +\delta_{h} +r_{h})I_{r}(t)
+	\end{pmatrix}$
+	
+$\Rightarrow F = \begin{bmatrix}
+				  0 & \alpha_{h}S_{h} & \beta_{h}S_{h}\\
+				  0 & 0 & 0\\
+				  0 & 0 & \alpha_{r}S_{r}
+				  \end{bmatrix}$ and
+			$V = \begin{bmatrix}
+				  d_{h}+\omega_{2} & 0 & 0\\
+				  -\omega_{2} & d_{h} +\delta_{h} +r_{h} & 0\\
+				  0 & 0 & d_{r} +\delta_{r} +r_{r}
+				  \end{bmatrix}$
+				  
+Now,
+\begin{flalign*}
+K &= FV^{-1} \\
+%-------------------------------------------------------------
+  &= c \begin{bmatrix}
+	  0 & \alpha_{h}S_{h} & \beta_{h}S_{h}\\
+	  0 & 0 & 0\\
+	  0 & 0 & \alpha_{r}S_{r}
+	  \end{bmatrix}
+	  \begin{bmatrix}
+	  (d_{h} +\delta_{h} +r_{h})(d_{r} +\delta_{r} +r_{r}) & 0 & 0\\
+	  \omega_{2}(d_{r} +\delta_{r} +r_{r}) & (d_{h}+\omega_{2})(d_{r} +\delta_{r} +r_{r}) & 0\\
+	  0 & 0 & (d_{h}+\omega_{2})(d_{h} +\delta_{h} +r_{h})
+	  \end{bmatrix}
+\end{flalign*}
+	 where {\large $c = \frac{1}{(d_{h}+\omega_{2})(d_{h} +\delta_{h} +r_{h})(d_{r} +\delta_{r} +r_{r})}$}
+%-------------------------------------------------------------
+\begin{flalign*}
+  &= c \begin{bmatrix}
+	  \omega_{2}\alpha_{h}S_{h}(d_{r} +\delta_{r} +r_{r}) & \alpha_{h}S_{h}(d_{h}+\omega_{2})(d_{r} +\delta_{r} +r_{r}) & \beta_{h}S_{h}(d_{h}+\omega_{2})(d_{h} +\delta_{h} +r_{h})\\
+	  0 & 0 & 0\\
+	  0 & 0 & \alpha_{r}S_{r}(d_{h}+\omega_{2})(d_{h} +\delta_{h} +r_{h})
+	  \end{bmatrix}
+\end{flalign*}
+%-------------------------------------------------------------
+%EIGEN VALUES
+Eigen Values of K are as follows
+%-------------------------------------------------------------
+\begin{flalign*}
+  	&\hspace{17pt}\begin{vmatrix}
+	K-\lambda I
+	\end{vmatrix} = 0\\
+%-------------------------------------------------------------
+	&\Rightarrow \begin{vmatrix}
+	c\omega_{2}\alpha_{h}S_{h}(d_{r} +\delta_{r} +r_{r}) - \lambda & \alpha_{h}S_{h}(d_{h}+\omega_{2})(d_{r} +\delta_{r} +r_{r}) & \beta_{h}S_{h}(d_{h}+\omega_{2})(d_{h} +\delta_{h} +r_{h})\\
+	0 & -\lambda & 0\\
+	0 & 0 & c\alpha_{r}S_{r}(d_{h}+\omega_{2})(d_{h} +\delta_{h} +r_{h})-\lambda
+	\end{vmatrix} = 0\\
+%-------------------------------------------------------------
+	&\Rightarrow -\lambda\bigl[c\omega_{2}\alpha_{h}S_{h}(d_{r} +\delta_{r} +r_{r}) - \lambda\bigr]\bigl[c\alpha_{r}S_{r}(d_{h}+\omega_{2})(d_{h} +\delta_{h} +r_{h})-\lambda\bigr] = 0 \\
+	&\Rightarrow \lambda = 0,\hspace{1pt} c\omega_{2}\alpha_{h}S_{h}(d_{r} +\delta_{r} +r_{r}),\hspace{1pt} c\alpha_{r}S_{r}(d_{h}+\omega_{2})(d_{h} +\delta_{h} +r_{h})\\
+\end{flalign*}
+where, $0$ is not a dominant eigen value. After substituting back the value of $c$, we get
+\begin{flalign*}
+&\lambda = \hspace{1pt} \frac{\omega_{2}\alpha_{h}S_{h}}{(d_{h}+\omega_{2})(d_{h} +\delta_{h} +r_{h})},\hspace{1pt} \frac{\alpha_{r}S_{r}}{(d_{r} +\delta_{r} +r_{r})}
+\end{flalign*}
+using the values of $S_{h}$ and $S_{r}$ at the disease free equilibrium, we get
+\begin{flalign*}
+&\lambda_{1} = \frac{\omega_{2}\alpha_{h}a_{h}(d_{h}+\omega_{1})}{d_{h}(d_{h}+\omega_{2})(d_{h} +\delta_{h} +r_{h})(d_{h}+\omega_{1}+b)},
+\end{flalign*}
+%\hspace{1pt} \frac{\alpha_{r}S_{r}}{(d_{r} +\delta_{r} +r_{r})}

@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.8.22)  30 AUG 2022 05:05
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Arch Linux) (preloaded format=pdflatex 2022.9.2)  2 SEP 2022 16:03
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **Chapter_02.tex
 (./Chapter_02.tex
 LaTeX2e <2021-11-15> patch level 1
-L3 programming layer <2022-01-21>
+L3 programming layer <2022-04-10>
 ! Undefined control sequence.
 l.9 \chapter
             {Model Description}
@@ -2193,14 +2193,32 @@ Missing character: There is no i in font nullfont!
 Missing character: There is no o in font nullfont!
 Missing character: There is no n in font nullfont!
 Missing character: There is no s in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no d in font nullfont!
 Missing character: There is no . in font nullfont!
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 66--67
+[]
+ []
+
+
+Overfull \hbox (19.19795pt too wide) in paragraph at lines 66--67
+\OML/cmm/m/it/10 P\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )$
+ []
+
+
+Overfull \hbox (19.29446pt too wide) in paragraph at lines 66--67
+\OML/cmm/m/it/10 Q\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )$ 
+ []
+
 Missing character: There is no C in font nullfont!
 Missing character: There is no a in font nullfont!
 Missing character: There is no s in font nullfont!
 Missing character: There is no e in font nullfont!
 ! Undefined control sequence.
-l.68 Case \rom
-              {1} [$P(t)=e^{-\omega t}, Q(t)=e^{-\omega t}$] \\
+l.69 Case \rom
+              {1} [$P(t)=e^{-\omega1 t}, Q(t)=e^{-\omega2 t}$]
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
 misspelled it (e.g., `\hobx'), type `I' and the correct
@@ -2210,6 +2228,26 @@ and I'll forget about whatever was undefined.
 Missing character: There is no 1 in font nullfont!
 Missing character: There is no [ in font nullfont!
 Missing character: There is no ] in font nullfont!
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 69--70
+[]
+ []
+
+
+Overfull \hbox (29.75346pt too wide) in paragraph at lines 69--70
+\OML/cmm/m/it/10 P\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) =
+ []
+
+
+Overfull \hbox (57.99657pt too wide) in paragraph at lines 69--70
+\OML/cmm/m/it/10 e[]; Q\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) =
+ []
+
+
+Overfull \hbox (23.70218pt too wide) in paragraph at lines 69--70
+\OML/cmm/m/it/10 e[]$ 
+ []
+
 Missing character: There is no E in font nullfont!
 Missing character: There is no q in font nullfont!
 Missing character: There is no u in font nullfont!
@@ -2221,7 +2259,7 @@ Missing character: There is no n in font nullfont!
 ! Undefined control sequence.
 <write> ...: Reference `exposed' on page \thepage 
                                                   \space undefined\on@line .
-l.69 Equation \ref{exposed}
+l.71 Equation \ref{exposed}
                             becomes
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2230,7 +2268,7 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 
-LaTeX Warning: Reference `exposed' on page  undefined on input line 69.
+LaTeX Warning: Reference `exposed' on page  undefined on input line 71.
 
 Missing character: There is no b in font nullfont!
 Missing character: There is no e in font nullfont!
@@ -2240,38 +2278,17 @@ Missing character: There is no m in font nullfont!
 Missing character: There is no e in font nullfont!
 Missing character: There is no s in font nullfont!
 
-Overfull \hbox (20.0pt too wide) in paragraph at lines 66--70
+Overfull \hbox (20.0pt too wide) in paragraph at lines 71--72
 []
  []
 
 
-Overfull \hbox (54.98552pt too wide) in paragraph at lines 66--70
-\OML/cmm/m/it/10 P\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )\OML/cmm/
-m/it/10 andQ\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )$
- []
-
-
-Overfull \hbox (29.75346pt too wide) in paragraph at lines 66--70
-\OML/cmm/m/it/10 P\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) =
- []
-
-
-Overfull \hbox (54.01044pt too wide) in paragraph at lines 66--70
-\OML/cmm/m/it/10 e[]; Q\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) =
- []
-
-
-Overfull \hbox (19.71605pt too wide) in paragraph at lines 66--70
-\OML/cmm/m/it/10 e[]$ 
- []
-
-
-Overfull \hbox (10.86105pt too wide) in paragraph at lines 66--70
+Overfull \hbox (10.86105pt too wide) in paragraph at lines 71--72
 []
  []
 
 
-Overfull \hbox (270.16473pt too wide) detected at line 70
+Overfull \hbox (270.16473pt too wide) detected at line 72
 \OML/cmm/m/it/10 E[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) = [][]
 (\OML/cmm/m/it/10 []S[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 ^^V\OT1/cmr/m/n/10 )\
 OML/cmm/m/it/10 I[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 ^^V\OT1/cmr/m/n/10 ) + \OM
@@ -2281,7 +2298,7 @@ m/m/it/10 e[] d^^V
  []
 
 
-Overfull \hbox (289.76535pt too wide) detected at line 72
+Overfull \hbox (289.76535pt too wide) detected at line 74
 \OMS/cmsy/m/n/10 ) \OML/cmm/m/it/10 E[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/
 cmr/m/n/10 ) = \OML/cmm/m/it/10 e[] [][]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 []S[
 ]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 ^^V\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 I[]\OT1
@@ -2291,7 +2308,7 @@ mr/m/n/10 (\OML/cmm/m/it/10 ^^V\OT1/cmr/m/n/10 ))\OML/cmm/m/it/10 e[] d^^V
  []
 
 
-Overfull \hbox (322.21568pt too wide) detected at line 74
+Overfull \hbox (322.21568pt too wide) detected at line 76
 \OMS/cmsy/m/n/10 ) \OML/cmm/m/it/10 E[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/
 cmr/m/n/10 ) = \OMS/cmsy/m/n/10 ^^@\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 d[] \OT1/c
 mr/m/n/10 + \OML/cmm/m/it/10 !\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 E[]\OT1/cmr/m/n
@@ -2304,7 +2321,7 @@ m/it/10 I[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ))\OML/cmm/m/it/1
  []
 
 
-Overfull \hbox (231.09879pt too wide) detected at line 76
+Overfull \hbox (231.09879pt too wide) detected at line 78
 \OMS/cmsy/m/n/10 ) \OML/cmm/m/it/10 E[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/
 cmr/m/n/10 ) = \OML/cmm/m/it/10 []S[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/c
 mr/m/n/10 )\OML/cmm/m/it/10 I[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/
@@ -2323,7 +2340,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.76 ...}S_{h}(t)I_{r}(t)-(d_{h}+\omega)E_{h}(t)\]
+l.78 ...}S_{h}(t)I_{r}(t)-(d_{h}+\omega)E_{h}(t)\]
                                                   
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -2333,7 +2350,7 @@ or  <return>  to continue without it.
 ! Undefined control sequence.
 <write> \newlabel{exposed}{{1}{\thepage 
                                         }}
-l.76 ...}S_{h}(t)I_{r}(t)-(d_{h}+\omega)E_{h}(t)\]
+l.78 ...}S_{h}(t)I_{r}(t)-(d_{h}+\omega)E_{h}(t)\]
                                                   
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2345,7 +2362,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <write> \newlabel{vaccinated}{{2}{\thepage 
                                            }}
-l.76 ...}S_{h}(t)I_{r}(t)-(d_{h}+\omega)E_{h}(t)\]
+l.78 ...}S_{h}(t)I_{r}(t)-(d_{h}+\omega)E_{h}(t)\]
                                                   
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2357,7 +2374,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <write> \newlabel{meq1}{{}{\thepage 
                                     }}
-l.76 ...}S_{h}(t)I_{r}(t)-(d_{h}+\omega)E_{h}(t)\]
+l.78 ...}S_{h}(t)I_{r}(t)-(d_{h}+\omega)E_{h}(t)\]
                                                   
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2369,7 +2386,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <write> \newlabel{meq2}{{}{\thepage 
                                     }}
-l.76 ...}S_{h}(t)I_{r}(t)-(d_{h}+\omega)E_{h}(t)\]
+l.78 ...}S_{h}(t)I_{r}(t)-(d_{h}+\omega)E_{h}(t)\]
                                                   
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2381,7 +2398,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <write> \newlabel{meq3}{{}{\thepage 
                                     }}
-l.76 ...}S_{h}(t)I_{r}(t)-(d_{h}+\omega)E_{h}(t)\]
+l.78 ...}S_{h}(t)I_{r}(t)-(d_{h}+\omega)E_{h}(t)\]
                                                   
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2393,7 +2410,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <write> \newlabel{meq4}{{}{\thepage 
                                     }}
-l.76 ...}S_{h}(t)I_{r}(t)-(d_{h}+\omega)E_{h}(t)\]
+l.78 ...}S_{h}(t)I_{r}(t)-(d_{h}+\omega)E_{h}(t)\]
                                                   
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2405,7 +2422,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <write> \newlabel{meq5}{{}{\thepage 
                                     }}
-l.76 ...}S_{h}(t)I_{r}(t)-(d_{h}+\omega)E_{h}(t)\]
+l.78 ...}S_{h}(t)I_{r}(t)-(d_{h}+\omega)E_{h}(t)\]
                                                   
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2417,7 +2434,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <write> \newlabel{meq6}{{}{\thepage 
                                     }}
-l.76 ...}S_{h}(t)I_{r}(t)-(d_{h}+\omega)E_{h}(t)\]
+l.78 ...}S_{h}(t)I_{r}(t)-(d_{h}+\omega)E_{h}(t)\]
                                                   
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2429,7 +2446,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <write> \newlabel{meq7}{{}{\thepage 
                                     }}
-l.76 ...}S_{h}(t)I_{r}(t)-(d_{h}+\omega)E_{h}(t)\]
+l.78 ...}S_{h}(t)I_{r}(t)-(d_{h}+\omega)E_{h}(t)\]
                                                   
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2441,7 +2458,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <write> \newlabel{meq8}{{}{\thepage 
                                     }}
-l.76 ...}S_{h}(t)I_{r}(t)-(d_{h}+\omega)E_{h}(t)\]
+l.78 ...}S_{h}(t)I_{r}(t)-(d_{h}+\omega)E_{h}(t)\]
                                                   
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2468,7 +2485,7 @@ Missing character: There is no n in font nullfont!
 ! Undefined control sequence.
 <write> ...eference `vaccinated' on page \thepage 
                                                   \space undefined\on@line .
-l.78 Again, equation \ref{vaccinated}
+l.80 Again, equation \ref{vaccinated}
                                       becomes
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -2477,7 +2494,7 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 
-LaTeX Warning: Reference `vaccinated' on page  undefined on input line 78.
+LaTeX Warning: Reference `vaccinated' on page  undefined on input line 80.
 
 Missing character: There is no b in font nullfont!
 Missing character: There is no e in font nullfont!
@@ -2487,16 +2504,214 @@ Missing character: There is no m in font nullfont!
 Missing character: There is no e in font nullfont!
 Missing character: There is no s in font nullfont!
 
-Overfull \hbox (10.86105pt too wide) in paragraph at lines 76--79
+Overfull \hbox (10.86105pt too wide) in paragraph at lines 78--81
   []
  []
 
 
-Overfull \hbox (165.4768pt too wide) detected at line 79
+Overfull \hbox (165.4768pt too wide) detected at line 81
 \OML/cmm/m/it/10 V[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) = [][]
  \OML/cmm/m/it/10 bS[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 ^^V\OT1/cmr/m/n/10 )\OM
 L/cmm/m/it/10 e[] d^^V
  []
+
+
+Overfull \hbox (185.07742pt too wide) detected at line 83
+\OMS/cmsy/m/n/10 ) \OML/cmm/m/it/10 V[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/
+cmr/m/n/10 ) = \OML/cmm/m/it/10 e[] [][] bS[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 
+^^V\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 e[] d^^V
+ []
+
+
+Overfull \hbox (221.55562pt too wide) detected at line 85
+\OMS/cmsy/m/n/10 ) \OML/cmm/m/it/10 V[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/
+cmr/m/n/10 ) = \OMS/cmsy/m/n/10 ^^@\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 d[] \OT1/c
+mr/m/n/10 + \OML/cmm/m/it/10 !\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 V[]\OT1/cmr/m/n
+/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) + \OML/cmm/m/it/10 e[]bS[]\OT1/cmr/m/n
+/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 e[]
+ []
+
+
+Overfull \hbox (138.21652pt too wide) detected at line 87
+\OMS/cmsy/m/n/10 ) \OML/cmm/m/it/10 V[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/
+cmr/m/n/10 ) = \OML/cmm/m/it/10 bS[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr
+/m/n/10 ) \OMS/cmsy/m/n/10 ^^@ \OT1/cmr/m/n/10 (\OML/cmm/m/it/10 d[] \OT1/cmr/m
+/n/10 + \OML/cmm/m/it/10 !\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 V[]\OT1/cmr/m/n/10 
+(\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )
+ []
+
+Missing character: There is no T in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no e in font nullfont!
+! Undefined control sequence.
+l.89 The model for case \rom
+                            {1} is represented as follows
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no s in font nullfont!
+
+! LaTeX Error: Environment flalign undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.90 \begin{flalign}
+                    
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+Missing character: There is no S in font nullfont!
+! Missing $ inserted.
+<inserted text> 
+                $
+l.91 S_
+       {h}'(t) &= a_{h}+\omega V_{h}(t)-d_{h}S_{h}(t)-bS_{h}(t)-(\alpha_{h}S...
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Misplaced alignment tab character &.
+l.91 S_{h}'(t) &
+                = a_{h}+\omega V_{h}(t)-d_{h}S_{h}(t)-bS_{h}(t)-(\alpha_{h}S...
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Misplaced alignment tab character &.
+l.93 V_{h}'(t) &
+                = bS_{h}(t)-(d_{h}+\omega)V_{h}(t) \label{case1meq2}\\
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Misplaced alignment tab character &.
+l.95 E_{h}'(t) &
+                = \alpha_{h}S_{h}(t)I_{h}(t) + \beta_{h}S_{h}(t)I_{r}(t)-(d_...
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Misplaced alignment tab character &.
+l.97 I_{h}'(t) &
+                = \omega E_{h}(t) -d_{h}I_{h}(t) -\delta_{h}I_{h}(t) -r_{h}I...
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Misplaced alignment tab character &.
+l.99 R_{h}'(t) &
+                = r_{h}I_{h}(t) -d_{h}R_{h}(t) \label{case1meq5}\\
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Misplaced alignment tab character &.
+l.101 S_{r}'(t) &
+                 = a_{r}-d_{r}S_{r}(t)-\alpha_{r}S_{r}(t)I_{r}(t)  \label{ca...
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Misplaced alignment tab character &.
+l.103 I_{r}'(t) &
+                 = \alpha_{r}S_{r}(t)I_{r}(t) -d_{r}I_{r}(t) -\delta_{r}I_{r...
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Misplaced alignment tab character &.
+l.105 R_{r}'(t) &
+                 = r_{r}I_{r}(t) -d_{r}R_{r}(t)  \label{case1meq8}
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+
+! LaTeX Error: \begin{document} ended by \end{flalign}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.107 \end{flalign}
+                   
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.107 \end{flalign}
+                   
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
 
 )
 ! Emergency stop.
@@ -2506,11 +2721,11 @@ L/cmm/m/it/10 e[] d^^V
 
  
 Here is how much of TeX's memory you used:
- 29 strings out of 480204
- 538 string characters out of 5895010
- 297022 words of memory out of 5000000
- 18077 multiletter control sequences out of 15000+600000
+ 29 strings out of 478238
+ 534 string characters out of 5850457
+ 302873 words of memory out of 5000000
+ 18365 multiletter control sequences out of 15000+600000
  469567 words of font info for 29 fonts, out of 8000000 for 9000
- 36 hyphenation exceptions out of 8191
+ 1141 hyphenation exceptions out of 8191
  23i,6n,23p,628b,103s stack positions out of 5000i,500n,10000p,200000b,80000s
 !  ==> Fatal error occurred, no output PDF file produced!
