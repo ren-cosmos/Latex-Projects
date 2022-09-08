@@ -119,3 +119,282 @@ I_{r}'(t) &= \alpha_{r}S_{r}(t)I_{r}(t) -d_{r}I_{r}(t) -\delta_{r}I_{r}(t)- r_{r
 R_{r}'(t) &= r_{r}I_{r}(t) -d_{r}R_{r}(t)  \label{case1meq8}
 %-------------------------------------------------------------
 \end{flalign}
+
+% CASE 2
+Case \rom{2} $\Biggl[P(t)=e^{-\omega t}, Q(t)=\begin{cases}
+        1 & \text{if } t \in (0,\tau]\\
+        0 & \text{if } t > \tau
+    \end{cases}\Biggr\}\Biggr]$\\
+% when t lies in 0 and tau
+when $t \in (0,\tau]$, equation \ref{exposed} becomes
+\begin{flalign*}
+E_{h}(t) &= \int_{0}^{t} (\alpha_{h}S_{h}(\mu)I_{h}(\mu) +\beta_{h}S_{h}(\mu)I_{r}(\mu)) e^{-d_{h}(t-\mu)} \,d\mu\\
+%-------------------------------------------------------------
+&= e^{-d_{h}t} \int_{0}^{t} (\alpha_{h}S_{h}(\mu)I_{h}(\mu) +\beta_{h}S_{h}(\mu)I_{r}(\mu)) e^{d_{h}\mu} \,d\mu\\
+%-------------------------------------------------------------
+\Rightarrow E_{h}'(t) &= -d_{h}E_{h}+\alpha_{h}S_{h}(t)I_{h}(t) +\beta_{h}S_{h}(t)I_{r}(t)
+\end{flalign*}
+Again, when $t \in (0,\tau]$, equation \ref{vaccinated} becomes
+\begin{flalign*}
+V_{h}(t) &= \int_{0}^{t} bS_{h}(\mu)e^{-d_{h}(t-\mu)}e^{-\omega(t-\mu)} \,d\mu\\
+%-------------------------------------------------------------
+&= e^{-(\omega+d_{h})t}\int_{0}^{t} bS_{h}(\mu)e^{(\omega+d_{h})\mu} \,d\mu\\
+%-------------------------------------------------------------
+\Rightarrow V_{h}'(t) &= bS_{h}t - (\omega+d_{h})V_{h}
+\end{flalign*}
+%-------------------------------------------------------------
+The model for case \rom{2} when $t \in (0,\tau]$ is represented as follows
+\begin{flalign} 
+S_{h}'(t) &= a_{h}+\omega V_{h}(t)-d_{h}S_{h}(t)-bS_{h}(t)-(\alpha_{h}S_{h}(t)I_{h}(t)+\beta_{h}S_{h}(t)I_{r}(t)) \label{case1meq1}\\
+%-------------------------------------------------------------
+V_{h}'(t) &= bS_{h}t - (\omega+d_{h})V_{h} \label{case1meq2}\\
+%-------------------------------------------------------------
+E_{h}'(t) &= -d_{h}E_{h}+\alpha_{h}S_{h}(t)I_{h}(t) +\beta_{h}S_{h}(t)I_{r}(t)  \label{case1meq3}\\
+%-------------------------------------------------------------
+I_{h}'(t) &= -(d_{h}+\delta_{h}+r_{h})I_{h}(t)  \label{case1meq4}\\
+%-------------------------------------------------------------
+R_{h}'(t) &= r_{h}I_{h}(t) -d_{h}R_{h}(t) \label{case1meq5}\\ 
+%-------------------------------------------------------------
+S_{r}'(t) &= a_{r}-d_{r}S_{r}(t)-\alpha_{r}S_{r}(t)I_{r}(t)  \label{case1meq6}\\
+%-------------------------------------------------------------
+I_{r}'(t) &= \alpha_{r}S_{r}(t)I_{r}(t) -(d_{r}+\delta_{r}+r_{r})I_{r}(t) \label{case1meq7}\\
+%-------------------------------------------------------------
+R_{r}'(t) &= r_{r}I_{r}(t) -d_{r}R_{r}(t)  \label{case1meq8}
+%-------------------------------------------------------------
+\end{flalign}
+% when t > tau
+when $t > \tau$, equation \ref{exposed} becomes
+\begin{flalign*}
+E_{h}(t) &= \int_{t-\tau}^{t} (\alpha_{h}S_{h}(\mu)I_{h}(\mu) +\beta_{h}S_{h}(\mu)I_{r}(\mu)) e^{-d_{h}(t-\mu)} \,d\mu\\
+%-------------------------------------------------------------
+&= e^{-d_{h}t} \int_{t-\tau}^{t} (\alpha_{h}S_{h}(\mu)I_{h}(\mu) +\beta_{h}S_{h}(\mu)I_{r}(\mu)) e^{d_{h}\mu} \,d\mu\\
+%-------------------------------------------------------------
+\Rightarrow E_{h}'(t) &= -d_{h}E_{h}+\alpha_{h}S_{h}(t)I_{h}(t) +\beta_{h}S_{h}(t)I_{r}(t)-\biggl[\alpha_{h}S_{h}(t-\tau)I_{h}(t-\tau) +\beta_{h}S_{h}(t-\tau)I_{r}(t-\tau)\biggr]e^{-d_{h}\tau}
+\end{flalign*}
+Again, when $t > \tau$, equation \ref{vaccinated} becomes
+\begin{flalign*}
+V_{h}(t) &= \int_{0}^{t} bS_{h}(\mu)e^{-d_{h}(t-\mu)}e^{-\omega(t-\mu)} \,d\mu\\
+%-------------------------------------------------------------
+&= e^{-(\omega+d_{h})t}\int_{0}^{t} bS_{h}(\mu)e^{(\omega+d_{h})\mu} \,d\mu\\
+%-------------------------------------------------------------
+\Rightarrow V_{h}'(t) &= bS_{h}t - (\omega+d_{h})V_{h}
+\end{flalign*}
+%-------------------------------------------------------------
+The model for case \rom{2} when $t > \tau$ is represented as follows
+\begin{flalign} 
+S_{h}'(t) &= a_{h}+\omega V_{h}(t)-d_{h}S_{h}(t)-bS_{h}(t)-(\alpha_{h}S_{h}(t)I_{h}(t)+\beta_{h}S_{h}(t)I_{r}(t)) \\
+%-------------------------------------------------------------
+V_{h}'(t) &= bS_{h}t - (\omega+d_{h})V_{h} \\
+%-------------------------------------------------------------
+E_{h}'(t) &= -d_{h}E_{h}+\alpha_{h}S_{h}(t)I_{h}(t) +\beta_{h}S_{h}(t)I_{r}(t)-\biggl[\alpha_{h}S_{h}(t-\tau)I_{h}(t-\tau) +\beta_{h}S_{h}(t-\tau)I_{r}(t-\tau)\biggr]e^{-d_{h}\tau}\\
+%-------------------------------------------------------------
+I_{h}'(t) &= \biggl[\alpha_{h}S_{h}(t-\tau)I_{h}(t-\tau) +\beta_{h}S_{h}(t-\tau)I_{r}(t-\tau)\biggr]e^{-d_{h}\tau} -(d_{h}+\delta_{h}+r_{h})I_{h}(t)\\
+%-------------------------------------------------------------
+R_{h}'(t) &= r_{h}I_{h}(t) -d_{h}R_{h}(t)\\ 
+%-------------------------------------------------------------
+S_{r}'(t) &= a_{r}-d_{r}S_{r}(t)-\alpha_{r}S_{r}(t)I_{r}(t)\\
+%-------------------------------------------------------------
+I_{r}'(t) &= \alpha_{r}S_{r}(t)I_{r}(t) -(d_{r}+\delta_{r}+r_{r})I_{r}(t)\\
+%-------------------------------------------------------------
+R_{r}'(t) &= r_{r}I_{r}(t) -d_{r}R_{r}(t)
+%-------------------------------------------------------------
+\end{flalign}
+
+% CASE 3
+Case \rom{3} $\Biggl[P(t)=\begin{cases}
+        1 & \text{if } t \in (0,\tau]\\
+        0 & \text{if } t > \tau
+    \end{cases}\Biggr\}, Q(t)=e^{-\omega t}\Biggr]$\\
+% when t lies in 0 and tau
+when $t \in (0,\tau]$, equation \ref{exposed} becomes
+\begin{flalign*}
+E_{h}(t) &= \int_{0}^{t} (\alpha_{h}S_{h}(\mu)I_{h}(\mu) +\beta_{h}S_{h}(\mu)I_{r}(\mu)) e^{-d_{h}(t-\mu)}e^{-\omega(t-\mu)} \,d\mu\\
+%-------------------------------------------------------------
+&= e^{-(\omega+d_{h})t} \int_{0}^{t} (\alpha_{h}S_{h}(\mu)I_{h}(\mu) +\beta_{h}S_{h}(\mu)I_{r}(\mu)) e^{(\omega+d_{h})\mu} \,d\mu\\
+%-------------------------------------------------------------
+\Rightarrow E_{h}'(t) &= -(\omega+d_{h})E_{h}+\alpha_{h}S_{h}(t)I_{h}(t) +\beta_{h}S_{h}(t)I_{r}(t)
+\end{flalign*}
+Again, when $t \in (0,\tau]$, equation \ref{vaccinated} becomes
+\begin{flalign*}
+V_{h}(t) &= \int_{0}^{t} bS_{h}(\mu)e^{-d_{h}(t-\mu)} \,d\mu\\
+%-------------------------------------------------------------
+&= e^{-d_{h}t}\int_{0}^{t} bS_{h}(\mu)e^{d_{h}\mu} \,d\mu\\
+%-------------------------------------------------------------
+\Rightarrow V_{h}'(t) &= bS_{h}(t) - d_{h}V_{h}
+\end{flalign*}
+%-------------------------------------------------------------
+The model for case \rom{3} when $t \in (0,\tau]$ is represented as follows
+\begin{flalign} 
+S_{h}'(t) &= a_{h}-d_{h}S_{h}(t)-bS_{h}(t)-(\alpha_{h}S_{h}(t)I_{h}(t)+\beta_{h}S_{h}(t)I_{r}(t))\\
+%-------------------------------------------------------------
+V_{h}'(t) &= bS_{h}t - d_{h}V_{h}\\
+%-------------------------------------------------------------
+E_{h}'(t) &= -(\omega+d_{h})E_{h}+\alpha_{h}S_{h}(t)I_{h}(t) +\beta_{h}S_{h}(t)I_{r}(t)\\
+%-------------------------------------------------------------
+I_{h}'(t) &= \omega E_{h}-(d_{h}+\delta_{h}+r_{h})I_{h}(t)\\
+%-------------------------------------------------------------
+R_{h}'(t) &= r_{h}I_{h}(t) -d_{h}R_{h}(t)\\ 
+%-------------------------------------------------------------
+S_{r}'(t) &= a_{r}-d_{r}S_{r}(t)-\alpha_{r}S_{r}(t)I_{r}(t)\\
+%-------------------------------------------------------------
+I_{r}'(t) &= \alpha_{r}S_{r}(t)I_{r}(t) -(d_{r}+\delta_{r}+r_{r})I_{r}(t)\\
+%-------------------------------------------------------------
+R_{r}'(t) &= r_{r}I_{r}(t) -d_{r}R_{r}(t)
+%-------------------------------------------------------------
+\end{flalign}
+% when t > tau
+when $t > \tau$, equation \ref{exposed} becomes
+\begin{flalign*}
+E_{h}(t) &= \int_{0}^{t} (\alpha_{h}S_{h}(\mu)I_{h}(\mu) +\beta_{h}S_{h}(\mu)I_{r}(\mu)) e^{-d_{h}(t-\mu)}e^{-\omega(t-\mu)} \,d\mu\\
+%-------------------------------------------------------------
+&= e^{-(\omega+d_{h})t} \int_{0}^{t} (\alpha_{h}S_{h}(\mu)I_{h}(\mu) +\beta_{h}S_{h}(\mu)I_{r}(\mu)) e^{(\omega+d_{h})\mu} \,d\mu\\
+%-------------------------------------------------------------
+\Rightarrow E_{h}'(t) &= -(d_{h}+\omega)E_{h}+\alpha_{h}S_{h}(t)I_{h}(t) +\beta_{h}S_{h}(t)I_{r}(t)
+\end{flalign*}
+Again, when $t > \tau$, equation \ref{vaccinated} becomes
+\begin{flalign*}
+V_{h}(t) &= \int_{t-\tau}^{t} bS_{h}(\mu)e^{-d_{h}(t-\mu)} \,d\mu\\
+%-------------------------------------------------------------
+&= e^{-d_{h}t}\int_{t-\tau}^{t} bS_{h}(\mu)e^{d_{h}\mu} \,d\mu\\
+%-------------------------------------------------------------
+\Rightarrow V_{h}'(t) &= bS_{h}(t) - d_{h}V_{h} - bS_{h}(t-\tau)e^{-d_{h}\tau}
+\end{flalign*}
+%-------------------------------------------------------------
+The model for case \rom{3} when $t > \tau$ is represented as follows
+\begin{flalign} 
+S_{h}'(t) &= a_{h}-d_{h}S_{h}(t)-bS_{h}(t) + bS_{h}(t-\tau)e^{-d_{h}\tau} -(\alpha_{h}S_{h}(t)I_{h}(t)+\beta_{h}S_{h}(t)I_{r}(t)) \\
+%-------------------------------------------------------------
+V_{h}'(t) &= bS_{h}(t) - d_{h}V_{h} - bS_{h}(t-\tau)e^{-d_{h}\tau} \\
+%-------------------------------------------------------------
+E_{h}'(t) &= -(d_{h}+\omega)E_{h}+\alpha_{h}S_{h}(t)I_{h}(t) +\beta_{h}S_{h}(t)I_{r}(t)\\
+%-------------------------------------------------------------
+I_{h}'(t) &= \omega  E_{h} -(d_{h}+\delta_{h}+r_{h})I_{h}(t)\\
+%-------------------------------------------------------------
+R_{h}'(t) &= r_{h}I_{h}(t) -d_{h}R_{h}(t)\\ 
+%-------------------------------------------------------------
+S_{r}'(t) &= a_{r}-d_{r}S_{r}(t)-\alpha_{r}S_{r}(t)I_{r}(t)\\
+%-------------------------------------------------------------
+I_{r}'(t) &= \alpha_{r}S_{r}(t)I_{r}(t) -(d_{r}+\delta_{r}+r_{r})I_{r}(t)\\
+%-------------------------------------------------------------
+R_{r}'(t) &= r_{r}I_{r}(t) -d_{r}R_{r}(t)
+%-------------------------------------------------------------
+\end{flalign}
+
+% CASE 4
+Case \rom{4} $\Biggl[P(t)=\begin{cases}
+        1 & \text{if } t \in (0,\tau_{1}]\\
+        0 & \text{if } t > \tau_{1}
+    \end{cases}\Biggr\}, Q(t)=\begin{cases}
+        1 & \text{if } t \in (0,\tau_{2}]\\
+        0 & \text{if } t > \tau_{2}
+    \end{cases}\Biggr\}\Biggr]$\\
+without the loss of generality, we assume that $\tau_{1}<\tau_{2}$.\\
+% when t < min{tau1, tau2}
+when $t < \min\{\tau_{1}, \tau_{2}\}$, equation \ref{exposed} becomes
+\begin{flalign*}
+E_{h}(t) &= \int_{0}^{t} (\alpha_{h}S_{h}(\mu)I_{h}(\mu) +\beta_{h}S_{h}(\mu)I_{r}(\mu)) e^{-d_{h}(t-\mu)} \,d\mu\\
+%-------------------------------------------------------------
+\Rightarrow E_{h}'(t) &= -d_{h}E_{h}+\alpha_{h}S_{h}(t)I_{h}(t) +\beta_{h}S_{h}(t)I_{r}(t)
+\end{flalign*}
+Again, when $t < \min\{\tau_{1}, \tau_{2}\}$, equation \ref{vaccinated} becomes
+\begin{flalign*}
+V_{h}(t) &= \int_{0}^{t} bS_{h}(\mu)e^{-d_{h}(t-\mu)} \,d\mu\\
+%-------------------------------------------------------------
+&= e^{-d_{h}t}\int_{0}^{t} bS_{h}(\mu)e^{d_{h}\mu} \,d\mu\\
+%-------------------------------------------------------------
+\Rightarrow V_{h}'(t) &= bS_{h}(t) - d_{h}V_{h}
+\end{flalign*}
+%-------------------------------------------------------------
+The model for case \rom{4} when $t < \min\{\tau_{1}, \tau_{2}\}$ is represented as follows
+\begin{flalign} 
+S_{h}'(t) &= a_{h}-d_{h}S_{h}(t)-bS_{h}(t)-(\alpha_{h}S_{h}(t)I_{h}(t)+\beta_{h}S_{h}(t)I_{r}(t))\\
+%-------------------------------------------------------------
+V_{h}'(t) &= bS_{h}t - d_{h}V_{h}\\
+%-------------------------------------------------------------
+E_{h}'(t) &= -d_{h}E_{h}+\alpha_{h}S_{h}(t)I_{h}(t) +\beta_{h}S_{h}(t)I_{r}(t)\\
+%-------------------------------------------------------------
+I_{h}'(t) &= -(d_{h}+\delta_{h}+r_{h})I_{h}(t)\\
+%-------------------------------------------------------------
+R_{h}'(t) &= r_{h}I_{h}(t) -d_{h}R_{h}(t)\\ 
+%-------------------------------------------------------------
+S_{r}'(t) &= a_{r}-d_{r}S_{r}(t)-\alpha_{r}S_{r}(t)I_{r}(t)\\
+%-------------------------------------------------------------
+I_{r}'(t) &= \alpha_{r}S_{r}(t)I_{r}(t) -(d_{r}+\delta_{r}+r_{r})I_{r}(t)\\
+%-------------------------------------------------------------
+R_{r}'(t) &= r_{r}I_{r}(t) -d_{r}R_{r}(t)
+%-------------------------------------------------------------
+\end{flalign}
+% when min{tau1, tau2} < t < max{tau1, tau2}
+when $\min\{\tau_{1}, \tau_{2}\} < t < \max\{\tau_{1}, \tau_{2}\}$, equation \ref{exposed} becomes
+\begin{flalign*}
+E_{h}(t) &= \int_{0}^{t} (\alpha_{h}S_{h}(\mu)I_{h}(\mu) +\beta_{h}S_{h}(\mu)I_{r}(\mu)) e^{-d_{h}(t-\mu)} \,d\mu\\
+%-------------------------------------------------------------
+&= e^{-d_{h}t} \int_{0}^{t} (\alpha_{h}S_{h}(\mu)I_{h}(\mu) +\beta_{h}S_{h}(\mu)I_{r}(\mu)) e^{d_{h}\mu} \,d\mu\\
+%-------------------------------------------------------------
+\Rightarrow E_{h}'(t) &= -d_{h}E_{h}+\alpha_{h}S_{h}(t)I_{h}(t) +\beta_{h}S_{h}(t)I_{r}(t)
+\end{flalign*}
+Again, when $\min\{\tau_{1}, \tau_{2}\} < t < \max\{\tau_{1}, \tau_{2}\}$, equation \ref{vaccinated} becomes
+\begin{flalign*}
+V_{h}(t) &= \int_{t-\tau_{1}}^{t} bS_{h}(\mu)e^{-d_{h}(t-\mu)} \,d\mu\\
+%-------------------------------------------------------------
+&= e^{-d_{h}t}\int_{t-\tau_{1}}^{t} bS_{h}(\mu)e^{d_{h}\mu} \,d\mu\\
+%-------------------------------------------------------------
+\Rightarrow V_{h}'(t) &= bS_{h}(t) - d_{h}V_{h} - bS_{h}(t-\tau_{1})e^{-d_{h}\tau_{1}}
+\end{flalign*}
+%-------------------------------------------------------------
+The model for case \rom{4} when $\min\{\tau_{1}, \tau_{2}\} < t < \max\{\tau_{1}, \tau_{2}\}$ is represented as follows
+\begin{flalign}
+S_{h}'(t) &= a_{h}-d_{h}S_{h}(t)-bS_{h}(t) + bS_{h}(t-\tau_{1})e^{-d_{h}\tau_{1}} -(\alpha_{h}S_{h}(t)I_{h}(t)+\beta_{h}S_{h}(t)I_{r}(t)) \\
+%-------------------------------------------------------------
+V_{h}'(t) &= bS_{h}(t) - d_{h}V_{h} - bS_{h}(t-\tau_{1})e^{-d_{h}\tau_{1}} \\
+%-------------------------------------------------------------
+E_{h}'(t) &= -d_{h}E_{h}+\alpha_{h}S_{h}(t)I_{h}(t) +\beta_{h}S_{h}(t)I_{r}(t)\\
+%-------------------------------------------------------------
+I_{h}'(t) &= -(d_{h}+\delta_{h}+r_{h})I_{h}(t)\\
+%-------------------------------------------------------------
+R_{h}'(t) &= r_{h}I_{h}(t) -d_{h}R_{h}(t)\\ 
+%-------------------------------------------------------------
+S_{r}'(t) &= a_{r}-d_{r}S_{r}(t)-\alpha_{r}S_{r}(t)I_{r}(t)\\
+%-------------------------------------------------------------
+I_{r}'(t) &= \alpha_{r}S_{r}(t)I_{r}(t) -(d_{r}+\delta_{r}+r_{r})I_{r}(t)\\
+%-------------------------------------------------------------
+R_{r}'(t) &= r_{r}I_{r}(t) -d_{r}R_{r}(t)
+%-------------------------------------------------------------
+\end{flalign}
+% when t > max{tau1, tau2}
+when $t > \max\{\tau_{1}, \tau_{2}\}$, equation \ref{exposed} becomes
+\begin{flalign*}
+E_{h}(t) &= \int_{t-\tau_{2}}^{t} (\alpha_{h}S_{h}(\mu)I_{h}(\mu) +\beta_{h}S_{h}(\mu)I_{r}(\mu)) e^{-d_{h}(t-\mu)} \,d\mu\\
+%-------------------------------------------------------------
+&= e^{-d_{h}t} \int_{t-\tau_{2}}^{t} (\alpha_{h}S_{h}(\mu)I_{h}(\mu) +\beta_{h}S_{h}(\mu)I_{r}(\mu)) e^{d_{h}\mu} \,d\mu\\
+%-------------------------------------------------------------
+\Rightarrow E_{h}'(t) &= -d_{h}E_{h}+\alpha_{h}S_{h}(t)I_{h}(t) +\beta_{h}S_{h}(t)I_{r}(t) - \Bigl[\alpha_{h}S_{h}(t-\tau_{2})I_{h}(t-\tau_{2}) +\beta_{h}S_{h}(t-\tau_{2})I_{r}(t-\tau_{2})\Bigr]e^{-d_{h}\tau_{2}}
+\end{flalign*}
+Again, when $t > \max\{\tau_{1}, \tau_{2}\}$, equation \ref{vaccinated} becomes
+\begin{flalign*}
+V_{h}(t) &= \int_{t-\tau_{1}}^{t} bS_{h}(\mu)e^{-d_{h}(t-\mu)} \,d\mu\\
+%-------------------------------------------------------------
+&= e^{-d_{h}t}\int_{t-\tau_{1}}^{t} bS_{h}(\mu)e^{d_{h}\mu} \,d\mu\\
+%-------------------------------------------------------------
+\Rightarrow V_{h}'(t) &= bS_{h}(t) - d_{h}V_{h} - bS_{h}(t-\tau_{1})e^{-d_{h}\tau_{1}}
+\end{flalign*}
+%-------------------------------------------------------------
+The model for case \rom{4} when $t > \max\{\tau_{1}, \tau_{2}\}$ is represented as follows
+\begin{flalign}
+S_{h}'(t) &= a_{h}-d_{h}S_{h}(t)-bS_{h}(t) + bS_{h}(t-\tau_{1})e^{-d_{h}\tau_{1}} -(\alpha_{h}S_{h}(t)I_{h}(t)+\beta_{h}S_{h}(t)I_{r}(t)) \\
+%-------------------------------------------------------------
+V_{h}'(t) &= bS_{h}(t) - d_{h}V_{h} - bS_{h}(t-\tau_{1})e^{-d_{h}\tau_{1}} \\
+%-------------------------------------------------------------
+E_{h}'(t) &= -d_{h}E_{h}+\alpha_{h}S_{h}(t)I_{h}(t) +\beta_{h}S_{h}(t)I_{r}(t) - \Bigl[\alpha_{h}S_{h}(t-\tau_{2})I_{h}(t-\tau_{2}) +\beta_{h}S_{h}(t-\tau_{2})I_{r}(t-\tau_{2})\Bigr]e^{-d_{h}\tau_{2}}\\
+%-------------------------------------------------------------
+I_{h}'(t) &= \Bigl[\alpha_{h}S_{h}(t-\tau_{2})I_{h}(t-\tau_{2}) +\beta_{h}S_{h}(t-\tau_{2})I_{r}(t-\tau_{2})\Bigr]e^{-d_{h}\tau_{2}} -(d_{h}+\delta_{h}+r_{h})I_{h}(t)\\
+%-------------------------------------------------------------
+R_{h}'(t) &= r_{h}I_{h}(t) -d_{h}R_{h}(t)\\ 
+%-------------------------------------------------------------
+S_{r}'(t) &= a_{r}-d_{r}S_{r}(t)-\alpha_{r}S_{r}(t)I_{r}(t)\\
+%-------------------------------------------------------------
+I_{r}'(t) &= \alpha_{r}S_{r}(t)I_{r}(t) -(d_{r}+\delta_{r}+r_{r})I_{r}(t)\\
+%-------------------------------------------------------------
+R_{r}'(t) &= r_{r}I_{r}(t) -d_{r}R_{r}(t)
+%-------------------------------------------------------------
+\end{flalign}

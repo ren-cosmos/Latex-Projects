@@ -1,7 +1,7 @@
 \contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}%
 \contentsline {chapter}{\numberline {2}Model Description}{3}{chapter.2}%
-\contentsline {chapter}{\numberline {3}Analysis}{7}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Positivity}{7}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Boundedness}{7}{section.3.2}%
-\contentsline {section}{\numberline {3.3}Existence of DFE and EE}{8}{section.3.3}%
-\contentsline {section}{\numberline {3.4}Stability Analysis}{9}{section.3.4}%
+\contentsline {chapter}{\numberline {3}Analysis}{11}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Positivity}{11}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Boundedness}{11}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Existence of DFE and EE}{12}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Stability Analysis}{13}{section.3.4}%
